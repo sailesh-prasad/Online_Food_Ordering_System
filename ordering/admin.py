@@ -1,3 +1,5 @@
 from django.contrib import admin
+from customer.models import DeliveryPerson, Feedback
 
-# admin.site.site_header = 'My Awesome Admin'
+admin.site.register(DeliveryPerson)
+admin.site.register(Feedback)

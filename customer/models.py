@@ -1,7 +1,29 @@
 from django.db import models
-from datetime import date, timedelta
-from django.db import models
+from django.utils import timezone
 
+
+class DeliveryPerson(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True)
+    vehicle_details = models.CharField(max_length=255, blank=True)
+    availability_status = models.BooleanField(default=True)
+    photo = models.ImageField(upload_to='static/images/', blank=True, null=True)
+    date_of_joining = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+
+class Feedback(models.Model):
+    delivery_person = models.ForeignKey(DeliveryPerson, on_delete=models.CASCADE, related_name="feedbacks")
+    rating = models.PositiveIntegerField()
+    comments = models.TextField(blank=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Feedback for {self.delivery_person} - Rating: {self.rating}'
 
 # class Student(models.Model):
 
