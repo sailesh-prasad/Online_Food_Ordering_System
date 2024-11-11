@@ -83,12 +83,11 @@ WSGI_APPLICATION = 'ordering.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Use mysqlclient
-        'NAME': os.getenv('MYSQL_DATABASE', 'food_ordering_db'),
-        'USER': os.getenv('MYSQL_USER', 'root'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'root'),
-        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
-        'PORT': os.getenv('MYSQL_PORT', '3306'),
-        
+        'NAME': 'food_ordering_db',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 pymysql.version_info = (1, 4, 2, "final", 0)
