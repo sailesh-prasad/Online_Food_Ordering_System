@@ -1,4 +1,9 @@
 from django.contrib import admin
+from customer.models import DeliveryPerson, Feedback
+
+admin.site.register(DeliveryPerson)
+admin.site.register(Feedback)
+
 from .models import FoodItem, Order, OrderItem
 
 class OrderItemInline(admin.TabularInline):
