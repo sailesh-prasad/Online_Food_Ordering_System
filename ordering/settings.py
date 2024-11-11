@@ -21,14 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vex3%bq7byz=55)q#c_i3*n0_f90e2g)##xsdpwz=-(_y-wz7+'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-vex3%bq7byz=55)q#c_i3*n0_f90e2g)##xsdpwz=-(_y-wz7+')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
-
-
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
@@ -84,11 +82,12 @@ WSGI_APPLICATION = 'ordering.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Use mysqlclient
-        'NAME': 'food_ordering_db',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_DATABASE', 'food_ordering_db'),
+        'USER': os.getenv('MYSQL_USER', 'root'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'root'),
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),
+        
     }
 }
 
@@ -137,9 +136,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'my_files')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import os
-
-MYSQL_PATH = "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe"  # Update if the path differs
-if os.path.exists(MYSQL_PATH):
-    DATABASES['default']['OPTIONS'] = {'read_default_file': MYSQL_PATH}
