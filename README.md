@@ -1,7 +1,17 @@
 # Food-ordering
 
-# Installation procedure
+ a Django Food ordering web application
+## Installation
 
-# Run pip install -r requirement.txt
+Use the requirements.txt to install the requirements.
 
-# run python manage.py runserver
+```bash
+pip install -r requirements.txt
+```
+
+## use this command to run the server
+
+```python
+Python manage.py runserver
+```
+
