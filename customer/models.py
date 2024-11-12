@@ -1,6 +1,32 @@
 from django.db import models
-from datetime import date, timedelta
-from django.db import models
+
+class Customer(models.Model):
+    c_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    phone_number = models.IntegerField()
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.name
+
+    def view_menu(self):
+        
+        pass
+
+    def make_payment(self):
+        
+        pass
+
+    def add_to_cart(self):
+        
+        pass
+
+    def delete_from_cart(self):
+        
+        pass
+
+
 
 
 # class Student(models.Model):
