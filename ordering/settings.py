@@ -138,8 +138,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'my_files')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import os
 
-MYSQL_PATH = "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe"  # Update if the path differs
-if os.path.exists(MYSQL_PATH):
-    DATABASES['default']['OPTIONS'] = {'read_default_file': MYSQL_PATH}
