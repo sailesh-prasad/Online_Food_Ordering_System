@@ -1,7 +1,11 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import DeliveryPersonViewSet, CommentViewSet
 
-# urlpatterns = [
-#     path('student_list', views.student_list, name='student_list'),
-#     path('studentr-detail/<int:student_id>/', views.student_detail, name='student_detail') 
-# ]
+router = DefaultRouter()
+router.register(r'delivery-persons', DeliveryPersonViewSet)
+router.register(r'comments', CommentViewSet)
+
+urlpatterns = [
+    path('api/', include(router.urls)),
+]
