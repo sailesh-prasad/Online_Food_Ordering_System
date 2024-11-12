@@ -1,5 +1,5 @@
 from django.test import TestCase
-from customer.models import Customer
+from customer.models import Customer,Food 
 from django.core.exceptions import ValidationError
 
 # Customer model tests
@@ -79,3 +79,53 @@ class CustomerModelTest(TestCase):
             CustomerPass="password123"
         )
         self.assertEqual(customer.Address, "")
+        
+        
+        
+#! food model test cases 
+
+class FoodModelTest(TestCase):
+
+    def setUp(self):
+        self.food = Food.objects.create(
+            FoodName="Pizza",
+            FoodCat="Fast Food",
+            FoodPrice=9.99,
+            FoodImage="media/pizza.jpg"
+        )
+
+    def test_food_creation(self):
+        self.assertIsInstance(self.food, Food)
+        self.assertEqual(self.food.FoodName, "Pizza")
+        self.assertEqual(self.food.FoodCat, "Fast Food")
+        self.assertEqual(self.food.FoodPrice, 9.99)
+        self.assertEqual(self.food.FoodImage, "media/pizza.jpg")
+
+    def test_food_str(self):
+        expected_str = f"{self.food.FoodName}"
+        self.assertEqual(str(self.food), expected_str)
+
+    def test_field_lengths(self):
+        food = Food.objects.create(
+            FoodName="A" * 30,
+            FoodCat="B" * 30,
+            FoodPrice=19.99,
+            FoodImage="media/food.jpg"
+        )
+        food.full_clean()  # Should not raise any exceptions
+
+    def test_default_food_image(self):
+        food = Food.objects.create(
+            FoodName="Burger",
+            FoodCat="Fast Food",
+            FoodPrice=5.99
+        )
+        self.assertEqual(food.FoodImage, "")
+
+    def test_food_price_validation(self):
+        with self.assertRaises(ValidationError):
+            food = Food(
+                FoodName="Invalid Price",
+                FoodCat="Fast Food",
+                FoodPrice="invalid_price"
+            )

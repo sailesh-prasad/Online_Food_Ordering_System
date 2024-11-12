@@ -90,6 +90,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+#! add these 2 lines
 pymysql.version_info = (1, 4, 2, "final", 0)
 pymysql.install_as_MySQLdb()
 # Password validation
