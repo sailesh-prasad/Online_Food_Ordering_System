@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import pymysql
+
 from pathlib import Path
 import os
 
@@ -21,12 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-vex3%bq7byz=55)q#c_i3*n0_f90e2g)##xsdpwz=-(_y-wz7+')
+SECRET_KEY = 'django-insecure-vex3%bq7byz=55)q#c_i3*n0_f90e2g)##xsdpwz=-(_y-wz7+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -90,9 +91,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-#! add these 2 lines to fix SSH Client error
-pymysql.version_info = (1, 4, 2, "final", 0)
-pymysql.install_as_MySQLdb()
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
