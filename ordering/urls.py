@@ -22,8 +22,12 @@ from . import views
 
 
 urlpatterns = [
+    
     path('admin/', admin.site.urls),
-    path('api/customer/', include('customer.api.urls')),
+    path('restaurant/', include('restaurant.urls')),
+    path('customer/', include('customer.urls')),
+    path('delivery/', include('delivery.urls')),
+    path('', views.home, name='blog-home'),
 ]
 
 if settings.DEBUG:
