@@ -21,11 +21,14 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    # path('admin/', include('teacher.urls')),
-    # path('customer/', include('student.urls')),
+    
+    # path('customer/', include('customer.urls')),
+    # path('delivery/', include('delivery.urls')),
     path('', views.home, name='blog-home'),
     path('admin/', admin.site.urls),
-    path('api/customer/', include('customer.api.urls')),
+    path('customer/', include('customer.api.urls')),
+    path('restaurant/', include('restaurant.api.urls')),
+
 ]
 
 if settings.DEBUG:
