@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.views.generic.list import ListView
 from django.shortcuts import render, get_object_or_404
-from .models import AdminPrivilege
+from .models import Student
 
 
 # def student_list(request):
@@ -11,24 +12,26 @@ from .models import AdminPrivilege
 #     student = get_object_or_404(Student, id=student_id)
 #     return render(request, 'home/student_detail.html', {'student': student})
 
-# Check if the user is a superuser
-def is_superuser(user):
-    return user.is_superuser
+# class customerListView(generic.ObjectListView):
+#     queryset = Provider.objects.annotate(
+#         count_circuits=count_related(Circuit, 'provider')
+#     )
+#     filterset = filtersets.ProviderFilterSet
+#     filterset_form = forms.ProviderFilterForm
+#     table = tables.ProviderTable
+
+# class customerView(GetRelatedModelsMixin, generic.ObjectView):
+#     queryset = Provider.objects.all()
+
+#     def get_extra_context(self, request, instance):
+#         return {
+#             'related_models': self.get_related_models(request, instance),
+#         }
+
+# class customerEditView(generic.ObjectEditView):
+#     queryset = Provider.objects.all()
+#     form = forms.ProviderForm
 
 
-def manage_admin_privileges(request):
-    privileges = AdminPrivilege.objects.all()
-    return render(request, 'home/manage_privileges.html', {'privileges': privileges})
-
-
-def edit_admin_privilege(request, user_id):
-    privilege = AdminPrivilege.objects.get(user_id=user_id)
-    if request.method == 'POST':
-        # Directly update privilege fields from POST data
-        privilege.can_manage_orders = request.POST.get('can_manage_orders') == 'on'
-        privilege.can_manage_inventory = request.POST.get('can_manage_inventory') == 'on'
-        privilege.can_view_reports = request.POST.get('can_view_reports') == 'on'
-        privilege.save()
-        return redirect('manage_admin_privileges')
-    return render(request, 'home/edit_privilege.html', {'privilege': privilege})
-
+# class customerDeleteView(generic.ObjectDeleteView):
+#     queryset = Provider.objects.all()
