@@ -1,83 +1,51 @@
 from django.test import TestCase
-from customer.models import Customer,Food 
+from customer.models import Customer
 from django.core.exceptions import ValidationError
 
-# Customer model tests
 class CustomerModelTest(TestCase):
 
     def setUp(self):
         self.customer = Customer.objects.create(
-            CustomerFName="John",
-            CustomerLName="Doe",
-            CustomerCont="1234567890",
-            CustomerEmail="john.doe@example.com",
-            CustomerPass="password123",
-            Address="123 Main St"
+            name="John Doe",
+            address="123 Main St",
+            phone_number=1234567890,
+            email="john.doe@example.com"
         )
 
     def test_customer_creation(self):
         self.assertIsInstance(self.customer, Customer)
-        self.assertEqual(self.customer.CustomerFName, "John")
-        self.assertEqual(self.customer.CustomerLName, "Doe")
-        self.assertEqual(self.customer.CustomerCont, "1234567890")
-        self.assertEqual(self.customer.CustomerEmail, "john.doe@example.com")
-        self.assertEqual(self.customer.CustomerPass, "password123")
-        self.assertEqual(self.customer.Address, "123 Main St")
+        self.assertEqual(self.customer.name, "John Doe")
+        self.assertEqual(self.customer.address, "123 Main St")
+        self.assertEqual(self.customer.phone_number, 1234567890)
+        self.assertEqual(self.customer.email, "john.doe@example.com")
 
     def test_customer_str(self):
-        expected_str = f"{self.customer.CustomerFName} {self.customer.CustomerLName}"
-        self.assertEqual(str(self.customer), expected_str)
+        self.assertEqual(str(self.customer), "John Doe")
 
     def test_required_fields(self):
         with self.assertRaises(ValidationError):
             Customer.objects.create(
-                CustomerFName="",
-                CustomerLName="",
-                CustomerCont="",
-                CustomerEmail="",
-                CustomerPass="",
-                Address=""
+                name="",
+                address="",
+                phone_number=None,
+                email=""
             ).full_clean()
 
     def test_field_lengths(self):
         customer = Customer.objects.create(
-            CustomerFName="A" * 30,
-            CustomerLName="B" * 30,
-            CustomerCont="1" * 10,
-            CustomerEmail="email@example.com",
-            CustomerPass="password123",
-            Address="C" * 150
+            name="A" * 100,
+            address="B" * 255,
+            phone_number=1234567890,
+            email="email@example.com"
         )
         customer.full_clean()  # Should not raise any exceptions
 
-    def test_unique_email(self):
-        Customer.objects.create(
-            CustomerFName="Jane",
-            CustomerLName="Doe",
-            CustomerCont="0987654321",
-            CustomerEmail="jane.doe@example.com",
-            CustomerPass="password123",
-            Address="456 Another St"
-        )
+    def test_invalid_phone_number(self):
         with self.assertRaises(ValidationError):
-            duplicate_customer = Customer(
-                CustomerFName="Jane",
-                CustomerLName="Doe",
-                CustomerCont="0987654321",
-                CustomerEmail="jane.doe@example.com",
-                CustomerPass="password123",
-                Address="456 Another St"
+            customer = Customer(
+                name="Invalid Phone Number",
+                address="123 Test St",
+                phone_number="invalid_phone_number",
+                email="test@example.com"
             )
-            duplicate_customer.full_clean()
-
-    def test_default_address(self):
-        customer = Customer.objects.create(
-            CustomerFName="Default",
-            CustomerLName="Address",
-            CustomerCont="1234567890",
-            CustomerEmail="default.address@example.com",
-            CustomerPass="password123"
-        )
-        self.assertEqual(customer.Address, "")
-        
- 
+            customer.full_clean()
