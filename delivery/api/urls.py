@@ -1,7 +1,7 @@
 from rest_framework.routers import DefaultRouter
-from .views import CustomerViewSet
+from .views import DeliveryPersonViewSet
 
 router = DefaultRouter()
-router.register(r'customers', CustomerViewSet)
+router.register(r'delivery-persons', DeliveryPersonViewSet)
 
 urlpatterns = router.urls
