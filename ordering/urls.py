@@ -24,6 +24,7 @@ from . import views
 urlpatterns = [
     
     path('admin/', admin.site.urls),
+    path('api/', include('ordering.api.urls')),
     path('restaurant/', include('restaurant.urls')),
     path('customer/', include('customer.urls')),
     path('delivery/', include('delivery.urls')),

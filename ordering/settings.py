@@ -35,8 +35,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'ordering',
-    'restaurant',
-    'delivery',
     'customer.apps.CustomerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
