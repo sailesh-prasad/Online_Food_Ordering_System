@@ -6,7 +6,7 @@ from .views import RestaurantViewSet
 
 
 router = DefaultRouter()
-router.register(r'restaurant',RestaurantViewSet)
+router.register(r'',RestaurantViewSet)
 
 urlpatterns = [
     path('api/',include(router.urls))

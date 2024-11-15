@@ -6,7 +6,7 @@ from .views import CustomerViewSet
 
 
 router = DefaultRouter()
-router.register(r'customer',CustomerViewSet)
+router.register(r'',CustomerViewSet)
 
 urlpatterns = [
     path('api/',include(router.urls))
