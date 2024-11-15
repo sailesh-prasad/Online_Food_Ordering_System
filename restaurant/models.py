@@ -1,4 +1,6 @@
 from django.db import models
+
+
 class Restaurant(models.Model):
     
     name = models.CharField(max_length=100)
@@ -12,3 +14,27 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+class Cart(models.Model):
+    id = models.IntegerField(primary_key=True)
+    number_of_products = models.IntegerField()
+    product1 = models.CharField(max_length=100, null=True, blank=True)
+    product2 = models.CharField(max_length=100, null=True, blank=True)
+    product3 = models.CharField(max_length=100, null=True, blank=True)
+    price = models.FloatField()
+    total = models.FloatField()
+
+class Product(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
+    subcategory = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Payment(models.Model):
+    customer_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    card_type = models.CharField(max_length=50)
+    card_no = models.CharField(max_length=20)
