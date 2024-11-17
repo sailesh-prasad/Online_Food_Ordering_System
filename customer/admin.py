@@ -7,3 +7,10 @@ class StudentAdmin(admin.ModelAdmin):
     list_filter = ('student_class', 'class_teacher', 'date_of_join')
 
 # admin.site.register(Student, StudentAdmin)
+from .models import AdminPrivilege, FoodOrder, Customer, Cart, Food  
+
+admin.site.register(AdminPrivilege)
+admin.site.register(FoodOrder)
+admin.site.register(Customer)
+admin.site.register(Cart)
+admin.site.register(Food)
