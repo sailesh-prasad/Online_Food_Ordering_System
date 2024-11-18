@@ -20,10 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 
+
 urlpatterns = [
     
-    # path('customer/', include('customer.urls')),
-    # path('delivery/', include('delivery.urls')),
+   
+    path('api/', include('ordering.api.urls')),
+    path('delivery/', include('delivery.urls')),
     path('', views.home, name='blog-home'),
     path('admin/', admin.site.urls),
     path('customer/', include('customer.api.urls')),
