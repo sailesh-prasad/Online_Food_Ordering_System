@@ -24,6 +24,9 @@ class Cart(models.Model):
     price = models.FloatField()
     total = models.FloatField()
 
+    def __str__(self):
+        return self.id
+
 class Product(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -31,10 +34,12 @@ class Product(models.Model):
     subcategory = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.id
 
 class Payment(models.Model):
     customer_id = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     card_type = models.CharField(max_length=50)
     card_no = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name

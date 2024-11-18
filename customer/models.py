@@ -5,6 +5,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.IntegerField()
     email = models.EmailField()
+    password = models.CharField(max_length=255)  # Add password field
 
     def __str__(self):
         return self.name
