@@ -15,7 +15,7 @@ class Ordering(models.Model):
     delivery_address = models.TextField()
     
     def __str__(self):
-        return self.name
+        return self.order_id
 
 # class Comments(models.model):
 
@@ -30,4 +30,4 @@ class Comment(models.Model):
     parent_comment = models.ForeignKey('self', related_name="replies", on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
-        return f"{self.user.username} commented on {self.restaurant.name}"
+        return self.comment_id
