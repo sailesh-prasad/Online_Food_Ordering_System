@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp',]
+    'myapp',
+    'ordering',]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,11 +127,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/staticfile/'
+STATIC_URL = '/static/'
 
 # Point to the exact location of your static files directory
 STATICFILES_DIRS = [
-    r"D:\PROJECTS\FOOD-ORDERING\Food-ordering\ordering\staticfiles",  # Ensure this points to the correct static directory
+    r"D:\PROJECTS\FOOD-ORDERING\Food-ordering\ordering\static",  # Ensure this points to the correct static directory
 ]
 
 # Static root for collectstatic command
