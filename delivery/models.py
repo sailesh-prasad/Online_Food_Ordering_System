@@ -26,7 +26,10 @@ class DeliveryPerson(models.Model):
     emergency_contact_name = models.CharField(max_length=255, blank=True, null=True)
     emergency_contact_phone = models.CharField(max_length=20, blank=True, null=True)
     vehicle_registration_date = models.DateField(blank=True, null=True)
+    
+    #! need info
     last_login = models.DateTimeField(blank=True, null=True)
+    
     note = models.TextField(blank=True, null=True)
 
     

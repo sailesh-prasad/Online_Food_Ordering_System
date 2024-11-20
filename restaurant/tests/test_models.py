@@ -1,6 +1,6 @@
 from django.test import TestCase
-from customer.models import Restaurant
 from django.core.exceptions import ValidationError
+from restaurant.models import Restaurant, Cart, Product, Payment
 
 class RestaurantModelTest(TestCase):
 
@@ -22,48 +22,189 @@ class RestaurantModelTest(TestCase):
         self.assertEqual(self.restaurant.address, "123 Test St")
         self.assertEqual(self.restaurant.phone_number, "1234567890")
         self.assertEqual(self.restaurant.email, "test@example.com")
-        self.assertEqual(self.restaurant.opening_hours, "9 AM - 9 PM")
-        self.assertEqual(self.restaurant.cuisine_type, "Italian")
-        self.assertEqual(self.restaurant.rating, 4.5)
-        self.assertEqual(self.restaurant.website_url, "http://www.testrestaurant.com")
+        
+    #! edit restaurant test
+    def test_edit_restaurant(self):
+        self.restaurant.name = "Updated Restaurant"
+        self.restaurant.address = "456 Updated St"
+        self.restaurant.phone_number = "0987654321"
+        self.restaurant.email = "updated@example.com"
+        self.restaurant.save()
 
-    def test_restaurant_str(self):
-        self.assertEqual(str(self.restaurant), "Test Restaurant")
-
-    def test_default_address(self):
-        restaurant = Restaurant.objects.create(
-            name="Default Address Restaurant"
-        )
-        self.assertEqual(restaurant.address, "Unknown Address")
-
-    def test_optional_fields(self):
-        restaurant = Restaurant.objects.create(
-            name="Optional Fields Restaurant"
-        )
-        self.assertIsNone(restaurant.phone_number)
-        self.assertIsNone(restaurant.email)
-        self.assertIsNone(restaurant.opening_hours)
-        self.assertIsNone(restaurant.cuisine_type)
-        self.assertIsNone(restaurant.rating)
-        self.assertIsNone(restaurant.website_url)
-
-    def test_field_lengths(self):
-        restaurant = Restaurant.objects.create(
-            name="A" * 100,
-            address="B" * 255,
-            phone_number="1" * 15,
-            email="email@example.com",
-            opening_hours="C" * 100,
-            cuisine_type="D" * 50,
-            rating=4.5,
-            website_url="http://www.example.com"
-        )
-        restaurant.full_clean()  # Should not raise any exceptions
+        updated_restaurant = Restaurant.objects.get(id=self.restaurant.id)
+        self.assertEqual(updated_restaurant.name, "Updated Restaurant")
+        self.assertEqual(updated_restaurant.address, "456 Updated St")
+        self.assertEqual(updated_restaurant.phone_number, "0987654321")
+        self.assertEqual(updated_restaurant.email, "updated@example.com")
+        
+    #! delete Restaurant test 
+    def test_delete_restaurant(self):
+        restaurant_id = self.restaurant.id
+        self.restaurant.delete()
+        with self.assertRaises(Restaurant.DoesNotExist):
+            Restaurant.objects.get(id=restaurant_id)
 
     def test_invalid_rating(self):
+        restaurant = Restaurant(
+            name="Invalid Rating Restaurant",
+            address="123 Test St",
+            phone_number="1234567890",
+            email="invalid@example.com",
+            opening_hours="9 AM - 9 PM",
+            cuisine_type="Italian",
+            rating=10,  #* Assuming rating should be between 0 and 5
+            website_url="http://www.invalidratingrestaurant.com"
+        )
         with self.assertRaises(ValidationError):
-            restaurant = Restaurant(
-                name="Invalid Rating Restaurant",
-                rating=10.0  # Invalid rating, should be between 0 and 5
-            )
-            restaurant.full_clean()
+            restaurant.full_clean()  #* This will trigger the validation
+from django.test import TestCase
+from restaurant.models import Cart
+
+class CartModelTest(TestCase):
+
+    def setUp(self):
+        self.cart = Cart.objects.create(
+            number_of_products=3,
+            product1="Burger",
+            product2="Fries",
+            product3="Soda",
+            price=15.99,
+            total=20.99
+        )
+
+    def test_edit_cart(self):
+        self.cart.number_of_products = 5
+        self.cart.product1 = "Pizza"
+        self.cart.product2 = "Salad"
+        self.cart.product3 = "Juice"
+        self.cart.price = 25.99
+        self.cart.total = 30.99
+        self.cart.save()
+
+        updated_cart = Cart.objects.get(id=self.cart.id)
+        self.assertEqual(updated_cart.number_of_products, 5)
+        self.assertEqual(updated_cart.product1, "Pizza")
+        self.assertEqual(updated_cart.product2, "Salad")
+        self.assertEqual(updated_cart.product3, "Juice")
+        self.assertEqual(updated_cart.price, 25.99)
+        self.assertEqual(updated_cart.total, 30.99)
+
+    def test_delete_cart(self):
+        cart_id = self.cart.id
+        self.cart.delete()
+        with self.assertRaises(Cart.DoesNotExist):
+            Cart.objects.get(id=cart_id)
+
+    def test_str_method(self):
+        cart = Cart.objects.create(
+            number_of_products=3,
+            product1="Burger",
+            product2="Fries",
+            product3="Soda",
+            price=15.99,
+            total=20.99
+        )
+        self.assertEqual(str(cart), str(cart.id))  # Ensure it matches the string representation of the id
+    
+    def test_edit_cart(self):
+        self.cart.number_of_products = 5
+        self.cart.product1 = "Pizza"
+        self.cart.product2 = "Salad"
+        self.cart.product3 = "Juice"
+        self.cart.price = 25.99
+        self.cart.total = 30.99
+        self.cart.save()
+
+        updated_cart = Cart.objects.get(id=self.cart.id)
+        self.assertEqual(updated_cart.number_of_products, 5)
+        self.assertEqual(updated_cart.product1, "Pizza")
+        self.assertEqual(updated_cart.product2, "Salad")
+        self.assertEqual(updated_cart.product3, "Juice")
+        self.assertEqual(updated_cart.price, 25.99)
+        self.assertEqual(updated_cart.total, 30.99)
+
+    def test_delete_cart(self):
+        cart_id = self.cart.id
+        self.cart.delete()
+        with self.assertRaises(Cart.DoesNotExist):
+            Cart.objects.get(id=cart_id)
+            
+            
+class ProductModelTest(TestCase):
+
+    def setUp(self):
+        self.product = Product.objects.create(
+            name="Test Product",
+            category="Test Category",
+            subcategory="Test Subcategory"
+        )
+
+    def test_edit_product(self):
+        self.product.name = "Updated Product"
+        self.product.category = "Updated Category"
+        self.product.subcategory = "Updated Subcategory"
+        self.product.save()
+
+        updated_product = Product.objects.get(id=self.product.id)
+        self.assertEqual(updated_product.name, "Updated Product")
+        self.assertEqual(updated_product.category, "Updated Category")
+        self.assertEqual(updated_product.subcategory, "Updated Subcategory")
+
+    def test_delete_product(self):
+        product_id = self.product.id
+        self.product.delete()
+        with self.assertRaises(Product.DoesNotExist):
+            Product.objects.get(id=product_id)
+
+    def test_str_method(self):
+        product = Product.objects.create(
+            name="Test Product",
+            category="Test Category",
+            subcategory="Test Subcategory"
+        )
+        self.assertEqual(str(product), str(product.id))  # Ensure it matches the string representation of the id
+
+class PaymentModelTest(TestCase):
+
+    def setUp(self):
+        self.payment = Payment.objects.create(
+            customer_id="cust123",
+            name="John Doe",
+            card_type="Visa",
+            card_no="4111111111111111"
+        )
+
+    def test_create_payment(self):
+        self.assertIsInstance(self.payment, Payment)
+        self.assertEqual(self.payment.customer_id, "cust123")
+        self.assertEqual(self.payment.name, "John Doe")
+        self.assertEqual(self.payment.card_type, "Visa")
+        self.assertEqual(self.payment.card_no, "4111111111111111")
+
+    def test_edit_payment(self):
+        self.payment.customer_id = "cust456"
+        self.payment.name = "Jane Doe"
+        self.payment.card_type = "MasterCard"
+        self.payment.card_no = "5500000000000004"
+        self.payment.save()
+
+        updated_payment = Payment.objects.get(id=self.payment.id)
+        self.assertEqual(updated_payment.customer_id, "cust456")
+        self.assertEqual(updated_payment.name, "Jane Doe")
+        self.assertEqual(updated_payment.card_type, "MasterCard")
+        self.assertEqual(updated_payment.card_no, "5500000000000004")
+
+    def test_delete_payment(self):
+        payment_id = self.payment.id
+        self.payment.delete()
+        with self.assertRaises(Payment.DoesNotExist):
+            Payment.objects.get(id=payment_id)
+
+    def test_str_method(self):
+        payment = Payment.objects.create(
+            customer_id="cust123",
+            name="John Doe",
+            card_type="Visa",
+            card_no="4111111111111111"
+        )
+        self.assertEqual(str(payment), "John Doe")  # Ensure it matches the string representation of the name

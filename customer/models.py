@@ -1,16 +1,25 @@
+import re
 from django.db import models
+from django.forms import ValidationError
 
 class Customer(models.Model):
 
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=15)  #! Ensure this is a CharField
     email = models.EmailField()
-    password = models.CharField(max_length=255)  # Add password field
+    password = models.CharField(max_length=255)
+
 
     def __str__(self):
         return self.name
 
+    def clean(self):
+        # Validate phone number
+        if not re.match(r'^\d{10,15}$', self.phone_number):
+            raise ValidationError('Phone number must be between 10 and 15 digits.')
+        
+        
     def view_menu(self):
         
         pass

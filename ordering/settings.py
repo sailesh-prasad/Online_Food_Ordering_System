@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#! to fix SSH not found error
+import pymysql
+# pymysql.version_info = (1, 4, 2, "final", 0)
+pymysql.install_as_MySQLdb()
 
 
 
@@ -91,7 +95,7 @@ DATABASES = {
        'ENGINE': 'django.db.backends.mysql',  # Use mysqlclient
        'NAME': 'food_ordering_db',
        'USER': 'root',
-       'PASSWORD': 'root',
+       'PASSWORD': '',
        'HOST': 'localhost',
        'PORT': '3306',
    }
