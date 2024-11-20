@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-
+#import pymysql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,6 +34,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ordering',
+    'restaurant.apps.RestaurantConfig',
+    'delivery.apps.DeliveryConfig',
     'customer.apps.CustomerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,8 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'myapp',
     'ordering',]
+=======
+    'rest_framework',
+]
+>>>>>>> 53108b98e33fc32b1985866576992c817f92f790
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,13 +90,24 @@ WSGI_APPLICATION = 'ordering.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.mysql',  # Use mysqlclient
+       'NAME': 'food_ordering_db',
+       'USER': 'root',
+       'PASSWORD': 'root',
+       'HOST': 'localhost',
+       'PORT': '3306',
+   }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
