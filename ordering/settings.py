@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import pymysql
+#import pymysql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,8 +39,8 @@ pymysql.install_as_MySQLdb()
 
 INSTALLED_APPS = [
     'ordering',
-    'restaurant',
-    'delivery',
+    'restaurant.apps.RestaurantConfig',
+    'delivery.apps.DeliveryConfig',
     'customer.apps.CustomerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,9 +48,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
+    'myapp',
+    'ordering',]
+=======
     'rest_framework',
-    
 ]
+>>>>>>> 53108b98e33fc32b1985866576992c817f92f790
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+                ],
         },
     },
 ]
@@ -89,6 +93,7 @@ WSGI_APPLICATION = 'ordering.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
 
 DATABASES = {
    'default': {
@@ -142,14 +147,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 STATIC_URL = '/static/'
+
+# Point to the exact location of your static files directory
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    r"D:\PROJECTS\FOOD-ORDERING\Food-ordering\ordering\static",  # Ensure this points to the correct static directory
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'my_files')
 
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Static root for collectstatic command
+STATIC_ROOT = r"D:\PROJECTS\FOOD-ORDERING\Food-ordering\ordering"  # This is where collectstatic will gather all static files for production

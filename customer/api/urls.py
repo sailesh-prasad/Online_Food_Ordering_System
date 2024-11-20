@@ -6,8 +6,9 @@ from .views import CustomerViewSet
 
 
 router = DefaultRouter()
-router.register(r'customer',CustomerViewSet)
+router.register(r'api',CustomerViewSet)
 
-urlpatterns = [
-    path('api/',include(router.urls))
-]
+# urlpatterns = [
+#     path('api/',include(router.urls))
+# ]
+urlpatterns = router.urls
