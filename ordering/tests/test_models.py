@@ -1,50 +1,53 @@
 from django.test import TestCase
-from customer.models import Ordering
 from django.core.exceptions import ValidationError
+from ordering.models import Comment
 
-class OrderingModelTest(TestCase):
+class CommentModelTest(TestCase):
 
     def setUp(self):
-        self.ordering = Ordering.objects.create(
-            name="Test Ordering",
-            address="123 Test St",
-            phone_number=1234567890,
-            email="test@example.com"
+        self.comment = Comment.objects.create(
+            comment_id="comment1",
+            content="This is a test comment.",
+            rating=4
         )
 
-    def test_ordering_creation(self):
-        self.assertIsInstance(self.ordering, Ordering)
-        self.assertEqual(self.ordering.name, "Test Ordering")
-        self.assertEqual(self.ordering.address, "123 Test St")
-        self.assertEqual(self.ordering.phone_number, 1234567890)
-        self.assertEqual(self.ordering.email, "test@example.com")
+    def test_comment_creation(self):
+        self.assertIsInstance(self.comment, Comment)
+        self.assertEqual(self.comment.comment_id, "comment1")
+        self.assertEqual(self.comment.content, "This is a test comment.")
+        self.assertEqual(self.comment.rating, 4)
 
-    def test_ordering_str(self):
-        self.assertEqual(str(self.ordering), "Test Ordering")
+    def test_str_method(self):
+        self.assertEqual(str(self.comment), "comment1")
 
-    def test_required_fields(self):
+    def test_invalid_rating(self):
         with self.assertRaises(ValidationError):
-            Ordering.objects.create(
-                address="",
-                phone_number=None,
-                email=""
-            ).full_clean()
-
-    def test_field_lengths(self):
-        ordering = Ordering.objects.create(
-            name="A" * 100,
-            address="B" * 255,
-            phone_number=1234567890,
-            email="email@example.com"
-        )
-        ordering.full_clean()  # Should not raise any exceptions
-
-    def test_invalid_phone_number(self):
-        with self.assertRaises(ValidationError):
-            ordering = Ordering(
-                name="Invalid Phone Number",
-                address="123 Test St",
-                phone_number="invalid_phone_number",
-                email="test@example.com"
+            comment = Comment(
+                comment_id="comment2",
+                content="This is another test comment.",
+                rating=6  # Invalid rating, should be between 1 and 5
             )
-            ordering.full_clean()
+            comment.full_clean()  # This will trigger the validation
+
+    def test_blank_rating(self):
+        comment = Comment.objects.create(
+            comment_id="comment3",
+            content="This is a test comment with no rating."
+        )
+        self.assertIsInstance(comment, Comment)
+        self.assertIsNone(comment.rating)
+
+    def test_parent_comment(self):
+        parent_comment = Comment.objects.create(
+            comment_id="parent_comment",
+            content="This is a parent comment.",
+            rating=5
+        )
+        child_comment = Comment.objects.create(
+            comment_id="child_comment",
+            content="This is a child comment.",
+            rating=4,
+            parent_comment=parent_comment
+        )
+        self.assertEqual(child_comment.parent_comment, parent_comment)
+        self.assertIn(child_comment, parent_comment.replies.all())

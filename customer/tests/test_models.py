@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from pymysql import IntegrityError
 from customer.models import Customer
 
 class CustomerModelTest(TestCase):
@@ -87,4 +88,44 @@ class CustomerModelTest(TestCase):
         self.customer.delete()
         with self.assertRaises(Customer.DoesNotExist):
             Customer.objects.get(id=customer_id)
-            
+
+    def test_max_length_name(self):
+        with self.assertRaises(ValidationError):
+            customer = Customer(
+                name="A" * 101,  # Exceeds max_length of 100
+                address="456 Elm St",
+                phone_number="9822751922",
+                email="jane@example.com",
+                password="securepassword123"
+            )
+            customer.full_clean()  # This will trigger the validation
+
+    def test_max_length_address(self):
+        with self.assertRaises(ValidationError):
+            customer = Customer(
+                name="Jane Doe",
+                address="A" * 256,  # Exceeds max_length of 255
+                phone_number="9822751922",
+                email="jane@example.com",
+                password="securepassword123"
+            )
+            customer.full_clean()  # This will trigger the validation
+
+    def test_create_multiple_customers(self):
+        customer1 = Customer.objects.create(
+            name="Alice",
+            address="789 Pine St",
+            phone_number="1234567890",
+            email="alice@example.com",
+            password="securepassword123"
+        )
+        customer2 = Customer.objects.create(
+            name="Bob",
+            address="101 Maple St",
+            phone_number="0987654321",
+            email="bob@example.com",
+            password="securepassword123"
+        )
+        self.assertIsInstance(customer1, Customer)
+        self.assertIsInstance(customer2, Customer)
+        self.assertEqual(Customer.objects.count(), 3)  # Including the customer created in setUp
