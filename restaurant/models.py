@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ValidationError
+from django.core.validators import MinValueValidator , MaxValueValidator
 # Create your models here.
 from django.db import models
 from customer.models import CustomUser  # Import CustomUser from the user app
@@ -50,3 +51,17 @@ class Payment(models.Model):
     card_no = models.CharField(max_length=20)
     def __str__(self):
         return self.name
+    
+    
+#! rating with Validation min and max value 
+class Rating(models.Model):
+    user = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE , related_name = 'ratings')
+    
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    
+    
+    def __str__(self):
+        return f"Rating: {self.rating}"
