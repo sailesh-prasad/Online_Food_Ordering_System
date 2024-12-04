@@ -31,6 +31,8 @@ urlpatterns = [
     
 
     path('admin/', admin.site.urls),
+    path('api/', include('ordering.api.urls')),
+
 
     path('', include('customer.urls')),
     # path('login/',customerviews.loginUser,name = 'login'),

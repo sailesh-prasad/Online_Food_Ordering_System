@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('comments', models.TextField()),
             ],
         ),
-        migrations.DeleteModel(
-            name='DeliveryPerson',
-        ),
+        # migrations.DeleteModel(
+        #     name='DeliveryPerson',
+        # ),
     ]

@@ -4,6 +4,14 @@ from django.forms import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+
+
 class CustomUser(AbstractUser):
     is_user = models.BooleanField(default=False)
     is_restaurant = models.BooleanField(default=False)
@@ -29,7 +37,8 @@ class Customer(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
-    password = models.CharField(max_length=255)  # Add password field
+    password = models.CharField(max_length=255,default=1)  # Add password field
+   
 
     def __str__(self):
         return self.name
@@ -54,3 +63,8 @@ class Customer(models.Model):
     def delete_from_cart(self):
         
         pass
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
