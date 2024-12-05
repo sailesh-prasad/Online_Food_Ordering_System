@@ -54,14 +54,14 @@ class Payment(models.Model):
     
     
 #! rating with Validation min and max value 
-class Rating(models.Model):
-    user = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE , related_name = 'ratings')
+# class Rating(models.Model):
+#     user = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
+#     restaurant = models.ForeignKey(restaurantUser, on_delete=models.CASCADE , related_name = 'ratings')
     
-    rating = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)]
-    )
+#     rating = models.PositiveSmallIntegerField(
+#         validators=[MinValueValidator(1), MaxValueValidator(5)]
+#     )
     
     
-    def __str__(self):
-        return f"Rating: {self.rating}"
+#     def __str__(self):
+#         return f"Rating: {self.rating}"
