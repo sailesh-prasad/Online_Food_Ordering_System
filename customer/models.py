@@ -4,6 +4,7 @@ from django.forms import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
 class CustomUser(AbstractUser):
     is_user = models.BooleanField(default=False)
     is_restaurant = models.BooleanField(default=False)
@@ -29,7 +30,8 @@ class Customer(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
-    password = models.CharField(max_length=255)  # Add password field
+    password = models.CharField(max_length=255,default=1)  # Add password field
+   
 
     def __str__(self):
         return self.name
@@ -54,3 +56,4 @@ class Customer(models.Model):
     def delete_from_cart(self):
         
         pass
+
