@@ -6,7 +6,7 @@ from restaurant.models import restaurantUser,foodItems
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login,logout,get_user_model
 # Create your views here.
-from .forms import RatingForm
+
 
 def loginRestaurant(request):
     if request.method == 'POST':
@@ -112,14 +112,3 @@ def logoutRestaurant(request):
     logout(request)
     return redirect("feedback_form")
 
-
-def ratings(request):
-    if request.method == 'POST' :
-        form = RatingForm(request.POST or None)
-        if form.is_valid():
-            form.save()
-        else:
-            return render(request , 'rating.html' , {'form':form})
-    context = {'form' : RatingForm()}
-    
-    return render(request,'rating.html', context)

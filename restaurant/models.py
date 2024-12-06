@@ -52,16 +52,3 @@ class Payment(models.Model):
     def __str__(self):
         return self.name
     
-    
-#! rating with Validation min and max value 
-# class Rating(models.Model):
-#     user = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
-#     restaurant = models.ForeignKey(restaurantUser, on_delete=models.CASCADE , related_name = 'ratings')
-    
-#     rating = models.PositiveSmallIntegerField(
-#         validators=[MinValueValidator(1), MaxValueValidator(5)]
-#     )
-    
-    
-#     def __str__(self):
-#         return f"Rating: {self.rating}"

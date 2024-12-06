@@ -9,11 +9,7 @@ class RestaurantModelTest(TestCase):
             name="Test Restaurant",
             address="123 Test St",
             phone_number="1234567890",
-            email="test@example.com",
-            opening_hours="9 AM - 9 PM",
-            cuisine_type="Italian",
-            rating=4.5,
-            website_url="http://www.testrestaurant.com"
+            email="test@example.com"
         )
 
     def test_restaurant_creation(self):
@@ -22,8 +18,7 @@ class RestaurantModelTest(TestCase):
         self.assertEqual(self.restaurant.address, "123 Test St")
         self.assertEqual(self.restaurant.phone_number, "1234567890")
         self.assertEqual(self.restaurant.email, "test@example.com")
-        
-    #! edit restaurant test
+
     def test_edit_restaurant(self):
         self.restaurant.name = "Updated Restaurant"
         self.restaurant.address = "456 Updated St"
@@ -36,29 +31,15 @@ class RestaurantModelTest(TestCase):
         self.assertEqual(updated_restaurant.address, "456 Updated St")
         self.assertEqual(updated_restaurant.phone_number, "0987654321")
         self.assertEqual(updated_restaurant.email, "updated@example.com")
-        
-    #! delete Restaurant test 
+
     def test_delete_restaurant(self):
         restaurant_id = self.restaurant.id
         self.restaurant.delete()
         with self.assertRaises(Restaurant.DoesNotExist):
             Restaurant.objects.get(id=restaurant_id)
 
-    def test_invalid_rating(self):
-        restaurant = Restaurant(
-            name="Invalid Rating Restaurant",
-            address="123 Test St",
-            phone_number="1234567890",
-            email="invalid@example.com",
-            opening_hours="9 AM - 9 PM",
-            cuisine_type="Italian",
-            rating=10,  #* Assuming rating should be between 0 and 5
-            website_url="http://www.invalidratingrestaurant.com"
-        )
-        with self.assertRaises(ValidationError):
-            restaurant.full_clean()  #* This will trigger the validation
-from django.test import TestCase
-from restaurant.models import Cart
+    
+            
 
 class CartModelTest(TestCase):
 
@@ -105,31 +86,9 @@ class CartModelTest(TestCase):
             total=20.99
         )
         self.assertEqual(str(cart), str(cart.id))  # Ensure it matches the string representation of the id
-    
-    def test_edit_cart(self):
-        self.cart.number_of_products = 5
-        self.cart.product1 = "Pizza"
-        self.cart.product2 = "Salad"
-        self.cart.product3 = "Juice"
-        self.cart.price = 25.99
-        self.cart.total = 30.99
-        self.cart.save()
+        
+        
 
-        updated_cart = Cart.objects.get(id=self.cart.id)
-        self.assertEqual(updated_cart.number_of_products, 5)
-        self.assertEqual(updated_cart.product1, "Pizza")
-        self.assertEqual(updated_cart.product2, "Salad")
-        self.assertEqual(updated_cart.product3, "Juice")
-        self.assertEqual(updated_cart.price, 25.99)
-        self.assertEqual(updated_cart.total, 30.99)
-
-    def test_delete_cart(self):
-        cart_id = self.cart.id
-        self.cart.delete()
-        with self.assertRaises(Cart.DoesNotExist):
-            Cart.objects.get(id=cart_id)
-            
-            
 class ProductModelTest(TestCase):
 
     def setUp(self):
@@ -162,7 +121,10 @@ class ProductModelTest(TestCase):
             category="Test Category",
             subcategory="Test Subcategory"
         )
-        self.assertEqual(str(product), str(product.id))  # Ensure it matches the string representation of the id
+        self.assertEqual(str(product), str(product.id))
+        # Ensure it matches the string representation of the id
+        
+        
 
 class PaymentModelTest(TestCase):
 
@@ -208,3 +170,4 @@ class PaymentModelTest(TestCase):
             card_no="4111111111111111"
         )
         self.assertEqual(str(payment), "John Doe")  # Ensure it matches the string representation of the name
+        

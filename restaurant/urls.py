@@ -14,7 +14,6 @@ urlpatterns = [
     path('registerRestaurant/',restaurantviews.registerRestaurant,name = 'registerRestaurant'),
     path('addMenu/', restaurantviews.addMenu, name='addMenu'),
     
-    path('rating/',views.ratings, name = "ratings"), 
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
