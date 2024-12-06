@@ -15,8 +15,7 @@ schema_view = get_schema_view(
         title="API",
         default_version='v1',
         description="API for food ordering system",
-        terms_of_service="https://www.google.com/policies/terms/",
-        
+        terms_of_service="https://www.google.com/policies/terms/",        
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
