@@ -110,16 +110,7 @@ REST_FRAMEWORK = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.mysql',  # Use mysqlclient
-       'NAME': 'food_ordering_db',
-       'USER': 'root',
-       'PASSWORD': 'Sk@24sql',
-       'HOST': 'localhost',
-       'PORT': '3306',
-   }
-}
+
 # your_project/settings.py
 
 SWAGGER_SETTINGS = {
