@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'order',
     'menu',
     'delivery',
+    'import_export'
     ]
 
 MIDDLEWARE = [
