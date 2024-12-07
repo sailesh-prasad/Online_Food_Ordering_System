@@ -31,3 +31,6 @@ class PlaceAdmin(ImportExportModelAdmin):
     list_filter = ('city',)
     search_fields = ('name',)
 
+admin.site.register(State, StateAdmin)
+admin.site.register(City, CityAdmin)
+admin.site.register(Place, PlaceAdmin)
