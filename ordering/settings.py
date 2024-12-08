@@ -112,6 +112,18 @@ DATABASES = {
      }
  }
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Enter your token in the format `Token <your-token>`'
+        }
+    },
+    'DEFAULT_INFO': 'ordering.api.urls.schema_view',
+}
+
 
 
 # Password validation
