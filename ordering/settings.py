@@ -122,7 +122,7 @@ SWAGGER_SETTINGS = {
             'description': 'Enter your token in the format `Token <your-token>`'
         }
     },
-    'DEFAULT_INFO': 'your_project.urls.schema_view',
+    'DEFAULT_INFO': 'ordering.api.urls.schema_view',
 }
 
 
