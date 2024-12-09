@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import  CommentViewSet 
 from customer.api.views import *
-from delivery.api.views import DeliveryPersonViewSet
+from delivery.api.views import *
 from restaurant.api.views import *
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
@@ -30,6 +30,9 @@ router.register(r'customer', CustomerViewSet)
 router.register(r'feedback', FeedbackViewSet)
 router.register(r'contact', ContactViewSet)
 router.register(r'delivery-persons', DeliveryPersonViewSet)
+router.register(r'delivery-users', DeliveryUserViewSet)
+router.register(r'feedbacks', FeedbackViewSet)
+router.register(r'contacts', ContactViewSet)
 router.register(r'restaurant',RestaurantViewSet)
 router.register(r'payments',PaymentViewSet)
 router.register(r'products',ProductViewSet)
