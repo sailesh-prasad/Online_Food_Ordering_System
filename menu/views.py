@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from restaurant.models import foodItems, restaurantUser
@@ -44,9 +44,19 @@ def menu(request):
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
         'restaurant_list': list_restaurant
+    
     })
 
 
+@login_required
+def restaurant_menu(request, restaurant_id):
+    menu(request)
+    restaurant = get_object_or_404(restaurantUser, id=restaurant_id)
+    food_items = foodItems.objects.filter(restaurantName=restaurant)
+    return render(request, 'restaurant_menu.html', {
+        'restaurant': restaurant,
+        'food_items': food_items
+    })
 
 
 def restaurantPage(request):

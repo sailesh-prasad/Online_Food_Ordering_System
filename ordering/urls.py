@@ -32,7 +32,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('api/', include('ordering.api.urls')),
-
+    path('menu/', include('menu.urls')),  # Include the menu app's URLs
 
     path('', include('customer.urls')),
     # path('login/',customerviews.loginUser,name = 'login'),
