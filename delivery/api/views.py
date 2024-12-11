@@ -17,7 +17,7 @@ class DeliveryUserViewSet(viewsets.ModelViewSet):
     queryset = deliveryUser.objects.all()
     serializer_class = DeliveryUserSerializer
 
-class FeedbackViewSet(viewsets.ModelViewSet):
+class Feedback_dViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Feedback.objects.all()
