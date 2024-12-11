@@ -27,6 +27,7 @@ class Place(models.Model):
 class CustomUser(AbstractUser):
     is_user = models.BooleanField(default=False)
     is_restaurant = models.BooleanField(default=False)
+    is_delivery = models.BooleanField(default=False)
 
 
 class customerUser(CustomUser):

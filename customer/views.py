@@ -34,6 +34,9 @@ def loginUser(request):
         if user is None:
             messages.error(request,'Invalid Password or Username')
             return redirect('login')
+        elif user.is_delivery:
+            messages.error(request,'You are Registered as delivery')
+            return redirect('login')
         elif user.is_restaurant:
             messages.error(request,'You are Registered as restaurant')
             return redirect('login')
