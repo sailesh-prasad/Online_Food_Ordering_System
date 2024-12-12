@@ -72,6 +72,7 @@
                          style="height: 200px; width: 100%; object-fit: cover;"> <!-- Added uniform size -->
                     <div class="card-body">
                         <h5 class="card-title">{{ food.name }}</h5>
+                        <p class="card-text">{{ food.category }}</p> <!-- Add this line -->
                         <p class="card-text">{{ food.price }}</p>
                         <form action="#" method="post">
                             {% csrf_token %}
