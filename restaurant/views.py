@@ -23,6 +23,10 @@ def loginRestaurant(request):
             messages.error(request,'Invalid Password or Username')
             return redirect('loginRestaurant')
 
+        elif user.is_delivery==True:
+            messages.error(request,'You are Registered as delivery')
+            return redirect('loginRestaurant')
+
         elif user.is_restaurant==False:
             messages.error(request,'You are a User')
             return redirect('loginRestaurant')
