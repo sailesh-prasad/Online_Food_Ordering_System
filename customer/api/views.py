@@ -27,3 +27,9 @@ class ContactViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+
+class CustomerUserViewSet(viewsets.ModelViewSet): 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = customerUser.objects.all() 
+    serializer_class = CustomerUserSerializer

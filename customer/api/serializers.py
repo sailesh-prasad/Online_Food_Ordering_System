@@ -16,4 +16,7 @@ class ContactSerializer(serializers.ModelSerializer):
         model = Contact
         fields = '__all__'
 
-
+class CustomerUserSerializer(serializers.ModelSerializer): 
+    class Meta: 
+        model = customerUser 
+        fields = '__all__'

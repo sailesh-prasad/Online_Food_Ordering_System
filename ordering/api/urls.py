@@ -37,6 +37,7 @@ router.register(r'restaurant',RestaurantViewSet)
 router.register(r'payments',PaymentViewSet)
 router.register(r'products',ProductViewSet)
 router.register(r'carts',CartViewSet)
+router.register(r'customerusers', CustomerUserViewSet, basename='customeruser')
 
 
 urlpatterns = [
