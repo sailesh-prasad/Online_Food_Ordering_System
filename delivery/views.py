@@ -5,11 +5,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from delivery.models import deliveryUser
+from customer.models import Order
 
 # Home view for logged-in users
 @login_required
 def home(request):
-    return render(request, 'Deliveryhome.html')
+    delivery_user = deliveryUser.objects.get(username=request.user.username)
+    orders = Order.objects.filter(delivery_person=delivery_user.name)  # Filter by delivery person's name
+    return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request)})
 
 def loginDelivery(request):
     if request.method == 'POST':
