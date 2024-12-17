@@ -122,7 +122,7 @@ def logoutRestaurant(request):
 def restaurant_orders(request):
     restaurant_user = restaurantUser.objects.get(email=request.user.email)
     restaurant_name = restaurant_user.restaurantName
-    orders = Order.get_orders_for_restaurant(restaurant_name)
+    orders = Order.objects.filter(restaurant_name=restaurant_name)  # Ensure orders are filtered by restaurant name
     return render(request, 'restaurantorders.html', {'orders': orders, 'messages': messages.get_messages(request)})
 
 @login_required

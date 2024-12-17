@@ -105,6 +105,15 @@
             <a href="{% url 'logout' %}">Logout</a>  <!-- Logout link -->
         </div>
 
+        <!-- Display messages -->
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <div class="orders-container">
             <h3>Assigned Orders</h3>
             {% if orders %}
@@ -123,7 +132,21 @@
                                 <td>{{ order.order_no }}</td>
                                 <td>{{ order.customer.name }}</td>  <!-- Corrected field name -->
                                 <td>{{ order.customer.address }}</td>  <!-- Corrected field name -->
-                                <td>{{ order.get_status_display }}</td>  <!-- Display status -->
+                                <td>
+                                    <form method="post" action="{% url 'home' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                                        <select name="status">
+                                            {% for value, display in order.get_status_choices %}
+                                            <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>
+                                                {{ display }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit">Update</button>
+                                    </form>
+                                </td>
+                                {% comment %} <td>{{ order.get_status_display }}</td>  <!-- Display current status --> {% endcomment %}
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -133,6 +156,20 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        // Fade out messages after 5 seconds
+        setTimeout(function() {
+            var messages = document.querySelector('.alert');
+            if (messages) {
+                messages.style.transition = 'opacity 1s ease-out';
+                messages.style.opacity = '0';
+                setTimeout(function() {
+                    messages.style.display = 'none';
+                }, 1000);
+            }
+        }, 5000);
+    </script>
 
 </body>
 </html>
