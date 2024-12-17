@@ -10,6 +10,9 @@ class deliveryUser(CustomUser):
     address = models.TextField()
     deliveryContact = PhoneNumberField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name  # Use name for display
+
 class Feedback(models.Model):
     stars = models.IntegerField()
     comments = models.TextField()

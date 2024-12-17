@@ -178,9 +178,10 @@
             <td>
               <button type="submit">Update</button>
               </form>
-              <!-- <form method="get" >
+              <form method="post" action="{% url 'assign_delivery_person' order.id %}">
+                {% csrf_token %}
                 <button type="submit">Assign Delivery</button>
-              </form> -->
+              </form>
             </td>
           </tr>
           {% endfor %}

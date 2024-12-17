@@ -5,11 +5,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from delivery.models import deliveryUser
+from customer.models import Order
 
 # Home view for logged-in users
 @login_required
 def home(request):
-    return render(request, 'Deliveryhome.html')
+    delivery_user = deliveryUser.objects.get(username=request.user.username)
+    orders = Order.objects.filter(delivery_person=delivery_user.name)  # Filter by delivery person's name
+
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        new_status = request.POST.get('status')
+        try:
+            order = Order.objects.get(id=order_id, delivery_person=delivery_user.name)
+            order.status = new_status
+            order.save()
+            messages.success(request, f"Order status of {order.order_no} is {order.get_status_display()}")
+        except Order.DoesNotExist:
+            messages.error(request, 'Order not found or you are not authorized to update this order')
+
+        return redirect('home')  # Redirect to avoid resubmission on refresh
+
+    return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request)})
 
 def loginDelivery(request):
     if request.method == 'POST':
