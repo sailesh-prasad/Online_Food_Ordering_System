@@ -33,3 +33,27 @@ class CustomerUserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = customerUser.objects.all() 
     serializer_class = CustomerUserSerializer
+
+class StateViewSet(viewsets.ModelViewSet): 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = State.objects.all() 
+    serializer_class = StateSerializer
+
+class PlaceViewSet(viewsets.ModelViewSet): 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Place.objects.all() 
+    serializer_class = PlaceSerializer
+
+class CityViewSet(viewsets.ModelViewSet): 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = City.objects.all() 
+    serializer_class = CitySerializer
+
+class OrderViewSet(viewsets.ModelViewSet):
+    authenticatio_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer

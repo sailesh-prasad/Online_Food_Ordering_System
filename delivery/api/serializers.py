@@ -11,12 +11,12 @@ class DeliveryUserSerializer(serializers.ModelSerializer):
         model = deliveryUser
         fields = '__all__'
 
-class FeedbackSerializer(serializers.ModelSerializer):
+class Feedback_dSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = '__all__'
 
-class ContactSerializer(serializers.ModelSerializer):
+class Contact_dSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = '__all__'
