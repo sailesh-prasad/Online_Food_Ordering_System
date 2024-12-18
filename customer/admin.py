@@ -6,9 +6,13 @@ from django.contrib import admin
 from customer.models import State, City, Place
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'password', 'state', 'city', 'place']
+    list_display = ['name', 'email', 'state', 'city', 'place', 'get_address']  # Add 'get_address'
     search_fields = ('name',)
     list_filter = ('state', 'city', 'place')
+
+    def get_address(self, obj):
+        return obj.customer.address if obj.customer else 'No address'  # Handle None case
+    get_address.short_description = 'Address'
 
 admin.site.register(customerUser, UserAdmin)
 # Register your models here.

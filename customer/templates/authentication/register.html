@@ -92,12 +92,14 @@
     <div class="container form-container">
         <h1>Customer Registration</h1>
 
-        <form method="POST">
+        <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             
-            {% if showSuccess %}
+            {% if messages %}
             <div class="alert alert-success" role="alert">
-                Registration Successful!
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
             </div>
             {% endif %}
             

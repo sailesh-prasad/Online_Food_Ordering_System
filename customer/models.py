@@ -37,6 +37,7 @@ class customerUser(CustomUser):
     place = models.ForeignKey(Place, on_delete=models.CASCADE, default=1)  # Ensure Place with id=1 exists
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    customer = models.OneToOneField('Customer', on_delete=models.CASCADE, null=True, blank=True)  # Add OneToOneField to Customer
 
     def __str__(self):
         return f"{self.name} - {self.place.name}, {self.city.name}, {self.state.name}"

@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.shortcuts import render, get_object_or_404
 # from .models import Student
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from random import choice
-from customer.models import customerUser, Feedback, Contact, Order
+from customer.models import customerUser, Feedback, Contact, Order, Customer  # Ensure Customer is imported
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from customer.models import State, City, Place
@@ -59,12 +59,14 @@ def registerUser(request):
         User = get_user_model()
         name = request.POST.get('name')
         email = request.POST.get('email')
-        password = request.POST.get('password')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
         state_id = request.POST.get('state')
         city_id = request.POST.get('city')
         place_id = request.POST.get('place')
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
+        password = request.POST.get('password')
         
         state = State.objects.get(id=state_id)
         city = City.objects.get(id=city_id)
@@ -77,6 +79,14 @@ def registerUser(request):
 
 
         try:
+            customer = Customer.objects.create(
+                name=name,
+                address=address,
+                phone_number=phone,
+                email=email,
+                password=hashed_password
+            )
+
             user = customerUser.objects.create(
                 name=name,
                 email=email,
@@ -87,7 +97,8 @@ def registerUser(request):
                 city=city, 
                 place=place,
                 latitude=latitude,
-                longitude=longitude
+                longitude=longitude,
+                customer=customer
             )
             user.save()
             messages.success(request,'Successfully Registered')
@@ -173,6 +184,49 @@ def make_payment(request):
         return redirect('orders')
     return redirect('cart')
 
+def register(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        address = request.POST['address']
+        state_id = request.POST['state']
+        city_id = request.POST['city']
+        place_id = request.POST['place']
+        latitude = request.POST['latitude']
+        longitude = request.POST['longitude']
+        password = request.POST['password']
+
+        state = State.objects.get(id=state_id)
+        city = City.objects.get(id=city_id)
+        place = Place.objects.get(id=place_id)
+
+        customer = Customer.objects.create(
+            name=name,
+            address=address,
+            phone_number=phone,
+            email=email,
+            password=password
+        )
+
+        customer_user = customerUser.objects.create(
+            name=name,
+            email=email,
+            state=state,
+            city=city,
+            place=place,
+            latitude=latitude,
+            longitude=longitude,
+            customer=customer
+        )
+        customer_user.set_password(password)
+        customer_user.save()
+
+        messages.success(request, 'Registration Successful!')
+        return redirect('register')
+
+    states = State.objects.all()
+    return render(request, 'authentication/register.html', {'states': states})
 
 # def student_list(request):
 #     students = Student.objects.all()
