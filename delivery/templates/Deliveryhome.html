@@ -132,7 +132,7 @@
                             <tr>
                                 <td>{{ order.order_no }}</td>
                                 <td>{{ order.customer.name }}</td>  <!-- Corrected field name -->
-                                <td>{{ order.customer.customer.address }}</td>  <!-- Corrected field name to access address -->
+                                <td>{{ order.customer.address }}</td>  <!-- Corrected field name to access address -->
                                 <td>
                                     <form method="post" action="{% url 'home' %}">
                                         {% csrf_token %}

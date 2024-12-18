@@ -37,7 +37,8 @@ class customerUser(CustomUser):
     place = models.ForeignKey(Place, on_delete=models.CASCADE, default=1)  # Ensure Place with id=1 exists
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    customer = models.OneToOneField('Customer', on_delete=models.CASCADE, null=True, blank=True)  # Add OneToOneField to Customer
+    address=models.CharField(max_length=50)
+    # customer = models.OneToOneField('Customer', on_delete=models.CASCADE, null=True, blank=True)  # Add OneToOneField to Customer
 
     def __str__(self):
         return f"{self.name} - {self.place.name}, {self.city.name}, {self.state.name}"
@@ -53,37 +54,37 @@ class Contact(models.Model):
     def __str__(self):
         return self.name
     
-class Customer(models.Model):
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=15)
-    email = models.EmailField()
-    password = models.CharField(max_length=255,default=1)  # Add password field
+# class Customer(models.Model):
+#     name = models.CharField(max_length=100)
+#     address = models.CharField(max_length=255)
+#     phone_number = models.CharField(max_length=15)
+#     email = models.EmailField()
+#     password = models.CharField(max_length=255,default=1)  # Add password field
    
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
-    def clean(self):
-        # Validate phone number
-        if not re.match(r'^\d{10,15}$', self.phone_number):
-            raise ValidationError('Phone number must be between 10 and 15 digits.')
+#     def clean(self):
+#         # Validate phone number
+#         if not re.match(r'^\d{10,15}$', self.phone_number):
+#             raise ValidationError('Phone number must be between 10 and 15 digits.')
     
-    def view_menu(self):
+#     def view_menu(self):
         
-        pass
+#         pass
 
-    def make_payment(self):
+#     def make_payment(self):
         
-        pass
+#         pass
 
-    def add_to_cart(self):
+#     def add_to_cart(self):
         
-        pass
+#         pass
 
-    def delete_from_cart(self):
+#     def delete_from_cart(self):
         
-        pass
+#         pass
 
 class Order(models.Model):
     customer = models.ForeignKey(customerUser, on_delete=models.CASCADE, related_name='orders')

@@ -21,11 +21,11 @@ class foodItems(models.Model):
     restaurantName = models.ForeignKey(restaurantUser, related_name='food_items', on_delete=models.CASCADE)
 
 
-class Restaurant(models.Model):
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=255, default="Unknown Address")
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+# class Restaurant(models.Model):
+#     name = models.CharField(max_length=100)
+#     address = models.CharField(max_length=255, default="Unknown Address")
+#     phone_number = models.CharField(max_length=15, blank=True, null=True)
+#     email = models.EmailField(blank=True, null=True)
 
 class Cart(models.Model):
     number_of_products = models.IntegerField()

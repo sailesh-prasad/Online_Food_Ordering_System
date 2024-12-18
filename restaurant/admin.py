@@ -1,5 +1,5 @@
 from django.contrib import admin
-from restaurant.models import restaurantUser, Restaurant, foodItems
+from restaurant.models import restaurantUser, foodItems
 # Register your models here.
 
 class RestaurantAdmin(admin.ModelAdmin):
@@ -11,5 +11,5 @@ admin.site.register(restaurantUser,RestaurantAdmin)
 class FoodItemsAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'image', 'category', 'restaurantName']  # Add 'category'
 
-admin.site.register(Restaurant)
+# admin.site.register(Restaurant)
 admin.site.register(foodItems, FoodItemsAdmin)
