@@ -8,7 +8,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from random import choice
-from customer.models import customerUser, Feedback, Contact, Order  # Ensure Customer is imported
+from customer.models import customerUser, Feedback, Contact, Order, Customer  # Ensure Customer is imported
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from customer.models import State, City, Place
@@ -55,8 +55,6 @@ def loginUser(request):
 def registerUser(request):
     states = State.objects.all()
     if request.method == 'POST':
-        
-        User = get_user_model()
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
@@ -72,11 +70,11 @@ def registerUser(request):
         city = City.objects.get(id=city_id)
         place = Place.objects.get(id=place_id)
 
-        if customerUser.objects.filter(email= email).exists():
-            messages.error(request,'User Already Exist in the System')
-            return redirect('login')
-        hashed_password = make_password(password)
+        if customerUser.objects.filter(email=email).exists():
+            messages.error(request, 'User Already Exists in the System')
+            return redirect('registerUser')
 
+        hashed_password = make_password(password)
 
         try:
             customer = Customer.objects.create(
@@ -93,21 +91,22 @@ def registerUser(request):
                 username=email,
                 password=hashed_password,
                 is_user=True,
-                  state=state, 
-                city=city, 
+                state=state,
+                city=city,
                 place=place,
+                address=address,
                 latitude=latitude,
                 longitude=longitude,
                 customer=customer
             )
             user.save()
-            messages.success(request,'Successfully Registered')
+            messages.success(request, 'Successfully Registered')
             return redirect('login')
-        except:
-            messages.error(request,'Error!! Try Again')
-            
+        except Exception as e:
+            messages.error(request, f'Error!! Try Again: {e}')
+            return redirect('registerUser')
 
-    return render(request,'authentication/register.html', {'states': states})
+    return render(request, 'authentication/register.html', {'states': states})
 
 def forgetPassword(request):
     return render(request,'authentication/forgetPassword.html')
@@ -168,18 +167,36 @@ def make_payment(request):
     if request.method == 'POST':
         cart = request.session.get('cart', {})
         print(cart)
+        orders = {}
         for item_id, item in cart.items():
             food_item = foodItems.objects.get(id=item_id)
-            order = Order.objects.create(
+            restaurant_name = food_item.restaurantName.restaurantName
+            if restaurant_name not in orders:
+                orders[restaurant_name] = {
+                    'items': [],
+                    'total_price': 0,
+                    'restaurant_name': restaurant_name
+                }
+            orders[restaurant_name]['items'].append({
+                'name': food_item.name,
+                'quantity': item,
+                'category': food_item.category,
+                'price': food_item.price * item
+            })
+            orders[restaurant_name]['total_price'] += food_item.price * item
+
+        for order in orders.values():
+            order_instance = Order.objects.create(
                 customer=customerUser.objects.get(id=request.user.id),
-                item=food_item.name,
-                quantity=item,
-                category=food_item.category,
-                sum_of_price=food_item.price * item,
+                item=', '.join([f"{i['name']} (x{i['quantity']})" for i in order['items']]),
+                quantity=sum([i['quantity'] for i in order['items']]),
+                category=', '.join(set([i['category'] for i in order['items']])), 
+                sum_of_price=order['total_price'],
                 order_no=get_random_string(10),
-                restaurant_name=food_item.restaurantName.restaurantName  # Use the correct attribute
+                restaurant_name=order['restaurant_name']
             )
-            order.save()
+            order_instance.save()
+
         request.session['cart'] = {}
         return redirect('orders')
     return redirect('cart')
@@ -229,34 +246,3 @@ def register(request):
     states = State.objects.all()
     return render(request, 'authentication/register.html', {'states': states})
 
-# def student_list(request):
-#     students = Student.objects.all()
-#     return render(request, 'home/student_list.html', {'students': students})
-
-# def student_detail(request, student_id):
-#     student = get_object_or_404(Student, id=student_id)
-#     return render(request, 'home/student_detail.html', {'student': student})
-
-# class customerListView(generic.ObjectListView):
-#     queryset = Provider.objects.annotate(
-#         count_circuits=count_related(Circuit, 'provider')
-#     )
-#     filterset = filtersets.ProviderFilterSet
-#     filterset_form = forms.ProviderFilterForm
-#     table = tables.ProviderTable
-
-# class customerView(GetRelatedModelsMixin, generic.ObjectView):
-#     queryset = Provider.objects.all()
-
-#     def get_extra_context(self, request, instance):
-#         return {
-#             'related_models': self.get_related_models(request, instance),
-#         }
-
-# class customerEditView(generic.ObjectEditView):
-#     queryset = Provider.objects.all()
-#     form = forms.ProviderForm
-
-
-# class customerDeleteView(generic.ObjectDeleteView):
-#     queryset = Provider.objects.all()

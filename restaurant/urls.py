@@ -16,6 +16,7 @@ urlpatterns = [
     path('updateOrderStatus/<int:order_id>/', restaurantviews.update_order_status, name='update_order_status'),
     path('assignDeliveryPerson/<int:order_id>/', restaurantviews.assign_delivery_person, name='assign_delivery_person'),
     path('updateDeliveryPerson/<int:order_id>/', restaurantviews.update_delivery_person, name='update_delivery_person'),
+    path('delete_order/<int:order_id>/', restaurantviews.delete_order, name='delete_order'),
 ]
 
 if settings.DEBUG:

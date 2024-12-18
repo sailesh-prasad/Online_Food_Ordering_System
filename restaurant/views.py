@@ -151,3 +151,10 @@ def update_delivery_person(request, order_id):
         order.save()
         messages.success(request, f"Delivery person {delivery_person.name} assigned to order {order.order_no}")
     return redirect('restaurant_orders')
+
+@login_required
+def delete_order(request, order_id):
+    order = Order.objects.get(id=order_id)
+    order.delete()
+    messages.success(request, 'Order deleted successfully')
+    return redirect('restaurant_orders')
