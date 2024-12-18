@@ -246,9 +246,12 @@ h1 {
                     placeholder="Search for a restaurant..." 
                 >
                 <button 
-                    class="btn search-btn shadow">
-                    <i class="bi bi-search"></i> Search
+                    class="btn search-btn shadow" id="voice-search-btn">
+                    <i class="bi bi-mic"></i> Search
                 </button>
+                <button class="btn search-btn shadow" >
+                    <i class="bi bi-search"></i> Search
+                    </button>
             </div>
             
         
@@ -299,6 +302,15 @@ h1 {
     }
 });
 
+        });
+
+        document.getElementById('voice-search-btn').addEventListener('click', function() {
+            fetch('/run-speech-recog/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('search-bar').value = data.transcript;
+                })
+                .catch(error => console.error('Error:', error));
         });
     </script>
     <br>

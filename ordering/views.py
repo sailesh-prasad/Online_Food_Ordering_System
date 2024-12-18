@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from restaurant.models import foodItems, restaurantUser
 from django.db.models import Q
-from django.http import request
+from django.http import request, JsonResponse
+import speech_recognition as sr
 
 def home(request):
     return render(request, 'home/home.html')
@@ -114,3 +115,17 @@ def restaurantPage(request):
     print(rname)
 
     return render(request,'restaurantPage.html')
+
+
+def run_speech_recog(request):
+    r = sr.Recognizer()
+    try:
+        with sr.Microphone() as source2:
+            r.adjust_for_ambient_noise(source2, duration=0.2)
+            audio2 = r.listen(source2)
+            MyText = r.recognize_google(audio2).lower()
+            return JsonResponse({'transcript': MyText})
+    except sr.RequestError as e:
+        return JsonResponse({'error': str(e)})
+    except sr.UnknownValueError:
+        return JsonResponse({'error': "Unknown error occurred"})

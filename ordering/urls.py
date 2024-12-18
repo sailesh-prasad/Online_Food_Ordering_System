@@ -59,6 +59,7 @@ urlpatterns = [
     
     path('cart/', views.Cart, name='cart'),
     
+    path('run-speech-recog/', views.run_speech_recog, name='run_speech_recog'),
 ]
 
 # urlpatterns = [
