@@ -26,7 +26,7 @@ def home(request):
 
         return redirect('home')  # Redirect to avoid resubmission on refresh
 
-    return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request)})
+    return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request), 'customer_address': delivery_user.address})
 
 def loginDelivery(request):
     if request.method == 'POST':
