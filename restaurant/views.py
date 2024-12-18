@@ -83,7 +83,7 @@ def registerRestaurant(request):
             messages.success(request, "Successfully Registered")
             return redirect('loginRestaurant')
 
-    return render(request,'registerRestaurant.html', {'states': states})
+    return render(request, 'registerRestaurant.html', {'states': states})
 
 @login_required
 def addMenu(request):
