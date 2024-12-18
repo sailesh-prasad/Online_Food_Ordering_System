@@ -6,7 +6,9 @@ from restaurant.models import restaurantUser,foodItems
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login,logout,get_user_model
 from customer.models import Order
-from delivery.models import deliveryUser  # Import deliveryUser model
+from delivery.models import deliveryUser
+from customer.models import State,City,Place
+  # Import deliveryUser model
 # Create your views here.
 
 
@@ -39,6 +41,7 @@ def loginRestaurant(request):
 
 
 def registerRestaurant(request):
+    states = State.objects.all()
     if request.method == 'POST':
 
         restaurantName = request.POST.get('restaurantName')
@@ -48,11 +51,20 @@ def registerRestaurant(request):
         password = request.POST.get('password')
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
+        state_id = request.POST.get('state')
+        city_id = request.POST.get('city')
+        place_id = request.POST.get('place')
+        state = State.objects.get(id=state_id)
+        city = City.objects.get(id=city_id)
+        place = Place.objects.get(id=place_id)
 
         restaurant_data = restaurantUser(
             restaurantName=restaurantName,
             address=address,
             restaurantContact=restaurantContact,
+            state=state, 
+            city=city, 
+            place=place,
             email=email,
             username=email,
             is_restaurant=True,
@@ -74,7 +86,7 @@ def registerRestaurant(request):
             messages.success(request,"Successfully Registered")
             return redirect('loginRestaurant')
 
-    return render(request,'registerRestaurant.html')
+    return render(request,'registerRestaurant.html', {'states': states})
 
 @login_required
 def addMenu(request):

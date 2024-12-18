@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from customer.models import State, City, Place
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
-from restaurant.models import foodItems
+from restaurant.models import restaurantUser,foodItems
 # Create your views here.
 
 User = get_user_model()
@@ -147,7 +147,6 @@ def index(request):
 
 def Home(request):
     return render(request,'home.html')
-
 
 def load_cities(request):
     state_id = request.GET.get('state_id')

@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from restaurant.models import foodItems, restaurantUser
 from django.db.models import Q
 from django.http import request
-
+from customer.models import City
 def home(request):
     return render(request, 'home/home.html')
 
@@ -59,6 +59,13 @@ User = get_user_model()
 
 @login_required
 def menu(request):
+    cities = City.objects.all()
+    selected_city = request.GET.get('city')
+    if selected_city:
+        restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
+    else:
+        restaurant_list = restaurantUser.objects.all()
+    cities = City.objects.all()
     user = request.user
     query = request.GET.get('q')
     foods = foodItems.objects.all()
@@ -93,8 +100,8 @@ def menu(request):
         'foodItems': foods,
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
-        'restaurant_list': list_restaurant
-    
+        'restaurant_list': restaurant_list,
+        'cities': cities
     })
 
 

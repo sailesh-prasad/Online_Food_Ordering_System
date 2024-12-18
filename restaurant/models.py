@@ -5,11 +5,15 @@ from django.core.validators import MinValueValidator , MaxValueValidator
 from django.db import models
 from customer.models import CustomUser  # Import CustomUser from the user app
 from phonenumber_field.modelfields import PhoneNumberField
+from customer.models import State,City,Place
 
 class restaurantUser(CustomUser):
     restaurantName = models.CharField(max_length=50)
     address = models.TextField()
     restaurantContact = PhoneNumberField()
+    state = models.ForeignKey(State, on_delete=models.CASCADE, default=1)  # Ensure State with id=1 exists
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=1)    # Ensure City with id=1 exists
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=1)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
