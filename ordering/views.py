@@ -118,14 +118,16 @@ def restaurantPage(request):
 
 
 def run_speech_recog(request):
-    r = sr.Recognizer()
+    recognizer = sr.Recognizer()
     try:
-        with sr.Microphone() as source2:
-            r.adjust_for_ambient_noise(source2, duration=0.2)
-            audio2 = r.listen(source2)
-            MyText = r.recognize_google(audio2).lower()
-            return JsonResponse({'transcript': MyText})
-    except sr.RequestError as e:
-        return JsonResponse({'error': str(e)})
+        with sr.Microphone() as source:
+            print("Listening...")
+            audio = recognizer.listen(source)
+            transcript = recognizer.recognize_google(audio)
+            return JsonResponse({"transcript": transcript})
     except sr.UnknownValueError:
-        return JsonResponse({'error': "Unknown error occurred"})
+        return JsonResponse({"error": "Speech not recognized. Please try again."}, status=400)
+    except sr.RequestError as e:
+        return JsonResponse({"error": f"Speech recognition service error: {e}"}, status=500)
+    except AttributeError as e:
+        return JsonResponse({"error": "PyAudio is not installed or configured properly."}, status=500)
