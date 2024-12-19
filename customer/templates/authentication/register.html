@@ -239,6 +239,7 @@
                 let valid = true;
 
                 // Name validation
+                const name = $('#name').val();
                 if (!name.match(/^[a-zA-Z ]+$/)) {
                     $('#name-error').text('Name should contain only alphabets.');
                     valid = false;
@@ -246,9 +247,7 @@
                     $('#name-error').text('');
                 }
 
-
                 // Email validation
-                // Email Validation
                 const email = document.getElementById('email');
                 const emailError = document.getElementById('email-error');
                 const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Email must end with @gmail.com
