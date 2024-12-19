@@ -45,7 +45,6 @@ urlpatterns = [
     path('menu/',views.menu,name = 'menu'),
     # path('restaurantPage/', menuviews.restaurantPage, name='restaurantPage'),
     path('restaurant/<int:restaurant_id>/menu/', views.restaurant_menu, name='restaurant_menu'),
-    
     path('cart/', views.Cart, name='cart'),
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/',
@@ -54,6 +53,7 @@ urlpatterns = [
     path('password-reset-complete/',
          auth_views.PasswordResetCompleteView.as_view(template_name='home/password_reset_complete.html'),
          name='password_reset_complete'),
+    path('run-speech-recog/', views.run_speech_recog, name='run_speech_recog'),
 ]
 
 # urlpatterns = [

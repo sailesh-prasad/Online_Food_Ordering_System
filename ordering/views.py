@@ -9,6 +9,9 @@ from restaurant.models import foodItems, restaurantUser
 from django.db.models import Q
 from django.http import request
 from customer.models import City
+from django.http import request, JsonResponse
+import speech_recognition as sr
+
 def home(request):
     return render(request, 'home/home.html')
 
@@ -136,3 +139,17 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
                       " If you don't receive an email, " \
                       "please make sure you've entered the address you registered with, and check your spam folder."
     success_url = reverse_lazy('login')
+def run_speech_recog(request):
+    recognizer = sr.Recognizer()
+    try:
+        with sr.Microphone() as source:
+            print("Listening...")
+            audio = recognizer.listen(source)
+            transcript = recognizer.recognize_google(audio)
+            return JsonResponse({"transcript": transcript})
+    except sr.UnknownValueError:
+        return JsonResponse({"error": "Speech not recognized. Please try again."}, status=400)
+    except sr.RequestError as e:
+        return JsonResponse({"error": f"Speech recognition service error: {e}"}, status=500)
+    except AttributeError as e:
+        return JsonResponse({"error": "PyAudio is not installed or configured properly."}, status=500)
