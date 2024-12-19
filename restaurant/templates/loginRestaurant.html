@@ -7,7 +7,7 @@
     <title>Restaurant Login</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
-        /* Basic Styling for Error Handling and Form */
+        {% comment %} /* Basic Styling for Error Handling and Form */
         .form-container {
             max-width: 500px;
             margin: 20px auto;
@@ -32,17 +32,9 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-        }
+        } {% endcomment %}
 
-        .error-message {
-            display: block;
-            color: red;
-            font-size: 16px;
-            margin-top: 5px;
-            font-weight: 700;
-        }
-
-        .submit-btn {
+        {% comment %} .submit-btn {
             background-color: #007BFF;
             color: #fff;
             border: none;
@@ -72,7 +64,26 @@
 
         .social-btn:hover {
             background-color: #ddd;
+        } {% endcomment %}
+
+        .error-message {
+            display: block;
+            color: red;
+            font-size: 16px;
+            margin-top: 5px;
+            font-weight: 700;
         }
+        .alert {
+            text-align: center;
+            font-weight: bold;
+        }
+        .alert-danger {
+            color: red;
+        }
+        .alert-primary {
+            color: green;
+        }
+
     </style>
 </head>
 <header class="header">
@@ -116,7 +127,7 @@
 
                 <!-- Email input (Username) -->
                 <div class="form-field">
-                    <label for="email">Email or Username:</label>
+                    <label for="email">Email:</label>
                     <input 
                         type="text" 
                         id="email" 
@@ -142,10 +153,10 @@
 
                 <!-- Remember Me and Forgot Password -->
                 <div class="form-options">
-                    <div>
+                    {% comment %} <div>
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember Me</label>
-                    </div>
+                    </div> {% endcomment %}
                     <a href="{% url 'forgetPassword' %}">Forgot password?</a>
                 </div>
 
@@ -153,26 +164,33 @@
                 <button type="submit" class="submit-btn">Login</button>
 
                 <!-- Social Login Options -->
-                <div class="social-login">
+                {% comment %} <div class="social-login">
                     <p>Or login with:</p>
                     <button type="button" class="social-btn google">Google</button>
                     <button type="button" class="social-btn facebook">Facebook</button>
                     <button type="button" class="social-btn twitter">Twitter</button>
-                </div>
+                </div> {% endcomment %}
             </form>
 
             <!-- Register Prompt -->
             <div class="register-prompt">
-                <p>New to the Food Delivery System?</p>
+                <p>New to Food Delivery System?</p>
                 <a href="{% url 'registerRestaurant' %}">Register as Restaurant</a>
             </div>
 
             <!-- User Login Prompt -->
-            <div class="text-center my-5">
+            {% comment %} <div class="text-center my-5">
                 <p>Are you a customer? <a href="{% url 'login' %}" class="btn btn-danger">User Login</a></p>
-            </div>
+            </div> {% endcomment %}
         </div>
     </section>
+
+    
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 Food Delivery System | All rights reserved</p>
+    </footer>
+
 
     <!-- JavaScript for Validation -->
     <script>
@@ -181,62 +199,38 @@
             form.addEventListener('submit', function (event) {
                 let valid = true;
 
-                // Name Validation
-            const name = document.getElementById('name');
-            const nameError = document.getElementById('name-error');
-            const namePattern = /^[a-zA-Z\s]+$/;
-            if (!name.value.trim()) {
-                nameError.textContent = 'Name is required.';
-                valid = false;
-            } else if (!namePattern.test(name.value)) {
-                nameError.textContent = 'Name should contain only alphabets.';
-                valid = false;
-            } else {
-                nameError.textContent = '';
-            }
-
-                const contact = document.getElementById('contact');
-            const contactError = document.getElementById('contact-error');
-            const contactPattern = /^\d{10}$/;
-            if (!contact.value.trim()) {
-                contactError.textContent = 'Contact number is required.';
-                valid = false;
-            } else if (!contactPattern.test(contact.value)) {
-                contactError.textContent = 'Contact number must be 10 digits.';
-                valid = false;
-            } else {
-                contactError.textContent = '';
-            }
-
                 // Email Validation
                 const email = document.getElementById('email');
                 const emailError = document.getElementById('email-error');
                 const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-    
-                
-            if (!email.value.trim()) {
-                emailError.textContent = 'Email is required.';
-                valid = false;
-            } else if (!emailPattern.test(email.value)) {
-                emailError.textContent = 'Email must end with @gmail.com.';
-                valid = false;
-            } else {
-                emailError.textContent = '';
-            }
+                if (!email.value.trim()) {
+                    emailError.textContent = 'Email is required.';
+                    valid = false;
+                } else if (!emailPattern.test(email.value)) {
+                    emailError.textContent = 'Email must end with @gmail.com.';
+                    valid = false;
+                } else {
+                    emailError.textContent = '';
+                }
 
                 // Password Validation
                 const password = document.getElementById('password');
-            const passwordError = document.getElementById('password-error');
-            const passwordPattern = /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
-            if (!password.value.trim()) {
-                passwordError.textContent = 'Password is required.';
-                valid = false;
-            } else if (!passwordPattern.test(password.value)) {
-                passwordError.textContent = 'Password must have at least 8 characters, including uppercase, lowercase, a number, and a special character.';
-                valid = false;
-            } else {
-                passwordError.textContent = '';
-            }
+                const passwordError = document.getElementById('password-error');
+                const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+                if (!password.value.trim()) {
+                    passwordError.textContent = 'Password is required.';
+                    valid = false;
+                } 
+
+
+                {% comment %} else if (!passwordPattern.test(password.value)) {
+                    passwordError.textContent = 'Password must have at least 8 characters, including uppercase, lowercase, a number, and a special character.';
+                    valid = false;
+                }  {% endcomment %}
+                
+                else {
+                    passwordError.textContent = '';
+                }
 
                 // Prevent submission if invalid
                 if (!valid) {
