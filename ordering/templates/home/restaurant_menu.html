@@ -248,12 +248,16 @@
                         <h5 class="card-title">{{ food.name }}</h5>
                         <p class="card-text">Category: {{ food.category }}</p>
                         <p class="card-text">Price: ₹{{ food.price }}</p>
+                        {% if food.is_out_of_stock %}
+                        <button class="btn btn-secondary" disabled>Out Of Stock</button>
+                        {% else %}
                         <form action="#" method="post">
                             {% csrf_token %}
                             <input hidden type="text" name="id" value="{{ food.id }}">
                             <input type="button" class="btn btn-danger" value="Add to Cart" 
                                    onclick="handleAddToCart(this)">
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

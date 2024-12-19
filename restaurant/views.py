@@ -122,6 +122,14 @@ def delete_food(request, food_id):
     return redirect('addMenu')
 
 @login_required
+def toggle_stock(request, food_id):
+    food = foodItems.objects.get(id=food_id, restaurantName=request.user.restaurantuser)
+    food.is_out_of_stock = not food.is_out_of_stock
+    food.save()
+    messages.success(request, f"Stock status of {food.name} updated successfully")
+    return redirect('addMenu')
+
+@login_required
 def logoutRestaurant(request):
     user = get_user_model()
     logout(request)

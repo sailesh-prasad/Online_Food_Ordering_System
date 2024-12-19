@@ -345,6 +345,21 @@ h1 {
                     <div class="item-name">
                         <h4>{{ food.name }}</h4>
                         <p>{{ food.category }}</p> <!-- Add this line -->
+                        {% if food.is_out_of_stock %}
+                        <button class="btn btn-secondary" disabled>Out Of Stock</button>
+                        {% else %}
+                        <form action="#" method="post">
+                            {% csrf_token %}
+                            <div class="cart ml-4">
+                                <input hidden type="text" name="id" value="{{ food.id }}">
+                                {% if food.id|stringformat:"s" in cart %}
+                                <input type="submit" class="btn btn-success border btn-sm added-to-cart" value="Added to Cart" disabled>
+                                {% else %}
+                                <input type="submit" class="btn btn-danger border btn-sm" value="Add to Cart">
+                                {% endif %}
+                            </div>
+                        </form>
+                        {% endif %}
                         <p>Fresh & sweet</p>
                     </div>
                     <div class="rating">
@@ -358,18 +373,6 @@ h1 {
                     <div class="item-price">
                         <p>{{ food.price }}</p>
                     </div>
-                    <form action="#" method="post">
-                        {% csrf_token %}
-                        <div class="cart ml-4">
-                            <input hidden type="text" name="id" value="{{ food.id }}">
-                            {% if food.id|stringformat:"s" in cart %}
-                            <input type="submit" class="btn btn-success border btn-sm added-to-cart"
-                                value="Added to Cart" disabled>
-                            {% else %}
-                            <input type="submit" class="btn btn-danger border btn-sm" value="Add to Cart">
-                            {% endif %}
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
