@@ -68,9 +68,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ordering.urls'
 LOGOUT_REDIRECT_URL = '/'
 
-# AUTH_USER_MODEL = 'teacher.CustomUser'
-
-#SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -185,3 +182,15 @@ LOGIN_REDIRECT_URL = 'login'
 MEDIA_ROOT = BASE_DIR /'media'
 
 MEDIA_URL = '/media/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_USER', 'hkanjanv@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', 'zulc evxs sier ztmj')
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
+# Debugging statements
+print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
+print(f"EMAIL_HOST_PASSWORD: {EMAIL_HOST_PASSWORD}")

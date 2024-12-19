@@ -7,6 +7,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login,logout,get_user_model
 from customer.models import Order
 from delivery.models import deliveryUser  # Import deliveryUser model
+from django.core.mail import send_mail  # Add this import
+import os  # Add this import
 # Create your views here.
 
 
@@ -31,6 +33,40 @@ def loginRestaurant(request):
         else:
             login(request,user)
             messages.success(request,'Successfully Login')
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = restaurantUser.objects.get(email=username).restaurantName
+            view_orders_link = request.build_absolute_uri('/restaurantOrders/')
+            check_menu_link = request.build_absolute_uri('/addMenu/')
+            send_mail(
+    'Welcome Back, {}! Let’s Make Today Delicious!'.format(user_name),  # Subject line with dynamic user_name
+    """Hello {},
+
+Your kitchen is ready to serve! 🌟
+Check out today’s orders and get ready to satisfy your customers’ cravings!
+
+👉 [View New Orders]({view_orders_link})
+👉 [Check Your Menu]({check_menu_link})
+👉 [Manage Your Offers]
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                view_orders_link=view_orders_link, 
+                                                                check_menu_link=check_menu_link),  # Plain text email content
+    from_email,  # Sender's email
+    [user.email],  # Recipient's email
+    fail_silently=False,  # Fail silently if set to False
+    html_message="""Hello {},<br><br>
+
+Your kitchen is ready to serve! 🌟<br>
+Check out today’s orders and get ready to satisfy your customers’ cravings!<br><br>
+
+👉 <a href="{view_orders_link}">View New Orders</a><br>
+👉 <a href="{check_menu_link}">Check Your Menu</a><br>
+👉 [Manage Your Offers]<br><br>
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                   view_orders_link=view_orders_link, 
+                                                                   check_menu_link=check_menu_link)  # HTML email content
+)
             render(request,'loginRestaurant.html')
             return redirect('addMenu')
 
@@ -150,4 +186,11 @@ def update_delivery_person(request, order_id):
         order.delivery_contact = delivery_person.deliveryContact  # Add delivery contact
         order.save()
         messages.success(request, f"Delivery person {delivery_person.name} assigned to order {order.order_no}")
+    return redirect('restaurant_orders')
+
+@login_required
+def delete_order(request, order_id):
+    order = Order.objects.get(id=order_id)
+    order.delete()
+    messages.success(request, 'Order deleted successfully')
     return redirect('restaurant_orders')

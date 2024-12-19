@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from delivery.models import deliveryUser
 from customer.models import Order
+from django.core.mail import send_mail
 
 # Home view for logged-in users
 @login_required
@@ -46,7 +47,40 @@ def loginDelivery(request):
             messages.error(request, 'You are Registered as restaurant')
             return redirect('loginDelivery')
         # Log the user in
-        login(request, user)
+        else:
+            login(request, user)
+            messages.success(request, 'Successfully Login')
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = deliveryUser.objects.get(email=username).name
+            delivery_link = request.build_absolute_uri('/home/')
+            send_mail(
+                'Welcome Back, {}'.format(user_name),
+                """Hello {},
+
+Ready to deliver happiness today? 🚚💨
+Check out your upcoming deliveries and get ready to hit the road!
+
+👉 [View Upcoming Deliveries]({})
+
+We're here to help you make someone's day better! 🌟
+
+Drive safe and enjoy the ride,
+Delivery Team 🚗💨""".format(user_name, delivery_link),
+                from_email,
+                [user.email],
+                fail_silently=False,
+                html_message="""Hello {},<br><br>
+
+Ready to deliver happiness today? 🚚💨<br>
+Check out your upcoming deliveries and get ready to hit the road!<br><br>
+
+👉 <a href="{}">View Upcoming Deliveries</a><br><br>
+
+We're here to help you make someone's day better! 🌟<br><br>
+
+Drive safe and enjoy the ride,<br>
+Delivery Team 🚗💨""".format(user_name, delivery_link)
+            )
         return redirect('home')  # Redirect to a homepage or dashboard after login
 
     return render(request, 'loginDelivery.html')
