@@ -241,7 +241,7 @@
                 // Name validation
                 const name = $('#name').val();
                 if (!name.match(/^[a-zA-Z ]+$/)) {
-                    $('#name-error').text('Name should contain only alphabets.');
+                    $('#name-error').text('Name is required.');
                     valid = false;
                 } else {
                     $('#name-error').text('');

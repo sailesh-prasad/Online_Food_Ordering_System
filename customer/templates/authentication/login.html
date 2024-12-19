@@ -8,9 +8,21 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
         .error-message {
+            display: block;
             color: red;
-            font-size: 12px;
+            font-size: 16px;
             margin-top: 5px;
+            font-weight: 700;
+        }
+        .alert {
+            text-align: center;
+            font-weight: bold;
+        }
+        .alert-danger {
+            color: red;
+        }
+        .alert-primary {
+            color: green;
         }
     </style>
 </head>
@@ -39,6 +51,21 @@
             <h2>Login</h2>
             <form id="register-form" method="post" novalidate>
                 {% csrf_token %}
+
+                <!-- Display messages (Success/Errors) -->
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ message }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
 
                 <!-- Email -->
                 <div class="form-field">
@@ -69,10 +96,10 @@
                 </div>
                 <!-- Remember Me and Forgot Password -->
                 <div class="form-options">
-                    <div>
+                    {% comment %} <div>
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember Me</label>
-                    </div>
+                    </div> {% endcomment %}
                     <a href="{% url 'forgetPassword' %}">Forgot password?</a>
                 </div>
 
@@ -80,21 +107,28 @@
                 <button type="submit" class="submit-btn">Login</button>
             </form>
             <!-- Social Login Options -->
-            <div class="social-login">
+            {% comment %} <div class="social-login">
                 <p>Or login with:</p>
                 <button type="button" class="social-btn google">Google</button>
                 <button type="button" class="social-btn facebook">Facebook</button>
                 <button type="button" class="social-btn twitter">Twitter</button>
-            </div>
+            </div>  {% endcomment %}
         </form>
 
         <!-- Register Prompt -->
         <div class="register-prompt">
             <p>New to Food Delivery System?</p>
-            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'register' %}">Register as Customer</a>
         </div>
         </div>
     </section>
+
+    
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 Food Delivery System | All rights reserved</p>
+    </footer>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -123,10 +157,14 @@
                 if (!passwordField.value.trim()) {
                     passwordError.textContent = 'Password is required.';
                     valid = false;
-                } else if (!/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
+                }
+                
+                {% comment %} else if (!/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
                     passwordError.textContent = 'Password must have at least 8 characters of multi character';
                     valid = false;
-                } else {
+                } {% endcomment %}
+                
+                else {
                     passwordError.textContent = '';
                 }
 
