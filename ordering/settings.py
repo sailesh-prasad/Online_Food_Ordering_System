@@ -48,11 +48,10 @@ INSTALLED_APPS = [
     'customer',
     'phonenumber_field',
     'restaurant',
-    # 'order',
-    # 'menu',
+    'order',
+    'menu',
     'delivery',
     'drf_yasg',
-    'import_export',
     ]
 
 MIDDLEWARE = [
@@ -106,13 +105,13 @@ REST_FRAMEWORK = {
 }
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
-     }
- }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
-
+# your_project/settings.py
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
