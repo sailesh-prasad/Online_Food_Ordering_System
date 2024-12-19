@@ -229,6 +229,11 @@ h1 {
     transform: scale(1);
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 }
+.micButton.listening {
+    background-color: black !important;
+    color: white !important;
+}
+
 
     </style>
     
@@ -346,59 +351,113 @@ h1 {
     </div>
 
     <!-- Search Bar -->
+<form method="GET" action="{% url 'menu' %}" class="mb-5 d-flex justify-content-center">
+    <div class="input-group custom-search" style="max-width: 700px; width: 100%;">
+        <input type="text" name="q" id="searchInput" placeholder="Search for food..." class="form-control" value="{{ request.GET.q }}">
+        <button type="button" id="micButton" class="btn btn-secondary">
+            <i class="fas fa-microphone"></i> <!-- Font Awesome Icon -->
+        </button>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
 
-    <form method="GET" action="{% url 'menu' %}" class="mb-5 d-flex justify-content-center">
-        <div class="input-group custom-search" style="max-width: 700px; width: 100%;">
-            <input type="text" name="q" placeholder="Search for food..." class="form-control" value="{{ request.GET.q }}">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </form>
-    
-    
-    <section class="cards d-flex justify-content-evenly flex-wrap">
-        {% if foodItems is None %}
-        <p>Khana Nhi milega</p>
-        {% else %}
-        {% for food in foodItems %}
-        <div class="outer overflow-hidden">
-            <div class="inner"
-                style="background: url(/media/{{ food.image }}) no-repeat center center/cover; height: 200px;"></div> 
-            <div class="item d-flex align-items-center">
-                <div class="item-details flex-grow-1">
-                    <div class="item-name">
-                        <h4>{{ food.name }}</h4>
-                        <p>{{ food.category }}</p> <!-- Add this line -->
-                        <p>Fresh & sweet</p>
-                    </div>
-                    <div class="rating">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
+<section class="cards d-flex justify-content-evenly flex-wrap">
+    {% if foodItems is None %}
+    <p>Khana Nhi milega</p>
+    {% else %}
+    {% for food in foodItems %}
+    <div class="outer overflow-hidden">
+        <div class="inner"
+            style="background: url(/media/{{ food.image }}) no-repeat center center/cover; height: 200px;"></div> 
+        <div class="item d-flex align-items-center">
+            <div class="item-details flex-grow-1">
+                <div class="item-name">
+                    <h4>{{ food.name }}</h4>
+                    <p>{{ food.category }}</p> <!-- Add this line -->
+                    <p>Fresh & sweet</p>
                 </div>
-                <div class="item-price-and-cart d-flex align-items-center">
-                    <div class="item-price">
-                        <p>{{ food.price }}</p>
-                    </div>
-                    <form action="#" method="post">
-                        {% csrf_token %}
-                        <div class="cart ml-4">
-                            <input hidden type="text" name="id" value="{{ food.id }}">
-                            {% if food.id|stringformat:"s" in cart %}
-                            <input type="submit" class="btn btn-success border btn-sm added-to-cart"
-                                value="Added to Cart" disabled>
-                            {% else %}
-                            <input type="submit" class="btn btn-danger border btn-sm" value="Add to Cart">
-                            {% endif %}
-                        </div>
-                    </form>
+                <div class="rating">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             </div>
+            <div class="item-price-and-cart d-flex align-items-center">
+                <div class="item-price">
+                    <p>{{ food.price }}</p>
+                </div>
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="cart ml-4">
+                        <input hidden type="text" name="id" value="{{ food.id }}">
+                        {% if food.id|stringformat:"s" in cart %}
+                        <input type="submit" class="btn btn-success border btn-sm added-to-cart"
+                            value="Added to Cart" disabled>
+                        {% else %}
+                        <input type="submit" class="btn btn-danger border btn-sm" value="Add to Cart">
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
         </div>
-        {% endfor %}
-        {% endif %}
-    </section>
+    </div>
+    {% endfor %}
+    {% endif %}
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const micButton = document.getElementById("micButton");
+        const searchInput = document.getElementById("searchInput");
+
+        // Check if browser supports SpeechRecognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            micButton.disabled = true;
+            micButton.title = "Voice search is not supported in this browser.";
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+
+        micButton.addEventListener("click", () => {
+            recognition.start();
+        });
+
+        recognition.onstart = () => {
+            // Change the button's appearance when recognition starts
+            micButton.style.backgroundColor = "black"; // Black background color
+            micButton.style.color = "white"; // White icon color
+            micButton.innerHTML = `<i class="fas fa-microphone"></i>`;
+            micButton.style.background = "linear-gradient(45deg, #00bcd4, #8e44ad)"; // Animated background
+
+
+        };
+
+        recognition.onend = () => {
+            // Reset the button's style after recognition ends
+            micButton.style.backgroundColor = ""; // Revert to original background color
+            micButton.style.color = ""; // Revert to original icon color
+            micButton.innerHTML = `<i class="fas fa-microphone"></i>`; // Revert to microphone icon
+        };
+
+        recognition.onresult = (event) => {
+            let transcript = event.results[0][0].transcript;
+            // Remove trailing period, if any
+            transcript = transcript.trim().replace(/\.$/, '');
+            searchInput.value = transcript;
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error:", event.error);
+        };
+        
+    });
+</script>
+
+
     <div class="container text-center justify-content-center mt-5">
     </div>
     {% include "home/footer.html" %}
