@@ -14,7 +14,9 @@ from django.http import JsonResponse
 from customer.models import State, City, Place
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
-from restaurant.models import restaurantUser,foodItems
+from restaurant.models import foodItems, restaurantUser  # Add this import
+from django.core.mail import send_mail  # Add this import
+import os  # Add this import
 # Create your views here.
 
 User = get_user_model()
@@ -45,6 +47,40 @@ def loginUser(request):
         else:
             login(request,user)
             messages.success(request,'Successfully Login')
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = customerUser.objects.get(email=username).name
+            restaurant_links = "<br>".join([f"<a href='{request.build_absolute_uri(f'/restaurant/{restaurant.id}/menu/')}'>{restaurant.restaurantName}</a>" for restaurant in restaurantUser.objects.all()])
+            send_mail(
+    'Welcome Back, {}'.format(user_name),
+    """Hello {},<br><br>
+
+    Craving something delicious? 🍔🌮<br>
+    Explore your favorites or try something new today! 🚀<br>
+    👉 [Browse Restaurants]<br>
+    {}<br><br>
+
+    👉 [Explore Today's Deals]<br><br>
+
+    We're here to deliver happiness right to your doorstep. 🛵💨<br>
+    Bon appétit,<br>
+    Food Ordering Team 🍽️""".format(user_name, restaurant_links),
+    from_email,
+    [user.email],
+    fail_silently=False,
+    html_message="""Hello {},<br><br>
+
+    Craving something delicious? 🍔🌮<br>
+    Explore your favorites or try something new today! 🚀<br><br>
+
+    👉 [Browse Restaurants]<br>
+    {}<br><br>
+
+    👉 [Explore Today's Deals]<br><br>
+
+    We're here to deliver happiness right to your doorstep. 🛵💨<br>
+    Bon appétit,<br>
+    Food Ordering Team 🍽️""".format(user_name, restaurant_links)
+)
             render(request,'authentication/login.html')
             return redirect('menu')
 
@@ -91,8 +127,8 @@ def registerUser(request):
                 username=email,
                 password=hashed_password,
                 is_user=True,
-                state=state, 
-                city=city, 
+                state=state,
+                city=city,
                 place=place,
                 address=address,
                 latitude=latitude,
@@ -170,7 +206,7 @@ def make_payment(request):
         for item_id, item in cart.items():
             food_item = foodItems.objects.get(id=item_id)
             restaurant_name = food_item.restaurantName.restaurantName
-            if restaurant_name not in orders:
+            if (restaurant_name not in orders):
                 orders[restaurant_name] = {
                     'items': [],
                     'total_price': 0,

@@ -117,6 +117,10 @@
                             <div class="alert alert-danger" role="alert">
                                 {{ message }}
                             </div>
+                        {% elif message.tags == 'success' %}
+                            <div class="alert alert-success" role="alert">
+                                {{ message }}
+                            </div>
                         {% else %}
                             <div class="alert alert-primary" role="alert">
                                 {{ message }}
@@ -156,8 +160,9 @@
                     {% comment %} <div>
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember Me</label>
-                    </div> {% endcomment %}
-                    <a href="{% url 'forgetPassword' %}">Forgot password?</a>
+                    </div>{% endcomment %}
+
+                    <a href="{% url 'password_reset' %}">Forgot password?</a>
                 </div>
 
                 <!-- Submit button -->

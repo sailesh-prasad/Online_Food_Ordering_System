@@ -26,18 +26,15 @@ from restaurant import views as restaurantviews
 # from order import views as orderviews
 from delivery import views as deliveryviews
 from . import views
-from ordering.views import ResetPasswordView
+from ordering.views import ChangePasswordView, ResetPasswordView
+from .views import forget_password
+
 urlpatterns = [
-
-    
-
     path('admin/', admin.site.urls),
-
+    # path('', views.home, name='home'),  # Ensure home view is defined
     path('', include('customer.urls')),
-
     path('', include('restaurant.urls')),
- 
-    
+
     path('loginDelivery/',deliveryviews.loginDelivery,name = 'loginDelivery'),
     path('registerDelivery/',deliveryviews.registerDelivery,name = 'registerDelivery'),
     path('home/', deliveryviews.home, name='home'),
@@ -46,6 +43,9 @@ urlpatterns = [
     # path('restaurantPage/', menuviews.restaurantPage, name='restaurantPage'),
     path('restaurant/<int:restaurant_id>/menu/', views.restaurant_menu, name='restaurant_menu'),
     path('cart/', views.Cart, name='cart'),
+    path('forget_password/', forget_password, name='forget_password'),
+
+
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='home/password_reset_confirm.html'),
@@ -54,6 +54,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='home/password_reset_complete.html'),
          name='password_reset_complete'),
     path('run-speech-recog/', views.run_speech_recog, name='run_speech_recog'),
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
 ]
 
 # urlpatterns = [
