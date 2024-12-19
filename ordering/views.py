@@ -7,10 +7,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from restaurant.models import foodItems, restaurantUser
 from django.db.models import Q
-from django.http import request
+from django.http import request, HttpResponse
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.template.loader import render_to_string
+from django.core.mail import send_mail, BadHeaderError
+from django.conf import settings
 
 def home(request):
-    return render(request, 'home/home.html')
+    user = request.user
+    if user.is_authenticated:
+        if hasattr(user, 'customeruser'):
+            return redirect('login')
+        elif hasattr(user, 'restaurantuser'):
+            return redirect('loginRestaurant')
+        elif hasattr(user, 'deliveryuser'):
+            return redirect('home')
+    return render(request, 'home.html')
 
 
 
@@ -118,14 +133,50 @@ def restaurantPage(request):
 
 
 from django.urls import reverse_lazy
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordChangeView
+# from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'home/password_reset.html'
-    email_template_name = 'home/password_reset_email.html'
-    subject_template_name = 'home/password_reset_subject'
+    template_name = 'home/password_reset.html'  # Corrected template path
+    email_template_name = 'home/password_reset_email.html'  # Corrected template path
+    subject_template_name = 'home/password_reset_subject.txt'  # Corrected template path
     success_message = "We've emailed you instructions for setting your password, " \
                       "if an account exists with the email you entered. You should receive them shortly." \
                       " If you don't receive an email, " \
                       "please make sure you've entered the address you registered with, and check your spam folder."
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('Home')  # Corrected URL pattern
+
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'home/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('Home')  # Corrected URL pattern
+
+def forget_password(request):
+    if request.method == 'POST':
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = "authentication/password_reset_email.txt"
+                    c = {
+                        "email": user.email,
+                        'domain': request.META['HTTP_HOST'],
+                        'site_name': 'Website',
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "user": user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    return redirect("/password_reset/done/")
+    password_reset_form = PasswordResetForm()
+    return render(request=request, template_name="authentication/forgetPassword.html", context={"password_reset_form": password_reset_form})

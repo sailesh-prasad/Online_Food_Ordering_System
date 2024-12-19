@@ -9,6 +9,18 @@ from customer.models import Order
 from delivery.models import deliveryUser  # Import deliveryUser model
 from django.core.mail import send_mail  # Add this import
 import os  # Add this import
+from django.utils.crypto import get_random_string  # Add this import
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.core.mail import BadHeaderError
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetCompleteView
+from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
 
 
@@ -194,3 +206,53 @@ def delete_order(request, order_id):
     order.delete()
     messages.success(request, 'Order deleted successfully')
     return redirect('restaurant_orders')
+
+User = get_user_model()
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'authentication/password_reset.html'  # Corrected template path
+    email_template_name = 'authentication/password_reset_email.html'  # Corrected template path
+    subject_template_name = 'authentication/password_reset_subject.txt'  # Corrected template path
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('loginRestaurant')  # Corrected URL pattern
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'authentication/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('loginRestaurant')  # Corrected URL pattern
+
+class PasswordResetComplete(SuccessMessageMixin, PasswordResetCompleteView):
+    template_name = 'authentication/password_reset_complete.html'
+    success_message = "Your password has been set. You may go ahead and log in now."
+    success_url = reverse_lazy('loginRestaurant')
+
+def forget_password(request):
+    if request.method == 'POST':
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested for Your Account"
+                    email_template_name = "authentication/password_reset_email.html"
+                    c = {
+                        "email": user.email,
+                        'domain': request.META['HTTP_HOST'],
+                        'site_name': 'Website',
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "user": user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    return redirect("/password_reset/done/")
+    password_reset_form = PasswordResetForm()
+    return render(request=request, template_name="authentication/password_reset.html", context={"password_reset_form": password_reset_form})

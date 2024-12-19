@@ -4,8 +4,10 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from restaurant import views as restaurantviews
+from . import views
 
 urlpatterns = [
+    # path('', views.home, name='restaurant_home'),  # Ensure home view is defined
     path('logoutRestaurant/', restaurantviews.logoutRestaurant, name='logoutR'),
     path('loginRestaurant/', restaurantviews.loginRestaurant, name='loginRestaurant'),
     path('registerRestaurant/', restaurantviews.registerRestaurant, name='registerRestaurant'),
@@ -17,6 +19,10 @@ urlpatterns = [
     path('assignDeliveryPerson/<int:order_id>/', restaurantviews.assign_delivery_person, name='assign_delivery_person'),
     path('updateDeliveryPerson/<int:order_id>/', restaurantviews.update_delivery_person, name='update_delivery_person'),
     path('delete_order/<int:order_id>/', restaurantviews.delete_order, name='delete_order'),
+    # path('forgetPasswordRestaurant/', restaurantviews.forgetPasswordRestaurant, name='forgetPasswordRestaurant'),
+    path('password_reset/', restaurantviews.ResetPasswordView.as_view(), name='password_reset'),
+    path('password_reset_complete/', restaurantviews.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('password_change/', restaurantviews.ChangePasswordView.as_view(), name='password_change'),
 ]
 
 if settings.DEBUG:

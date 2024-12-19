@@ -60,13 +60,13 @@
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
 
-                <!-- Remember Me and Forgot Password -->
+                <!-- Remember Me and Forgot Password -->+
                 <div class="form-options">
                     <div>
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember Me</label>
                     </div>
-                    <a href="{% url 'forgetPassword' %}">Forgot password?</a>
+                    <a href="{% url 'password_reset' %}">Forgot password?</a>
                 </div>
 
                 <!-- Submit button -->
