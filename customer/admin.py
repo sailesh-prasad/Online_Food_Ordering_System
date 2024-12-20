@@ -1,5 +1,5 @@
 from django.contrib import admin
-from customer.models import customerUser, Feedback, Contact, Order, State, City, Place
+from customer.models import customerUser, Contact, Order, State, City, Place
 from import_export.admin import ImportExportModelAdmin
 
 class UserAdmin(admin.ModelAdmin):
@@ -12,7 +12,7 @@ admin.site.register(customerUser, UserAdmin)
 class Comments(admin.ModelAdmin):
     list_display = ['stars', 'comments']
 
-admin.site.register(Feedback, Comments)
+
 admin.site.register(Contact)
 
 class StateAdmin(ImportExportModelAdmin):
