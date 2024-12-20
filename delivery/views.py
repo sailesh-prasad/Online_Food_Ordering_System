@@ -8,6 +8,7 @@ from delivery.models import deliveryUser
 from customer.models import Order
 from customer.models import State, City, Place
 from django.core.mail import send_mail
+from .models import Feedback
 
 # Home view for logged-in users
 @login_required
@@ -127,3 +128,6 @@ def registerDelivery(request):
             messages.success(request, "Successfully Registered")
             return redirect('loginDelivery')
     return render(request, 'registerDelivery.html', {'states': states})
+
+def feedback_form(request):
+    pass

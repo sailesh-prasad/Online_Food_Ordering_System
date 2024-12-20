@@ -48,11 +48,10 @@ INSTALLED_APPS = [
     'customer',
     'phonenumber_field',
     'restaurant',
-    # 'order',
-    # 'menu',
+    'order',
+    'menu',
     'delivery',
     'drf_yasg',
-    'import_export',
     ]
 
 MIDDLEWARE = [
@@ -103,11 +102,13 @@ REST_FRAMEWORK = {
 }
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
-     }
- }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# your_project/settings.py
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -158,7 +159,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 # Point to the exact location of your static files directory
 STATICFILES_DIRS = [
