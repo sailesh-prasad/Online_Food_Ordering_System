@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
-from restaurant.models import restaurantUser,Product,Payment, Cart
-from restaurant.models import restaurantUser,Cart,Product,Payment
-from .serializers import  RestaurantSerializer, CartSerializer,ProductSerializer, PaymentSerializer
+from restaurant.models import Restaurant,Cart,Product,Payment,restaurantUser, foodItems
+from .serializers import  *
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -11,8 +10,20 @@ from rest_framework.permissions import IsAuthenticated
 class RestaurantViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = restaurantUser.objects.all()
+    queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+
+class RestaurantUserViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = restaurantUser.objects.all()
+    serializer_class = RestaurantUserSerializer
+
+class FoodItemsViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = foodItems.objects.all()
+    serializer_class = foodItemsSerializer
 
 class ProductViewSet(viewsets.ModelViewSet):    
     authentication_classes = [TokenAuthentication]
