@@ -24,9 +24,9 @@ urlpatterns = [
     path('load-cities/', customerviews.load_cities, name='load_cities'),
     path('load-places/', customerviews.load_places, name='load_places'),
     # path('forgetPasswordRestaurant/', restaurantviews.forgetPasswordRestaurant, name='forgetPasswordRestaurant'),
-    path('password_reset/', restaurantviews.ResetPasswordView.as_view(), name='password_reset'),
-    path('password_reset_complete/', restaurantviews.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-    path('password_change/', restaurantviews.ChangePasswordView.as_view(), name='password_change'),
+    # path('password_reset/', restaurantviews.ResetPasswordView.as_view(), name='password_reset'),
+    # path('password_reset_complete/', restaurantviews.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    # path('password_change/', restaurantviews.ChangePasswordView.as_view(), name='password_change'),
 ]
 
 if settings.DEBUG:

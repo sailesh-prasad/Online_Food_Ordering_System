@@ -14,16 +14,137 @@
             margin-top: 5px;
             font-weight: 700;
         }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #524b4b;
+            background: url('{% static "images/photobackground.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: rgba(0, 128, 0, 0.8);
+            color: #fff;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            text-align: center;
+            color: #fff;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(0, 100, 0, 0.8), rgba(0, 200, 0, 0.6));
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .hero h3 {
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .register-form {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: rgba(135, 209, 100, 0.9);
+            padding: 100px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #006400;
+        }
+
+        .form-field {
+            margin-bottom: 10px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-field input:focus {
+            border-color: #006400;
+            box-shadow: 0 0 5px rgba(0, 100, 0, 0.5);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0f9c0f;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #095323;
+        }
+
         .alert {
             text-align: center;
             font-weight: bold;
         }
+
         .alert-danger {
             color: red;
         }
+
         .alert-primary {
             color: green;
         }
+
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-prompt a {
+            color: #006400;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register-prompt a:hover {
+            text-decoration: underline;
+        }
+        
+
     </style>
 </head>
 <body>
@@ -123,12 +244,8 @@
         </div>
     </section>
 
-    
     <!-- Footer Section -->
-    <footer class="footer">
-        <p>&copy; 2024 Food Delivery System | All rights reserved</p>
-    </footer>
-
+    {% include 'home/footer.html' %}
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

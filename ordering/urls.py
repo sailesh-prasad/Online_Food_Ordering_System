@@ -43,7 +43,7 @@ urlpatterns = [
     # path('restaurantPage/', menuviews.restaurantPage, name='restaurantPage'),
     path('restaurant/<int:restaurant_id>/menu/', views.restaurant_menu, name='restaurant_menu'),
     path('cart/', views.Cart, name='cart'),
-    path('forget_password/', forget_password, name='forget_password'),
+    # path('forget_password/', forget_password, name='forget_password'),
 
 
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
