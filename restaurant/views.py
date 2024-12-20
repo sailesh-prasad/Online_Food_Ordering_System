@@ -58,11 +58,10 @@ def loginRestaurant(request):
     """Hello {},
 
 Your kitchen is ready to serve! 🌟
-Check out today’s orders and get ready to satisfy your customers’ cravings!
+Check out today’s orders and get ready to satisfy your customer's cravings!
 
 👉 [View New Orders]({view_orders_link})
 👉 [Check Your Menu]({check_menu_link})
-👉 [Manage Your Offers]
 
 We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
                                                                 view_orders_link=view_orders_link, 
@@ -73,11 +72,10 @@ We’re excited to see the magic your team creates today! 🍽️""".format(user
     html_message="""Hello {},<br><br>
 
 Your kitchen is ready to serve! 🌟<br>
-Check out today’s orders and get ready to satisfy your customers’ cravings!<br><br>
+Check out today’s orders and get ready to satisfy your customer's cravings!<br><br>
 
 👉 <a href="{view_orders_link}">View New Orders</a><br>
 👉 <a href="{check_menu_link}">Check Your Menu</a><br>
-👉 [Manage Your Offers]<br><br>
 
 We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
                                                                    view_orders_link=view_orders_link, 
@@ -186,7 +184,7 @@ def toggle_stock(request, food_id):
 def logoutRestaurant(request):
     user = get_user_model()
     logout(request)
-    return redirect("feedback_form")
+    return redirect("logout")
 
 @login_required
 def restaurant_orders(request):
