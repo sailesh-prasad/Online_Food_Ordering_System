@@ -261,134 +261,131 @@
       </div>
     </section>
 
-    <!-- Login Form Section -->
-    <section class="login-form">
+    <!-- Register Form Section -->
+    <section class="register-form">
       <div class="form-container">
-        <h2>Login</h2>
-        <form method="POST">
-          {% csrf_token %}
+          <h2>Login</h2>
+          <form id="register-form" method="post" novalidate>
+              {% csrf_token %}
 
-          <!-- Display messages (Success/Errors) -->
-          {% if messages %} {% for message in messages %} {% if message.tags == 'error' %}
-          <div class="alert alert-danger" role="alert">{{ message }}</div>
-          {% else %}
-          <div class="alert alert-primary" role="alert">{{ message }}</div>
-          {% endif %} {% endfor %} {% endif %}
+              <!-- Display messages (Success/Errors) -->
+              {% if messages %}
+                  {% for message in messages %}
+                      {% if message.tags == 'error' %}
+                          <div class="alert alert-danger" role="alert">
+                              {{ message }}
+                          </div>
+                      {% else %}
+                          <div class="alert alert-primary" role="alert">
+                              {{ message }}
+                          </div>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
 
-          <!-- Error message for empty fields -->
-          <div id="error-message">Please fill in all fields.</div>
+              <!-- Email -->
+              <div class="form-field">
+                  <label for="email">Email:</label>
+                  <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
+                      placeholder="Enter your email" 
+                      required 
+                      pattern="[a-zA-Z0-9._%+-]+@gmail\.com$"
+                  >
+                  <small class="error-message" id="email-error"></small>
+              </div>
 
-          <!-- Email input (Username) -->
-          <div class="form-field">
-            <label for="email">Email or Username:</label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              placeholder="Enter your email of username"
-              required
-            />
-          </div>
+              <!-- Password -->
+              <div class="form-field">
+                  <label for="password">Password:</label>
+                  <input 
+                      type="password" 
+                      id="password" 
+                      name="password" 
+                      placeholder="Enter your password" 
+                      required 
+                      pattern="(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}"
+                  >
+                  <small class="error-message" id="password-error"></small>
+              </div>
+              <!-- Remember Me and Forgot Password -->
+              <div class="form-options">
+                  {% comment %} <div>
+                      <input type="checkbox" id="remember" name="remember">
+                      <label for="remember">Remember Me</label>
+                  </div>{% endcomment %}
+                  <a href="{% url 'password_reset' %}">Forgot password?</a>
+              </div>
 
-          <!-- Password -->
-          <div class="form-field">
-            <label for="password">Password:</label>
-            <input
-              
-                        type="password"
-              
-                        id="password"
-              
-                        name="password"
-              
-                        placeholder="Enter your password"
-              
-                        required
-            / 
-                        pattern="(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}"
-                    >
-                    <small class="error-message" id="password-error"></small>
-          </div>
-          <!-- Remember Me and Forgot Password -->
-          <div class="form-options">
-            {% comment %} <div>
-              <input type="checkbox" id="remember" name="remember" />
-              <label for="remember">Remember Me</label>
-            </div>{% endcomment %}
-            <a href="{% url 'password_reset' %}">Forgot password?</a>
-          </div>
-
-          <!-- Submit button -->
-          <button type="submit" class="submit-btn">Login</button>
-
-
+              <!-- Submit Button -->
+              <button type="submit" class="submit-btn">Login</button>
+          </form>
           <!-- Social Login Options -->
-
           {% comment %} <div class="social-login">
-            <p>Or login with:</p>
-            <button type="button" class="social-btn google">Google</button>
-            <button type="button" class="social-btn facebook">Facebook</button>
-            <button type="button" class="social-btn twitter">Twitter</button>
-          </div> {% endcomment %}
+              <p>Or login with:</p>
+              <button type="button" class="social-btn google">Google</button>
+              <button type="button" class="social-btn facebook">Facebook</button>
+              <button type="button" class="social-btn twitter">Twitter</button>
+          </div>  {% endcomment %}
+      </form>
 
-          
-        </form>
-
-        <!-- Register Prompt -->
-        <div class="register-prompt">
-          <p>New to InFoodSys?</p>
-          <a href="{% url 'register' %}">Register</a>
-        </div>
+      <!-- Register Prompt -->
+      <div class="register-prompt">
+          <p>New to Food Delivery System?</p>
+          <a href="{% url 'register' %}">Register as Customer</a>
       </div>
-    </section>
+      </div>
+  </section>
 
-    <!-- Footer Section -->
-    {% include 'home/footer.html' %}
+  <!-- Footer Section -->
+  {% include 'home/footer.html' %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('register-form');
-            const emailField = document.getElementById('email');
-            const passwordField = document.getElementById('password');
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const form = document.getElementById('register-form');
+          const emailField = document.getElementById('email');
+          const passwordField = document.getElementById('password');
 
-            const emailError = document.getElementById('email-error');
-            const passwordError = document.getElementById('password-error');
+          const emailError = document.getElementById('email-error');
+          const passwordError = document.getElementById('password-error');
 
-            form.addEventListener('submit', function (event) {
-                let valid = true;
+          form.addEventListener('submit', function (event) {
+              let valid = true;
 
-                // Email validation
-                if (!emailField.value.trim()) {
-                    emailError.textContent = 'Email is required.';
-                    valid = false;
-                } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailField.value)) {
-                    emailError.textContent = 'Email must end with "@gmail.com".';
-                    valid = false;
-                } else {
-                    emailError.textContent = '';
-                }
+              // Email validation
+              if (!emailField.value.trim()) {
+                  emailError.textContent = 'Email is required.';
+                  valid = false;
+              } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailField.value)) {
+                  emailError.textContent = 'Email must end with "@gmail.com".';
+                  valid = false;
+              } else {
+                  emailError.textContent = '';
+              }
 
-                // Password validation
-                if (!passwordField.value.trim()) {
-                    passwordError.textContent = 'Password is required.';
-                    valid = false;
-                }
-                
-                {% comment %} else if (!/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
-                    passwordError.textContent = 'Password must have at least 8 characters of multi character';
-                    valid = false;
-                } {% endcomment %}
-                
-                else {
-                    passwordError.textContent = '';
-                }
+              // Password validation
+              if (!passwordField.value.trim()) {
+                  passwordError.textContent = 'Password is required.';
+                  valid = false;
+              }
+              
+              {% comment %} else if (!/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
+                  passwordError.textContent = 'Password must have at least 8 characters of multi character';
+                  valid = false;
+              } {% endcomment %}
+              
+              else {
+                  passwordError.textContent = '';
+              }
 
-                // Prevent form submission if validation fails
-                if (!valid) {
-                    event.preventDefault();
-                }
-            });
-        });
-    </script>
+              // Prevent form submission if validation fails
+              if (!valid) {
+                  event.preventDefault();
+              }
+          });
+      });
+  </script>
 </body>
 </html>
