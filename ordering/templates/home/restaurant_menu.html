@@ -14,51 +14,76 @@
         /* General body styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #95b0a7; /* Light background for better contrast */
             color: #343a40;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Page container to center the content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
         }
     
         h1 {
             font-weight: bold;
-            color: #007bff;
+            color: #0764c7;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
     
         /* Customize the nav-tabs */
         .custom-nav {
-            background: linear-gradient(90deg, #007bff, #00bfff);
+            background: linear-gradient(90deg, #3f70a4, #00bfff);
             border-radius: 50px;
             padding: 5px;
+            margin-bottom: 40px;
         }
     
         .custom-nav-link {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             color: #fff;
             background-color: transparent;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border-radius: 50px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     
         .custom-nav-link.active {
             background-color: #fff;
             color: #007bff;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
         }
     
         .custom-nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.8);
             color: #007bff;
+            transform: scale(1.05);
         }
     
         /* Search bar styling */
         #search-bar {
-            padding: 12px 20px;
-            border-radius: 30px;
+            padding: 14px 22px;
+            border-radius: 40px;
             border: 2px solid #007bff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0px 8px 12px rgba(0, 123, 255, 0.1);
+            transition: box-shadow 0.3s ease;
+            margin-bottom: 30px;
+        }
+    
+        #search-bar:focus {
+            box-shadow: 0px 8px 15px rgba(0, 123, 255, 0.3);
+            outline: none;
         }
     
         .input-group-text {
@@ -66,32 +91,36 @@
             color: #fff;
             border-radius: 50px;
             border: none;
-            padding: 0 15px;
+            padding: 0 18px;
         }
     
         /* Food card styling */
         .food-card {
             display: block;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            border-radius: 20px;
         }
     
         .food-card:hover {
             transform: scale(1.05);
             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+            opacity: 1;
         }
     
         .card {
             border: none;
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
             background-color: #fff;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.4s ease;
         }
     
         .card-img-top {
-            height: 200px;
+            height: 250px;
             width: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
     
         .card-img-top:hover {
@@ -99,53 +128,104 @@
         }
     
         .card-body {
+            padding: 20px;
             text-align: center;
         }
     
         .card-title {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #343a40;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
         }
     
         .card-text {
             color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            margin-bottom: 20px;
         }
     
         .btn-danger {
             background-color: #ff4d4f;
             border: none;
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
     
         .btn-danger:hover {
             background-color: #ff6666;
+            transform: scale(1.05);
         }
     
         .btn-success {
             background-color: #28a745;
             border: none;
             font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+    
+        .btn-success:hover {
+            background-color: #34d058;
+            transform: scale(1.05);
         }
     
         /* Responsive design */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2rem;
+            }
+    
+            .custom-nav-link {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+    
+            .food-card {
+                margin-bottom: 20px;
+            }
+        }
+    
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8rem;
             }
     
             .card-img-top {
-                height: 150px;
+                height: 180px;
             }
     
             .custom-nav-link {
                 font-size: 14px;
                 padding: 8px 15px;
             }
+    
+            #search-bar {
+                width: 100%;
+                margin: 10px auto;
+            }
+        }
+    
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+    
+            .custom-nav-link {
+                font-size: 12px;
+                padding: 7px 12px;
+            }
+    
+            .food-card {
+                margin-bottom: 15px;
+            }
+    
+            .card-title {
+                font-size: 1.1rem;
+            }
         }
     </style>
+    
     
 
     <script>
