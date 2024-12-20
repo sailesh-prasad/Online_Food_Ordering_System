@@ -27,89 +27,81 @@
 
     <style>
       /* Body Style */
-      {% comment %} body {
-          font-family: 'Poppins', sans-serif;
-          background: url('{% static "images/photobackground.jpg" %}') no-repeat center center/cover;
-          background-size: cover;
-          min-height: 100vh;
-          padding-top: 100px;
-          padding-bottom: 100px;
-      } {% endcomment %}
-
       body {
-          background-image:url('{% static "images/background1.jpg" %}');
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center center;
-          font-family: Arial, sans-serif;
-
+        font-family: "Poppins", sans-serif;
+        background: url('{% static "images/photobackground.jpg" %}') no-repeat
+          center center/cover;
+        background-size: cover;
+        min-height: 100vh;
+        padding-top: 100px;
+        padding-bottom: 100px;
       }
 
       .form-container {
-          width: 100%;
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 30px;
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 10px;
-          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
       }
 
       .form-container h1 {
-          text-align: center;
-          font-weight: bold;
-          margin-bottom: 30px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 30px;
       }
 
       .form-label {
-          font-weight: bold;
+        font-weight: bold;
       }
 
       .form-footer {
-          text-align: center;
-          margin-top: 20px;
+        text-align: center;
+        margin-top: 20px;
       }
 
       .form-footer a {
-          color: #74eb04;
-          text-decoration: none;
+        color: #74eb04;
+        text-decoration: none;
       }
 
       .form-footer a:hover {
-          text-decoration: underline;
+        text-decoration: underline;
       }
 
       .form-outline input,
       .form-outline select,
       .form-outline textarea {
-          width: 100%;
-          padding: 10px;
-          margin: 10px 0;
-          border-radius: 5px;
-          border: 1px solid #ccc;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
       }
 
       button {
-          width: 100%;
-          padding: 12px;
-          background-color: #74eb04;
-          border: none;
-          border-radius: 5px;
-          font-weight: bold;
-          cursor: pointer;
-          transition: background-color 0.3s;
+        width: 100%;
+        padding: 12px;
+        background-color: #74eb04;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
       }
 
       button:hover {
-          background-color: #82cb75;
+        background-color: #82cb75;
       }
 
       .error-message {
-          display: block;
-          color: red;
-          font-size: 16px;
-          margin-top: 5px;
-          font-weight: 700;
+        display: block;
+        color: red;
+        font-size: 16px;
+        margin-top: 5px;
+        font-weight: 700;
       }
     </style>
   </head>
@@ -122,6 +114,16 @@
         {% csrf_token %} {% if showSuccess %}
         <div class="alert alert-success" role="alert">
           Registration Successful!
+        </div>
+        {% endif %} {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+          <ul>
+            {% for field in form %} {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
         </div>
         {% endif %}
 
@@ -323,15 +325,15 @@
           let valid = true;
 
           // Name validation
+          const name = $("#name").val();
           if (!name.match(/^[a-zA-Z ]+$/)) {
-            $("#name-error").text("Name should contain only alphabets.");
+            $("#name-error").text("Name is required.");
             valid = false;
           } else {
             $("#name-error").text("");
           }
 
           // Email validation
-          // Email Validation
           const email = document.getElementById("email");
           const emailError = document.getElementById("email-error");
           const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Email must end with @gmail.com
