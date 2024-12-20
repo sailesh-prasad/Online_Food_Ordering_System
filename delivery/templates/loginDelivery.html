@@ -6,6 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delivery Login</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .error-message {
+            display: block;
+            color: red;
+            font-size: 16px;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+        .alert {
+            text-align: center;
+            font-weight: bold;
+        }
+        .alert-danger {
+            color: red;
+        }
+        .alert-primary {
+            color: green;
+        }
+    </style>
 </head>
 <body>
     <!-- Header Section -->
@@ -30,7 +49,7 @@
     <section class="login-form">
         <div class="form-container">
             <h2>Login</h2>
-            <form method="POST">
+            <form id="login-form" method="POST" novalidate>
                 {% csrf_token %}
                 
                 <!-- Display messages (Success/Errors) -->
@@ -50,53 +69,100 @@
 
                 <!-- Email input (Username) -->
                 <div class="form-field">
-                    <label for="email">Email or Username:</label>
+                    <label for="email">Email:</label>
                     <input type="text" id="email" name="email" placeholder="Enter your delivery email or username" required>
+                    <small class="error-message" id="email-error"></small>
                 </div>
 
                 <!-- Password input -->
                 <div class="form-field">
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <small class="error-message" id="password-error"></small>
                 </div>
 
                 <!-- Remember Me and Forgot Password -->
                 <div class="form-options">
-                    <div>
+                    {% comment %} <div>
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember Me</label>
-                    </div>
-                    <a href="{% url 'forgetPassword' %}">Forgot password?</a>
+                    </div>{% endcomment %}
+                    <a href="{% url 'password_reset' %}">Forgot password?</a>
                 </div>
 
                 <!-- Submit button -->
                 <button type="submit" class="submit-btn">Login</button>
 
                 <!-- Social Login Options -->
-                <div class="social-login">
+                {% comment %} <div class="social-login">
                     <p>Or login with:</p>
                     <button type="button" class="social-btn google">Google</button>
                     <button type="button" class="social-btn facebook">Facebook</button>
                     <button type="button" class="social-btn twitter">Twitter</button>
-                </div>
+                </div> {% endcomment %}
             </form>
 
             <!-- Register Prompt -->
             <div class="register-prompt">
-                <p>New to the Food Delivery System?</p>
+                <p>New to Food Delivery System?</p>
                 <a href="{% url 'registerDelivery' %}">Register as Delivery Person</a>
             </div>
 
             <!-- User Login Prompt -->
-            <div class="text-center my-5">
+            {% comment %} <div class="text-center my-5">
                 <p>Are you a customer? <a href="{% url 'login' %}" class="btn btn-danger">User Login</a></p>
-            </div>
+            </div> {% endcomment %}
         </div>
     </section>
+
 
     <!-- Footer Section -->
     <footer class="footer">
         <p>&copy; 2024 Food Delivery System | All rights reserved</p>
     </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('login-form');
+            form.addEventListener('submit', function (event) {
+                let valid = true;
+                // Email Validation
+                const email = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                if (!email.value.trim()) {
+                    emailError.textContent = 'Email is required.';
+                    valid = false;
+                } else if (!emailPattern.test(email.value)) {
+                    emailError.textContent = 'Email must end with @gmail.com.';
+                    valid = false;
+                } else {
+                    emailError.textContent = '';
+                }
+                // Password Validation
+                const password = document.getElementById('password');
+                const passwordError = document.getElementById('password-error');
+                const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+                if (!password.value.trim()) {
+                    passwordError.textContent = 'Password is required.';
+                    valid = false;
+                }
+                
+                {% comment %} else if (!passwordPattern.test(password.value)) {
+                    passwordError.textContent = 'Password must have at least 8 characters, including uppercase, lowercase, a number, and a special character.';
+                    valid = false;
+                } 
+                 {% endcomment %}
+                else {
+                    passwordError.textContent = '';
+                }
+                // Prevent submission if invalid
+                if (!valid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

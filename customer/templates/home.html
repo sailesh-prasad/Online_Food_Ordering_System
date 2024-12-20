@@ -296,10 +296,52 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Message Container */
+.message-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.alert {
+    display: inline-block;
+    padding: 15px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 10px 0;
+    background-color: transparent; /* Transparent background */
+}
+
+.alert-danger {
+    color: #721c24;
+}
+
+.alert-primary {
+    color: #004085;
+}
+
     </style>
 </head>
 <body>
-    
+    {% csrf_token %}
+                
+    <!-- Display messages (Success/Errors) -->
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>{{ message }}</strong>
+                    </div>
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        <strong>{{ message }}</strong>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+                
     <section class="hero">
         <div class="content-container">
             <h2>Welcome to Your Food Paradise</h2>

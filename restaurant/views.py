@@ -9,6 +9,21 @@ from customer.models import Order
 from delivery.models import deliveryUser
 from customer.models import State,City,Place
   # Import deliveryUser model
+from delivery.models import deliveryUser  # Import deliveryUser model
+from django.core.mail import send_mail  # Add this import
+import os  # Add this import
+from django.utils.crypto import get_random_string  # Add this import
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.core.mail import BadHeaderError
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetCompleteView
+from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
 
 # Create your views here.
@@ -32,9 +47,45 @@ def loginRestaurant(request):
             messages.error(request, 'You are a User')
             return redirect('loginRestaurant')
         else:
-            login(request, user)
-            messages.success(request, 'Successfully Login')
-            return redirect('addMenu')  # Ensure proper redirection after login
+            login(request,user)
+            messages.success(request,'Successfully Login')
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = restaurantUser.objects.get(email=username).restaurantName
+            view_orders_link = request.build_absolute_uri('/restaurantOrders/')
+            check_menu_link = request.build_absolute_uri('/addMenu/')
+            send_mail(
+    'Welcome Back, {}! Let’s Make Today Delicious!'.format(user_name),  # Subject line with dynamic user_name
+    """Hello {},
+
+Your kitchen is ready to serve! 🌟
+Check out today’s orders and get ready to satisfy your customer's cravings!
+
+👉 [View New Orders]({view_orders_link})
+👉 [Check Your Menu]({check_menu_link})
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                view_orders_link=view_orders_link, 
+                                                                check_menu_link=check_menu_link),  # Plain text email content
+    from_email,  # Sender's email
+    [user.email],  # Recipient's email
+    fail_silently=False,  # Fail silently if set to False
+    html_message="""Hello {},<br><br>
+
+Your kitchen is ready to serve! 🌟<br>
+Check out today’s orders and get ready to satisfy your customer's cravings!<br><br>
+
+👉 <a href="{view_orders_link}">View New Orders</a><br>
+👉 <a href="{check_menu_link}">Check Your Menu</a><br>
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                   view_orders_link=view_orders_link, 
+                                                                   check_menu_link=check_menu_link)  # HTML email content
+)
+            render(request,'loginRestaurant.html')
+            return redirect('addMenu')
+
+
+    return render(request,'loginRestaurant.html')
 
     return render(request, 'loginRestaurant.html')
 
@@ -133,7 +184,7 @@ def toggle_stock(request, food_id):
 def logoutRestaurant(request):
     user = get_user_model()
     logout(request)
-    return redirect("feedback_form")
+    return redirect("logout")
 
 @login_required
 def restaurant_orders(request):
@@ -175,29 +226,53 @@ def delete_order(request, order_id):
     order.delete()
     messages.success(request, 'Order deleted successfully')
     return redirect('restaurant_orders')
-# def location_view(request):
-#     states = State.objects.all()
-#     if request.method == 'POST':
-#         user_name = request.POST.get('user_name')
-#         state_id = request.POST.get('state')
-#         city_id = request.POST.get('city')
-#         place_id = request.POST.get('place')
 
-#         state = State.objects.get(id=state_id)
-#         city = City.objects.get(id=city_id)
-#         place = Place.objects.get(id=place_id)
+User = get_user_model()
 
-#         UserLocation.objects.create(user_name=user_name, state=state, city=city, place=place)
-#         return redirect('location')
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'authentication/password_reset.html'  # Corrected template path
+    email_template_name = 'authentication/password_reset_email.html'  # Corrected template path
+    subject_template_name = 'authentication/password_reset_subject.txt'  # Corrected template path
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('loginRestaurant')  # Corrected URL pattern
 
-#     return render(request, 'new_app/location.html', {'states': states})
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'authentication/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('loginRestaurant')  # Corrected URL pattern
 
-# def load_cities(request):
-#     state_id = request.GET.get('state_id')
-#     cities = City.objects.filter(state_id=state_id).values('id', 'name')
-#     return JsonResponse(list(cities), safe=False)
+class PasswordResetComplete(SuccessMessageMixin, PasswordResetCompleteView):
+    template_name = 'authentication/password_reset_complete.html'
+    success_message = "Your password has been set. You may go ahead and log in now."
+    success_url = reverse_lazy('loginRestaurant')
 
-# def load_places(request):
-#     city_id = request.GET.get('city_id')
-#     places = Place.objects.filter(city_id=city_id).values('id', 'name')
-#     return JsonResponse(list(places), safe=False)
+def forget_password(request):
+    if request.method == 'POST':
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested for Your Account"
+                    email_template_name = "authentication/password_reset_email.html"
+                    c = {
+                        "email": user.email,
+                        'domain': request.META['HTTP_HOST'],
+                        'site_name': 'Website',
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "user": user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    return redirect("/password_reset/done/")
+    password_reset_form = PasswordResetForm()
+    return render(request=request, template_name="authentication/password_reset.html", context={"password_reset_form": password_reset_form})

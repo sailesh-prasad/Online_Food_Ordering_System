@@ -55,9 +55,215 @@
         }
 
         .added-to-cart {
-            background-color: green;
+            background-color: rgb(2, 63, 2);
             color: white;
         }
+        /* Navigation Bar Styling */
+nav {
+  background-color: #006400; /* Dark Green */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation Links Styling */
+nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 15px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effects */
+nav a:hover {
+  background-color: #32cd32; /* Lighter green shade */
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Active Link Styling */
+nav a.active {
+  background-color: #228b22; /* Forest Green */
+  color: white;
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Logo Styling */
+nav .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+}
+
+        /* Footer Styles */
+.footer {
+    background: linear-gradient(135deg, #2a2a2a, #444); /* Gradient background */
+    color: #f1f1f1;
+    padding: 40px 20px;
+    font-size: 14px;
+    text-align: left;
+    border-top: 5px solid #82cb75; /* Highlighted border at the top */
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.footer-section {
+    padding: 0 15px;
+}
+
+.footer-section h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #82cb75; /* Green highlight */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-section p {
+    color: #bbb;
+    line-height: 1.8;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 8px 0;
+}
+
+.footer-section ul li a {
+    color: #bbb;
+    text-decoration: none;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #82cb75; /* Highlight on hover */
+    text-shadow: 0px 0px 5px #82cb75; /* Glow effect */
+}
+
+.footer-section.social ul {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-section.social ul li a {
+    font-size: 30px;
+    color: #bbb;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.footer-section.social ul li a:hover {
+    color: #82cb75;
+    transform: scale(1.2); /* Zoom effect */
+}
+
+.footer-section.social ul li a i {
+    transition: transform 0.3s ease;
+}
+
+.footer-section.social ul li a:hover i {
+    transform: rotate(10deg); /* Slight rotation on hover */
+}
+
+.footer-section.newsletter form {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-section.newsletter input {
+    padding: 12px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+}
+
+.footer-section.newsletter button {
+    font-weight: bold;
+    font-family: Montserrat, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    padding: 14px;
+    background: linear-gradient(135deg, #32b91a, #28a745);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.3s;
+    width: 100%;
+}
+
+.footer-section.newsletter button:hover {
+    background: linear-gradient(135deg, #34e308, #2ea744); /* Brighter gradient */
+    transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.footer-bottom {
+    background-color: #222;
+    padding: 15px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #888;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Message Container */
+.message-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.alert {
+    display: inline-block;
+    padding: 15px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.alert-danger {
+    color: #f44336;
+    background: rgba(244, 67, 54, 0.1); /* Light red background */
+}
+
+.alert-primary {
+    color: #007bff;
+    background: rgba(0, 123, 255, 0.1); /* Light blue background */
+}
+
+/* Hover Glow for Alerts */
+.alert:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
     </style>
 </head>
 
@@ -68,7 +274,6 @@
         <br>
         <br>
         <h1>What's on your mind</h1>
-        <br>
         <br>
         <form method="GET" action="{% url 'menu' %}">
             <div class="form-group">
@@ -82,39 +287,186 @@
             </div>
             <button type="submit" class="btn btn-primary mt-3">Filter</button>
         </form>
-        <br>
+        <style>/* Form Styling */
+            form {
+                background: #2f9310; /* Light gray background */
+                padding: 20px 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(239, 233, 233, 0.87); /* Subtle shadow for depth */
+                max-width: 1000px; /* Limit the width */
+                margin: 20px auto; /* Center the form */
+                font-family: 'Montserrat', sans-serif;
+            }
+            
+            /* Flexbox Container for Select and Button */
+            .flex-container {
+                display: flex;
+                align-items: center;
+                gap: 10px; /* Space between elements */
+            }
+            
+            /* Form Group */
+            .form-group label {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333; /* Dark text color */
+                display: block;
+                margin-bottom: 8px;
+            }
+            
+            .form-group select {
+                flex: 1; /* Allow select to grow */
+                padding: 10px;
+                font-size: 14px;
+                color: #555; /* Neutral text color */
+                border: 1px solid #ddd; /* Light border */
+                border-radius: 5px;
+                background: #fff; /* White background */
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Inner shadow */
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .form-group select:focus {
+                border-color: #007bff; /* Bootstrap primary blue */
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue glow */
+                outline: none;
+            }
+            
+            /* Filter Button Styling */
+            .btn-filter {
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #fff;
+                background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+                white-space: nowrap; /* Prevent button text wrapping */
+            }
+            
+            .btn-filter:hover {
+                background: linear-gradient(135deg, #218838, #19692c); /* Darker green */
+                transform: translateY(-2px); /* Lift effect */
+            }
+            
+            .btn-filter:active {
+                transform: translateY(0); /* Reset lift on click */
+            }
+            
+            /* Responsive Design */
+            @media (max-width: 576px) {
+                .flex-container {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+            
+                form {
+                    padding: 15px 20px;
+                }
+            
+                .form-group label {
+                    font-size: 14px;
+                }
+            
+                .form-group select {
+                    font-size: 12px;
+                }
+            
+                .btn-filter {
+                    font-size: 14px;
+                    padding: 10px;
+                }
+            }
+            </style>
         <br>
         <section id='hehe' class="d-flex justify-content-evenly flex-wrap">
             <div class="main_items">
-                <img class="img-fluid" src={% static "pizza.jpg" %} alt="pizza image">
+                <img class="img-fluid" src={% static "images/Del_reg.jpg" %} alt="pizza image">
                 <p>Pizza</p>
             </div>
             <div class="main_items">
-                <img class="img-fluid" src={% static 'biryani.png' %} alt="biryani image">
+                <img class="img-fluid" src={% static 'images/Del_reg.jpg' %} alt="biryani image">
                 <p>Biryani</p>
             </div>
             <div class="main_items">
-                <img class="img-fluid" src={% static 'paneer.png' %} alt="paneer image">
+                <img class="img-fluid" src={% static 'images/Del_reg.jpg' %} alt="paneer image">
                 <p>Paneer</p>
             </div>
             <div class="main_items">
-                <img class="img-fluid" src={% static 'thali.png' %} alt="thali image">
+                <img class="img-fluid" src={% static 'images/Del_reg.jpg' %} alt="thali image">
                 <p>Thali</p>
             </div>
             <div class="main_items">
-                <img class="img-fluid" src={% static 'noodle.png' %} alt="noodle image">
+                <img class="img-fluid" src={% static 'images/Del_reg.jpg' %} alt="noodle image">
                 <p>Noodles</p>
             </div>
         </section>
     </div>
     
+    
     <style>
-        /* Gradient Background */
-body {
-    background: linear-gradient(135deg, #f9f9f9, #eaeaea);
-    font-family: 'Poppins', sans-serif;
+        
+        /* Section Styling */
+#hehe {
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, #26941e, #f7f7f7);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual Item Styling */
+.main_items {
+    text-align: center;
+    margin: 10px;
+    width: 120px; /* Keeps the items small */
+}
+
+.main_items img {
+    width: 80px; /* Adjust image size */
+    height: 80px; /* Maintain uniform height */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main_items img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.main_items p {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 8px;
     color: #333;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #hehe {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main_items {
+        margin: 15px 0;
+    }
+}
+
+        /* Gradient Background */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #524b4b;
+            background: rgba(76, 187, 23, 0.9); /* Kelly Green */
+            background-size: cover;
+        }
 
 /* Section Header */
 h1 {
@@ -244,6 +596,11 @@ h1 {
     transform: scale(1);
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 }
+.micButton.listening {
+    background-color: black !important;
+    color: white !important;
+}
+
 
     </style>
     
@@ -253,69 +610,107 @@ h1 {
                 <h1>Order from your favourite restaurant</h1>
             </div>
             <!-- Search Bar -->
-            <div class="custom-search mb-5 d-flex justify-content-center align-items-center">
-                <input 
-                    type="text" 
-                    id="search-bar" 
-                    class="form-control search-bar shadow" 
-                    placeholder="Search for a restaurant..." 
-                >
-                <button 
-                    class="btn search-btn shadow">
-                    <i class="bi bi-search"></i> Search
-                </button>
+<div class="custom-search mb-5 d-flex justify-content-center align-items-center">
+    <input 
+        type="text" 
+        id="search-bar" 
+        class="form-control search-bar shadow" 
+        placeholder="Search for a restaurant..." 
+    >
+    <button 
+        class="btn search-btn shadow" 
+        id="voice-search-btn">
+        <i class="bi bi-mic"></i> 
+    </button>
+    <button 
+        class="btn search-btn shadow" 
+        id="search-btn">
+        <i class="bi bi-search"></i> Search
+    </button>
+</div>
+
+<!-- Restaurant Cards -->
+<div class="row g-4" id="restaurant-list">
+    {% for restaurant in restaurant_list %}
+    <div class="col-md-4 restaurant-item" data-name="{{ restaurant.restaurantName|lower }}">
+        <div class="restaurant-card">
+            <video class="restaurant-video" autoplay loop muted>
+                <source src="{% static 'video' %}{{ forloop.counter }}.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="restaurant-card-body">
+                <h5 class="restaurant-card-title">{{ restaurant.restaurantName }}</h5>
             </div>
-            
-        
-            <!-- Restaurant Cards -->
-            <div class="row g-4" id="restaurant-list">
-                {% for restaurant in restaurant_list %}
-                <div class="col-md-4 restaurant-item" data-name="{{ restaurant.restaurantName|lower }}">
-                    <div class="restaurant-card">
-                        <video class="restaurant-video" autoplay loop muted>
-                            <source src="{% static 'video' %}{{ forloop.counter }}.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="restaurant-card-body">
-                            <h5 class="restaurant-card-title">{{ restaurant.restaurantName }}</h5>
-                        </div>
-                        <div class="restaurant-card-footer">
-                            <a href="{% url 'restaurant_menu' restaurant.id %}" class="btn w-100">View Menu</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="restaurant-card-footer">
+                <a href="{% url 'restaurant_menu' restaurant.id %}" class="btn w-100">View Menu</a>
             </div>
         </div>
-        
-    </section>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchBar = document.getElementById('search-bar');
-            const restaurantItems = document.querySelectorAll('.restaurant-item');
-    
-            searchBar.addEventListener('input', function () {
-    const query = searchBar.value.toLowerCase();
-    let found = false;
+    </div>
+    {% endfor %}
+</div>
 
-    restaurantItems.forEach(item => {
-        const name = item.getAttribute('data-name');
-        if (name.includes(query)) {
-            item.style.display = "block";
-            found = true;
-        } else {
-            item.style.display = "none";
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchBar = document.getElementById('search-bar');
+        const restaurantItems = document.querySelectorAll('.restaurant-item');
+        const searchButton = document.getElementById('search-btn');
+        const restaurantList = document.getElementById('restaurant-list');
+
+        // Function to handle search logic
+        function handleSearch() {
+            const query = searchBar.value.toLowerCase().trim();
+
+            if (!query) {
+                // If the search bar is empty, reset to show all restaurants
+                restaurantItems.forEach(item => {
+                    item.style.display = "block";
+                });
+                return;
+            }
+
+            let found = false;
+
+            restaurantItems.forEach(item => {
+                const name = item.getAttribute('data-name');
+                if (name.includes(query)) {
+                    item.style.display = "block";
+                    found = true;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            // Show "No results found" if no matches
+            if (!found) {
+                restaurantList.innerHTML = <p class="text-center">No results found</p>;
+            }
         }
-    });
 
-    if (!found) {
-        document.getElementById('restaurant-list').innerHTML = `<p class="text-center">No results found</p>`;
-    }
-});
+        // Click event for search button
+        searchButton.addEventListener('click', handleSearch);
 
+        // Keydown event for Enter key
+        searchBar.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission or page reload
+                handleSearch();
+            }
         });
-    </script>
+
+        // Voice search functionality
+        document.getElementById('voice-search-btn').addEventListener('click', function() {
+            fetch('/run-speech-recog/')
+                .then(response => response.json())
+                .then(data => {
+                    searchBar.value = data.transcript;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+
+
+
     <br>
     <br>
     <div class="container-fluid text-center d-flex justify-content-center flex-wrap py-5">
@@ -323,13 +718,15 @@ h1 {
     </div>
 
     <!-- Search Bar -->
-
-    <form method="GET" action="{% url 'menu' %}" class="mb-5 d-flex justify-content-center">
-        <div class="input-group custom-search" style="max-width: 700px; width: 100%;">
-            <input type="text" name="q" placeholder="Search for food..." class="form-control" value="{{ request.GET.q }}">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </form>
+<form method="GET" action="{% url 'menu' %}" class="mb-5 d-flex justify-content-center">
+    <div class="input-group custom-search" style="max-width: 700px; width: 100%;">
+        <input type="text" name="q" id="searchInput" placeholder="Search for food..." class="form-control" value="{{ request.GET.q }}">
+        <button type="button" id="micButton" class="btn btn-secondary">
+            <i class="fas fa-microphone"></i> <!-- Font Awesome Icon -->
+        </button>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
     
     
     <section class="cards d-flex justify-content-evenly flex-wrap">
@@ -369,16 +766,77 @@ h1 {
                         <div></div>
                     </div>
                 </div>
-                <div class="item-price-and-cart d-flex align-items-center">
-                    <div class="item-price">
-                        <p>{{ food.price }}</p>
+                <!-- <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="cart ml-4">
+                        <input hidden type="text" name="id" value="{{ food.id }}">
+                        {% if food.id|stringformat:"s" in cart %}
+                        <input type="submit" class="btn btn-success border btn-sm added-to-cart"
+                            value="Added to Cart" disabled>
+                        {% else %}
+                        <input type="submit" class="btn btn-danger border btn-sm" value="Add to Cart">
+                        {% endif %}
                     </div>
-                </div>
+                </form> -->
             </div>
         </div>
-        {% endfor %}
-        {% endif %}
-    </section>
+    </div>
+    {% endfor %}
+    {% endif %}
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const micButton = document.getElementById("micButton");
+        const searchInput = document.getElementById("searchInput");
+
+        // Check if browser supports SpeechRecognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            micButton.disabled = true;
+            micButton.title = "Voice search is not supported in this browser.";
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+
+        micButton.addEventListener("click", () => {
+            recognition.start();
+        });
+
+        recognition.onstart = () => {
+            // Change the button's appearance when recognition starts
+            micButton.style.backgroundColor = "black"; // Black background color
+            micButton.style.color = "white"; // White icon color
+            micButton.innerHTML = <i class="fas fa-microphone"></i>;
+            micButton.style.background = "linear-gradient(45deg, #00bcd4, #8e44ad)"; // Animated background
+
+
+        };
+
+        recognition.onend = () => {
+            // Reset the button's style after recognition ends
+            micButton.style.backgroundColor = ""; // Revert to original background color
+            micButton.style.color = ""; // Revert to original icon color
+            micButton.innerHTML = <i class="fas fa-microphone"></i>; // Revert to microphone icon
+        };
+
+        recognition.onresult = (event) => {
+            let transcript = event.results[0][0].transcript;
+            // Remove trailing period, if any
+            transcript = transcript.trim().replace(/\.$/, '');
+            searchInput.value = transcript;
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error:", event.error);
+        };
+        
+    });
+</script>
+
+
     <div class="container text-center justify-content-center mt-5">
     </div>
     {% include "home/footer.html" %}
