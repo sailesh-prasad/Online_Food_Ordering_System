@@ -56,10 +56,9 @@ def loginUser(request):
 
     Craving something delicious? 🍔🌮<br>
     Explore your favorites or try something new today! 🚀<br>
-    👉 [Browse Restaurants]<br>
+    Browse Restaurants 👉 <br>
     {}<br><br>
 
-    👉 [Explore Today's Deals]<br><br>
 
     We're here to deliver happiness right to your doorstep. 🛵💨<br>
     Bon appétit,<br>
@@ -72,10 +71,9 @@ def loginUser(request):
     Craving something delicious? 🍔🌮<br>
     Explore your favorites or try something new today! 🚀<br><br>
 
-    👉 [Browse Restaurants]<br>
+    Browse Restaurants 👉 <br>
     {}<br><br>
 
-    👉 [Explore Today's Deals]<br><br>
 
     We're here to deliver happiness right to your doorstep. 🛵💨<br>
     Bon appétit,<br>
