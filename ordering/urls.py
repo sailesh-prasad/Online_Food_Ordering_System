@@ -45,7 +45,7 @@ urlpatterns = [
     path('cart/', views.Cart, name='cart'),
     path('forget_password/', forget_password, name='forget_password'),
 
-
+    path('feedback/', views.feedback_form, name='feedback_form'),
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='home/password_reset_confirm.html'),

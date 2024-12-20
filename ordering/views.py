@@ -19,6 +19,7 @@ from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
+from .models import Feedback
 
 def home(request):
     user = request.user
@@ -207,3 +208,21 @@ def forget_password(request):
                     return redirect("/password_reset/done/")
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="authentication/forgetPassword.html", context={"password_reset_form": password_reset_form})
+
+
+@login_required
+def feedback_form(request):
+    if request.method == 'POST':
+        stars = request.POST.get('stars')
+        comments = request.POST.get('comment')
+        user_type = 'customer' if request.user.is_user else 'restaurant' if request.user.is_restaurant else 'delivery'
+        try:
+            Fb = Feedback()
+            Fb.stars = stars
+            Fb.comments = comments
+            Fb.user_type = user_type
+            Fb.save()
+            return render(request, 'thank_you.html')  # Render the thank you page
+        except:
+            return HttpResponse('<h1>Sorry!</h1><p>There is an issue</p>')
+    return render(request, 'feedback.html')

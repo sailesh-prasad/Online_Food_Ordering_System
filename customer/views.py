@@ -153,20 +153,7 @@ def logoutUser(request):
     return render(request,'authentication/logout.html')
 
 def feedback_form(request):
-
-    if request.method == 'POST':
-        print("entered")
-        
-        comments=request.POST.get('comment')
-        try:
-            Fb = Feedback() 
-            Fb.stars = 0
-            Fb.comments = comments
-            Fb.save()
-            return render(request, 'thank_you.html')  # Render the thank you page
-        except:
-            return HttpResponse('<h1>Sorry!</h1><p>There is an issue</p>')
-    return render(request,'feedback.html')
+    pass
 
 def index(request):
     if request.method == "POST":
