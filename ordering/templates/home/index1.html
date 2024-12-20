@@ -487,6 +487,15 @@ h1 {
     cursor: pointer;
 }
 
+.restaurant-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+
 .restaurant-card:hover {
     transform: scale(1.08);
     box-shadow: 6px 6px 30px rgba(0, 0, 0, 0.2), -6px -6px 30px rgba(255, 255, 255, 0.5);
@@ -634,10 +643,7 @@ h1 {
     {% for restaurant in restaurant_list %}
     <div class="col-md-4 restaurant-item" data-name="{{ restaurant.restaurantName|lower }}">
         <div class="restaurant-card">
-            <video class="restaurant-video" autoplay loop muted>
-                <source src="{% static 'video' %}{{ forloop.counter }}.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <img src="{% static 'images/background1.jpg'%}" alt="{{ restaurant.restaurantName }}" class="restaurant-image">
             <div class="restaurant-card-body">
                 <h5 class="restaurant-card-title">{{ restaurant.restaurantName }}</h5>
             </div>
