@@ -6,6 +6,236 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Login</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(event) {
+                const email = document.getElementById('email');
+                const password = document.getElementById('password');
+                let valid = true;
+
+                if (!email.value) {
+                    valid = false;
+                    email.classList.add('error');
+                } else {
+                    email.classList.remove('error');
+                }
+
+                if (!password.value) {
+                    valid = false;
+                    password.classList.add('error');
+                } else {
+                    password.classList.remove('error');
+                }
+
+                if (!valid) {
+                    event.preventDefault();
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            });
+        });
+    </script>
+    <style>
+        body {
+            background-image: url('{% static "images/background1.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        .logo {
+            font-size: 20px; /* Decreased font size */
+            font-weight: bold;
+        }
+
+        .nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 30px 20px; /* Reduced padding */
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 28px; /* Reduced font size */
+            margin-bottom: 10px;
+        }
+
+        .hero h3 {
+            font-size: 16px; /* Reduced font size */
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-options div {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-options input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .form-options a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #74eb04;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #82cb75;
+        }
+
+        .social-login {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-login p {
+            margin-bottom: 10px;
+        }
+
+        .social-btn {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .social-btn.google {
+            background-color: #db4437;
+            color: white;
+        }
+
+        .social-btn.facebook {
+            background-color: #3b5998;
+            color: white;
+        }
+
+        .social-btn.twitter {
+            background-color: #1da1f2;
+            color: white;
+        }
+
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-prompt a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 18px; /* Increased font size */
+        }
+
+        .register-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            margin-top: auto; /* Ensure footer stays at the bottom */
+        }
+
+        .error {
+            border-color: red;
+        }
+
+        #error-message {
+            display: none;
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert-primary {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+    </style>
     <style>
         {% comment %} /* Basic Styling for Error Handling and Form */
         .form-container {
@@ -129,6 +359,9 @@
                     {% endfor %}
                 {% endif %}
 
+                <!-- Error message for empty fields -->
+                <div id="error-message">Please fill in all fields.</div>
+
                 <!-- Email input (Username) -->
                 <div class="form-field">
                     <label for="email">Email:</label>
@@ -167,14 +400,6 @@
 
                 <!-- Submit button -->
                 <button type="submit" class="submit-btn">Login</button>
-
-                <!-- Social Login Options -->
-                {% comment %} <div class="social-login">
-                    <p>Or login with:</p>
-                    <button type="button" class="social-btn google">Google</button>
-                    <button type="button" class="social-btn facebook">Facebook</button>
-                    <button type="button" class="social-btn twitter">Twitter</button>
-                </div> {% endcomment %}
             </form>
 
             <!-- Register Prompt -->
@@ -192,7 +417,7 @@
 
     
     <!-- Footer Section -->
-    <footer class="footer">
+    {% comment %} <footer class="footer">
         <p>&copy; 2024 Food Delivery System | All rights reserved</p>
     </footer>
 

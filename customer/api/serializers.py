@@ -6,10 +6,6 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = '__all__'
 
-class FeedbackSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Feedback
-        fields = '__all__'
 
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:

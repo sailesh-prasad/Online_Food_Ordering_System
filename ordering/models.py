@@ -31,3 +31,13 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.comment_id
+
+class Feedback(models.Model):
+    STARS_CHOICES = [(i, str(i)) for i in range(1, 6)]
+    stars = models.IntegerField(choices=STARS_CHOICES)
+    comments = models.TextField()
+    user_type = models.CharField(max_length=20)  # 'customer', 'restaurant', or 'delivery'
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user_type} - {self.stars} stars"

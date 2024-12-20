@@ -27,7 +27,6 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register(r'comments', CommentViewSet)
 router.register(r'customer', CustomerViewSet)
-router.register(r'feedback', FeedbackViewSet, basename='feedback')
 router.register(r'contact', ContactViewSet)
 router.register(r'delivery-persons', DeliveryPersonViewSet)
 router.register(r'delivery-users', DeliveryUserViewSet)

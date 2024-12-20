@@ -42,10 +42,6 @@ class customerUser(CustomUser):
     def __str__(self):
         return f"{self.name} - {self.place.name}, {self.city.name}, {self.state.name}"
     
-class Feedback(models.Model):
-    stars = models.IntegerField()
-    comments = models.TextField()
-
 class Contact(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
