@@ -458,7 +458,7 @@
                     valid = false;
                 }  {% endcomment %}
                 
-                else {
+                {% comment %} else {
                     passwordError.textContent = '';
                 }
 
@@ -467,7 +467,7 @@
                     event.preventDefault();
                 }
             });
-        });
+        }); {% endcomment %}
     </script>
 </body>
 </html>
