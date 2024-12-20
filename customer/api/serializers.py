@@ -23,9 +23,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class CustomerUserSerializer(serializers.ModelSerializer): 
     state = serializers.CharField(source='state.name', read_only=True) 
-    city = serializers.CharField(source='city.name', read_only=True) 
     place = serializers.CharField(source='place.name', read_only=True)
-    orders = OrderSerializer(many=True , read_only=True)
+    city = serializers.CharField(source='city.name', read_only=True) 
+    
     class Meta: 
         model = customerUser 
         fields = '__all__'
@@ -38,12 +38,12 @@ class StateSerializer(serializers.ModelSerializer):
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
-        model = State
+        model = City
         fields = '__all__'
 
 class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = State
+        model = Place
         fields = '__all__'
 
 

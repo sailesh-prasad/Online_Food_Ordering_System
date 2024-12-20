@@ -5,11 +5,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from delivery.models import deliveryUser
-
+from customer.models import Order
+from customer.models import State, City, Place
 # Home view for logged-in users
 @login_required
 def home(request):
-    return render(request, 'Deliveryhome.html')
+    delivery_user = deliveryUser.objects.get(username=request.user.username)
+    orders = Order.objects.filter(delivery_person=delivery_user.name)  # Filter by delivery person's name
+
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        new_status = request.POST.get('status')
+        try:
+            order = Order.objects.get(id=order_id, delivery_person=delivery_user.name)
+            order.status = new_status
+            order.save()
+            messages.success(request, f"Order status of {order.order_no} is {order.get_status_display()}")
+        except Order.DoesNotExist:
+            messages.error(request, 'Order not found or you are not authorized to update this order')
+
+        return redirect('home')  # Redirect to avoid resubmission on refresh
+
+    return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request), 'customer_address': delivery_user.address})
 
 def loginDelivery(request):
     if request.method == 'POST':
@@ -35,11 +52,18 @@ def loginDelivery(request):
     return render(request, 'loginDelivery.html')
 
 def registerDelivery(request):
+    states = State.objects.all()
     if request.method == 'POST':
         # Get form data
         name = request.POST.get('name')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        state_id = request.POST.get('state')
+        city_id = request.POST.get('city')
+        place_id = request.POST.get('place')
+        state = State.objects.get(id=state_id)
+        city = City.objects.get(id=city_id)
+        place = Place.objects.get(id=place_id)
         phone = request.POST.get('phone')
         address = request.POST.get('address')
 
@@ -47,6 +71,9 @@ def registerDelivery(request):
             username=email,
             password=make_password(password),
             email=email,
+            state=state, 
+            city=city, 
+            place=place,
             deliveryContact=phone,
             name=name,
             address=address,
@@ -64,4 +91,4 @@ def registerDelivery(request):
             delivery_data.save()
             messages.success(request, "Successfully Registered")
             return redirect('loginDelivery')
-    return render(request, 'registerDelivery.html')
+    return render(request, 'registerDelivery.html', {'states': states})

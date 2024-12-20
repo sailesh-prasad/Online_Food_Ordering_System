@@ -92,12 +92,29 @@
     <div class="container form-container">
         <h1>Customer Registration</h1>
 
-        <form method="POST">
+        <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             
-            {% if showSuccess %}
+            {% if messages %}
             <div class="alert alert-success" role="alert">
-                Registration Successful!
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
             </div>
             {% endif %}
             
@@ -120,29 +137,32 @@
             <div class="form-outline mb-4">
                 <label class="form-label" for="address">Address</label>
                 <input type="text" id="address" class="form-control" placeholder="Your Address" name="address" required />
-
             </div>
-            <!-- ADDED LOCATION DROPDOWN -->
-            <!-- <label for="user_name">User Name:</label>
-        <input type="text" id="user_name" name="user_name" required><br><br> -->
 
-        <label for="state">State:</label>
-        <select id="state" name="state" required>
-            <option value="">Select State</option>
-            {% for state in states %}
-            <option value="{{ state.id }}">{{ state.name }}</option>
-            {% endfor %}
-        </select><br><br>
+            <!-- Added Location Dropdowns -->
+            <div class="form-outline mb-4">
+                <label class="form-label" for="state">State</label>
+                <select id="state" class="form-control" name="state" required>
+                    <option value="">Select State</option>
+                    {% for state in states %}
+                    <option value="{{ state.id }}">{{ state.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label for="city">City:</label>
-        <select id="city" name="city" required>
-            <option value="">Select City</option>
-        </select><br><br>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="city">City</label>
+                <select id="city" class="form-control" name="city" required>
+                    <option value="">Select City</option>
+                </select>
+            </div>
 
-        <label for="place">Place:</label>
-        <select id="place" name="place" required>
-            <option value="">Select Place</option>
-        </select><br><br>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="place">Place</label>
+                <select id="place" class="form-control" name="place" required>
+                    <option value="">Select Place</option>
+                </select>
+            </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="latitude">Latitude</label>
