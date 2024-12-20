@@ -8,7 +8,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from random import choice
-from customer.models import customerUser, Feedback, Contact, Order, Customer  # Ensure Customer is imported
+from customer.models import customerUser, Contact, Order, Customer  # Ensure Customer is imported
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from customer.models import State, City, Place
@@ -240,14 +240,6 @@ def register(request):
         city = City.objects.get(id=city_id)
         place = Place.objects.get(id=place_id)
 
-        # customer = Customer.objects.create(
-        #     name=name,
-        #     address=address,
-        #     phone_number=phone,
-        #     email=email,
-        #     password=password
-        # )
-
         customer_user = customerUser.objects.create(
             name=name,
             email=email,
@@ -257,7 +249,6 @@ def register(request):
             address = address,
             latitude=latitude,
             longitude=longitude,
-            # customer=customer
         )
         customer_user.set_password(password)
         customer_user.save()

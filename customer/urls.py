@@ -7,7 +7,6 @@ from customer import views as customerviews
 urlpatterns = [
     path('login/', customerviews.loginUser, name='login'),
     path('logout/', customerviews.logoutUser, name='logout'),
-
     path('contact/', customerviews.index, name='index'),
     path('', customerviews.Home, name='Home'),
     path('register/', customerviews.registerUser, name='register'),  # Ensure correct view is used
