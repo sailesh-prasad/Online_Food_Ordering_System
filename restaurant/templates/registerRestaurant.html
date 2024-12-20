@@ -85,6 +85,14 @@
             background-color: #82cb75;
         }
 
+        .error-message {
+            display: block;
+            color: red;
+            font-size: 16px;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+
     </style>
 </head>
 
@@ -92,7 +100,7 @@
     <div class="container form-container">
         <h1>Restaurant Registration</h1>
 
-        <form method="POST">
+        <form id="register-form" method="POST" novalidate>
             {% csrf_token %}
             
             {% if showSuccess %}
@@ -105,60 +113,77 @@
             <div class="form-outline my-4">
                 <label class="form-label" for="restaurantName">Restaurant Name</label>
                 <input type="text" id="restaurantName" class="form-control" placeholder="Restaurant Name" name="restaurantName" required />
+                <small class="error-message" id="restaurantName-error"></small>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="address">Restaurant Address</label>
                 <input type="text" id="address" class="form-control" placeholder="Full Address" name="address" required />
+                <small class="error-message" id="address-error"></small>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="restaurantContact">Restaurant Contact Number</label>
                 <input type="number" id="restaurantContact" class="form-control" placeholder="Restaurant Contact Number" name="restaurantContact" required />
+                <small class="error-message" id="restaurantContact-error"></small>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="latitude">Latitude</label>
                 <input type="text" id="latitude" class="form-control" placeholder="Latitude" name="latitude" required />
+                <small class="error-message" id="latitude-error"></small>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="longitude">Longitude</label>
                 <input type="text" id="longitude" class="form-control" placeholder="Longitude" name="longitude" required />
+                <small class="error-message" id="longitude-error"></small>
             </div>
 
-            <label for="state">State:</label>
-        <select id="state" name="state" required>
-            <option value="">Select State</option>
-            {% for state in states %}
-            <option value="{{ state.id }}">{{ state.name }}</option>
-            {% endfor %}
-        </select><br><br>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="state">State:</label>
+                <select id="state" name="state" required>
+                    <option value="">Select State</option>
+                    {% for state in states %}
+                    <option value="{{ state.id }}">{{ state.name }}</option>
+                    {% endfor %}
+                </select>
+                <small class="error-message" id="state-error"></small>
+            </div>
 
-        <label for="city">City:</label>
-        <select id="city" name="city" required>
-            <option value="">Select City</option>
-        </select><br><br>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="city">City:</label>
+                <select id="city" name="city" required>
+                    <option value="">Select City</option>
+                </select>
+                <small class="error-message" id="city-error"></small>
+            </div>
 
-        <label for="place">Place:</label>
-        <select id="place" name="place" required>
-            <option value="">Select Place</option>
-        </select><br><br>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="place">Place:</label>
+                <select id="place" name="place" required>
+                    <option value="">Select Place</option>
+                </select>
+                <small class="error-message" id="place-error"></small>
+            </div>
 
             <!-- Section 2: Owner Details -->
             <div class="form-outline mb-4">
                 <label class="form-label" for="ownerName">Owner Name</label>
                 <input type="text" id="ownerName" class="form-control" placeholder="Owner Name" name="ownerName" required />
+                <small class="error-message" id="ownerName-error"></small>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="email">Owner Email Address</label>
                 <input type="email" id="email" class="form-control" placeholder="example@gmail.com" name="email" required />
+                <small class="error-message" id="email-error"></small>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="password">Password</label>
                 <input type="password" id="password" class="form-control" placeholder="Password" name="password" required />
+                <small class="error-message" id="password-error"></small>
             </div>
 
 
@@ -216,6 +241,123 @@
                     });
                 } else {
                     $('#place').html('<option value="">Select Place</option>');
+                }
+            });
+
+            // Form validation
+            $('#register-form').submit(function(event) {
+                event.preventDefault(); // Prevent page reload
+
+                let valid = true;
+
+                // Restaurant Name validation
+                const restaurantName = $('#restaurantName').val();
+                if (!restaurantName.match(/^[a-zA-Z0-9 ]+$/)) {
+                    $('#restaurantName-error').text('Restaurant Name is required.');
+                    valid = false;
+                } else {
+                    $('#restaurantName-error').text('');
+                }
+
+                // Address validation
+                if (!$('#address').val()) {
+                    $('#address-error').text('Address is required.');
+                    valid = false;
+                } else {
+                    $('#address-error').text('');
+                }
+
+                // Restaurant Contact validation
+                const restaurantContact = $('#restaurantContact').val();
+                const restaurantContactPattern = /^[0-9]{10}$/;
+                if (!restaurantContact.trim()) {
+                    $('#restaurantContact-error').text('Restaurant Contact Number is required.');
+                    valid = false;
+                } else if (!restaurantContactPattern.test(restaurantContact)) {
+                    $('#restaurantContact-error').text('Enter a valid 10-digit contact number.');
+                    valid = false;
+                } else {
+                    $('#restaurantContact-error').text('');
+                }
+
+                // Latitude validation
+                if (!$('#latitude').val()) {
+                    $('#latitude-error').text('Latitude is required.');
+                    valid = false;
+                } else {
+                    $('#latitude-error').text('');
+                }
+
+                // Longitude validation
+                if (!$('#longitude').val()) {
+                    $('#longitude-error').text('Longitude is required.');
+                    valid = false;
+                } else {
+                    $('#longitude-error').text('');
+                }
+
+                // State validation
+                if (!$('#state').val()) {
+                    $('#state-error').text('State is required.');
+                    valid = false;
+                } else {
+                    $('#state-error').text('');
+                }
+
+                // City validation
+                if (!$('#city').val()) {
+                    $('#city-error').text('City is required.');
+                    valid = false;
+                } else {
+                    $('#city-error').text('');
+                }
+
+                // Place validation
+                if (!$('#place').val()) {
+                    $('#place-error').text('Place is required.');
+                    valid = false;
+                } else {
+                    $('#place-error').text('');
+                }
+
+                // Owner Name validation
+                const ownerName = $('#ownerName').val();
+                if (!ownerName.match(/^[a-zA-Z ]+$/)) {
+                    $('#ownerName-error').text('Owner Name is required.');
+                    valid = false;
+                } else {
+                    $('#ownerName-error').text('');
+                }
+
+                // Email validation
+                const email = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Email must end with @gmail.com
+                if (!email.value.trim()) {
+                    emailError.textContent = 'Email is required.';
+                    valid = false;
+                } else if (!emailPattern.test(email.value)) {
+                    emailError.textContent = 'Email must be a valid @gmail.com address.';
+                    valid = false;
+                } else {
+                    emailError.textContent = '';
+                }
+
+                // Password validation
+                const password = document.getElementById('password');
+                const passwordError = document.getElementById('password-error');
+                if (!password.value.trim()) {
+                    passwordError.textContent = 'Password is required.';
+                    valid = false;
+                } else if (password.value.length < 8) {
+                    passwordError.textContent = 'Password must be at least 8 characters long.';
+                    valid = false;
+                } else {
+                    passwordError.textContent = '';
+                }
+
+                if (valid) {
+                    this.submit(); // Proceed with form submission if valid
                 }
             });
         });

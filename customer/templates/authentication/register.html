@@ -324,14 +324,14 @@
 
           let valid = true;
 
-          // Name validation
-          const name = $("#name").val();
-          if (!name.match(/^[a-zA-Z ]+$/)) {
-            $("#name-error").text("Name is required.");
-            valid = false;
-          } else {
-            $("#name-error").text("");
-          }
+                // Name validation
+                const name = $('#name').val();
+                if (!name.match(/^[a-zA-Z ]+$/)) {
+                    $('#name-error').text('Name is required.');
+                    valid = false;
+                } else {
+                    $('#name-error').text('');
+                }
 
           // Email validation
           const email = document.getElementById("email");

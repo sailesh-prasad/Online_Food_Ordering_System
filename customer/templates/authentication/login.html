@@ -290,24 +290,31 @@
             />
           </div>
 
-          <!-- Password input -->
+          <!-- Password -->
           <div class="form-field">
             <label for="password">Password:</label>
             <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              required
-            />
+              
+                        type="password"
+              
+                        id="password"
+              
+                        name="password"
+              
+                        placeholder="Enter your password"
+              
+                        required
+            / 
+                        pattern="(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}"
+                    >
+                    <small class="error-message" id="password-error"></small>
           </div>
-
           <!-- Remember Me and Forgot Password -->
           <div class="form-options">
-            <div>
+            {% comment %} <div>
               <input type="checkbox" id="remember" name="remember" />
               <label for="remember">Remember Me</label>
-            </div>
+            </div>{% endcomment %}
             <a href="{% url 'password_reset' %}">Forgot password?</a>
           </div>
 
@@ -336,8 +343,52 @@
     </section>
 
     <!-- Footer Section -->
-    {% comment %} <footer class="footer">
-      <p>&copy; 2024 Food Delivery System | All rights reserved</p>
-    </footer> {% endcomment %}
-  </body>
+    {% include 'home/footer.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('register-form');
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+
+            form.addEventListener('submit', function (event) {
+                let valid = true;
+
+                // Email validation
+                if (!emailField.value.trim()) {
+                    emailError.textContent = 'Email is required.';
+                    valid = false;
+                } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailField.value)) {
+                    emailError.textContent = 'Email must end with "@gmail.com".';
+                    valid = false;
+                } else {
+                    emailError.textContent = '';
+                }
+
+                // Password validation
+                if (!passwordField.value.trim()) {
+                    passwordError.textContent = 'Password is required.';
+                    valid = false;
+                }
+                
+                {% comment %} else if (!/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
+                    passwordError.textContent = 'Password must have at least 8 characters of multi character';
+                    valid = false;
+                } {% endcomment %}
+                
+                else {
+                    passwordError.textContent = '';
+                }
+
+                // Prevent form submission if validation fails
+                if (!valid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
 </html>
