@@ -320,14 +320,16 @@ from django.db.models import Q
 from restaurant.models import foodItems, restaurantUser
 from customer.models import City
 
+
+
 def search(request):
-    
-    if request.method == "POST":
-        search = request.POST['search']
-        food = foodItems.objects.filter(name__contains=search)
-        
-    
-        return render(request, 'home/search.html',{'search':search, 'food':food})
-    else:
-        return render(request, 'home/search.html',{})
+    query = request.POST.get('search', '')
+    food_results = foodItems.objects.filter(Q(name__icontains=query))
+    restaurant_results = restaurantUser.objects.filter(Q(restaurantName__icontains=query))
+
+    return render(request, 'home/search.html', {
+        'search': query,
+        'food_results': food_results,
+        'restaurant_results': restaurant_results
+    })
    
