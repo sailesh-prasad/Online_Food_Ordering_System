@@ -77,6 +77,53 @@ def Cart(request):
 
 User = get_user_model()
 
+# @login_required
+# def menu(request):
+#     cities = City.objects.all()
+#     selected_city = request.GET.get('city')
+#     if selected_city:
+#         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
+#     else:
+#         restaurant_list = restaurantUser.objects.all()
+#     cities = City.objects.all()
+#     user = request.user
+#     query = request.GET.get('q')
+#     foods = foodItems.objects.all()
+    
+#     if query:
+#         foods = foods.filter(Q(name__icontains=query))
+    
+#     cartEmpty = True
+#     if hasattr(user, 'customeruser'):
+#         name = user.customeruser.name
+#     else:
+#         name = "No name found"
+
+#     if 'cart' not in request.session:
+#         request.session['cart'] = {}
+
+#     if request.method == 'POST':
+#         id = request.POST.get("id")
+#         cart = request.session.get('cart', {})
+#         if id in cart:
+#             cart[id] += 1
+#             cartEmpty = False
+#         else:
+#             cart[id] = 1
+#             cartEmpty = False
+#         request.session['cart'] = cart
+
+#     list_restaurant = restaurantUser.objects.all()
+
+#     return render(request, 'home/index1.html', {
+#         'name': name,
+#         'foodItems': foods,
+#         'cart': request.session.get('cart', {}),
+#         'Empty': cartEmpty,
+#         'restaurant_list': restaurant_list,
+#         'cities': cities
+#     })
+
 @login_required
 def menu(request):
     cities = City.objects.all()
@@ -85,17 +132,15 @@ def menu(request):
         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
     else:
         restaurant_list = restaurantUser.objects.all()
-    cities = City.objects.all()
-    user = request.user
     query = request.GET.get('q')
     foods = foodItems.objects.all()
     
     if query:
         foods = foods.filter(Q(name__icontains=query))
-    
+
     cartEmpty = True
-    if hasattr(user, 'customeruser'):
-        name = user.customeruser.name
+    if hasattr(request.user, 'customeruser'):
+        name = request.user.customeruser.name
     else:
         name = "No name found"
 
@@ -104,16 +149,19 @@ def menu(request):
 
     if request.method == 'POST':
         id = request.POST.get("id")
+        action = request.POST.get("action")
         cart = request.session.get('cart', {})
-        if id in cart:
-            cart[id] += 1
+        if action == "add":
+            if id in cart:
+                cart[id] += 1
+            else:
+                cart[id] = 1
             cartEmpty = False
-        else:
-            cart[id] = 1
-            cartEmpty = False
+        elif action == "remove":
+            if id in cart:
+                del cart[id]
+            cartEmpty = len(cart) == 0
         request.session['cart'] = cart
-
-    list_restaurant = restaurantUser.objects.all()
 
     return render(request, 'home/index1.html', {
         'name': name,
@@ -226,3 +274,60 @@ def feedback_form(request):
         except:
             return HttpResponse('<h1>Sorry!</h1><p>There is an issue</p>')
     return render(request, 'feedback.html')
+
+
+
+# views.py
+from django.shortcuts import render
+from customer.models import City, Place , State
+from restaurant.models import restaurantUser, foodItems
+# forms.py
+
+from .forms import SearchForm
+
+# def search(request):
+#     # Default querysets for restaurants and food items
+#     restaurants = restaurantUser.objects.all()
+#     food_items = foodItems.objects.all()
+
+#     # Initialize the search form
+#     form = SearchForm(request.GET)
+
+#     # Apply filters if the form is valid
+#     if form.is_valid():
+#         # City filter
+#         city = form.cleaned_data.get('city')
+#         if city:
+#             restaurants = restaurants.filter(city=city)
+#             food_items = food_items.filter(restaurantName__city=city)
+
+#         # Search query for restaurant and food item names
+#         query = form.cleaned_data.get('query')
+#         if query:
+#             restaurants = restaurants.filter(restaurantName__icontains=query)
+#             food_items = food_items.filter(name__icontains=query)
+
+#     # Render the results with the form
+#     return render(request, 'search.html', {
+#         'form': form,
+#         'restaurants': restaurants,
+#         'food_items': food_items,
+#     })
+
+
+from django.shortcuts import render
+from django.db.models import Q
+from restaurant.models import foodItems, restaurantUser
+from customer.models import City
+
+def search(request):
+    
+    if request.method == "POST":
+        search = request.POST['search']
+        food = foodItems.objects.filter(name__contains=search)
+        
+    
+        return render(request, 'home/search.html',{'search':search, 'food':food})
+    else:
+        return render(request, 'home/search.html',{})
+   

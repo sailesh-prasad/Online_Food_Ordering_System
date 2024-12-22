@@ -55,6 +55,7 @@ urlpatterns = [
          name='password_reset_complete'),
     path('run-speech-recog/', views.run_speech_recog, name='run_speech_recog'),
     path('password-change/', ChangePasswordView.as_view(), name='password_change'),
+    path('search', views.search, name='search'),
 ]
 
 if settings.DEBUG:

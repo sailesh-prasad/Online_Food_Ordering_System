@@ -1,0 +1,42 @@
+ <!DOCTYPE html>
+ {% include "home/header.html" %}
+<html>
+  {% load static %}
+
+  <head>
+    <link rel="stylesheet" href={% static 'css/search.css' %}>
+
+
+    {% comment %} <link rel="stylesheet" href={% static 'css/index.css' %}> 
+
+    <link rel="stylesheet" href={% static 'css/forms.css' %}> 
+
+    <link rel="stylesheet"href={% static 'css/section.css' %}> {% endcomment %}
+
+
+
+  </head>
+  {% block content %}
+  <body style="background: rgb(245, 245, 245)"> 
+
+
+    <center>
+      {% if search %}
+      <h1>You searched for {{ search }}</h1>
+      <br>
+      {% for fooditem in food %}
+        {{fooditem.name}}  <br>
+      
+      
+      
+      {% endfor %}
+
+      {% else %}
+      <h1>No results Found !!</h1>
+
+      {% endif %}
+    </center>
+
+    {% endblock %}
+  </body>
+</html> 
