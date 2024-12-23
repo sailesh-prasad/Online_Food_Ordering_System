@@ -10,7 +10,7 @@ body {
 }
 
 .search-container {
-    padding-top: 64px;
+    padding-top: 95px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -60,13 +60,12 @@ body {
     display: flex;
     align-items: center;
 }
-
 .search-input {
     width: 300px;
     padding: 12px 24px;
     background-color: transparent;
     transition: transform 250ms ease-in-out;
-    font-size: 14px;
+    font-size: 10px;
     line-height: 18px;
     color: #575756;
     background-color: transparent;
@@ -77,6 +76,7 @@ body {
     transform-style: preserve-3d;
     box-shadow: none; /* Remove any box shadow */
     outline: none; /* Remove outline */
+    text-align: center; /* Center the text */
 }
 
 .search-input::placeholder {
