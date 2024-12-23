@@ -25,7 +25,7 @@ def loginUser(request):
 
     
     if request.method == 'POST':
-        User = get_user_model()
+        # User = get_user_model()
         username = request.POST.get('email')
         password = request.POST.get('password')
         
@@ -34,9 +34,9 @@ def loginUser(request):
         #     return redirect('login')
 
         user = authenticate(username=username, password=password)
-        print(user)
+        # print(user)
         if user is None:
-            messages.error(request,'Invalid Password or Username')
+            messages.error(request,'Invalid Username or Password')
             return redirect('login')
         elif user.is_delivery:
             messages.error(request,'You are Registered as delivery')
@@ -79,8 +79,8 @@ def loginUser(request):
     Bon appétit,<br>
     Food Ordering Team 🍽️""".format(user_name, restaurant_links)
 )
-            render(request,'authentication/login.html')
-            return redirect('menu')
+            # render(request,'authentication/login.html')
+        return redirect('menu')
 
 
         
