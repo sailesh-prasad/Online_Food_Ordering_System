@@ -273,12 +273,12 @@ $(document).ready(function() {
                     // On success, toggle the button text and style
                     if (action === "add") {
                         button.innerHTML = "Remove from Cart";
-                        button.style.backgroundColor = "#4CAF50";  // Green color for added items
+                          // Green color for added items
                         button.style.cursor = "pointer";
                         foodCard.classList.add('added-to-cart');
                     } else {
                         button.innerHTML = "Add to Cart";
-                        button.style.backgroundColor = "#FFA500";  // Original color for add to cart
+                          // Original color for add to cart
                         button.style.cursor = "pointer";
                         foodCard.classList.remove('added-to-cart');
                     }
