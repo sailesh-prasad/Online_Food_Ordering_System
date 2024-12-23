@@ -1,12 +1,12 @@
 
 
 nav {
-background-color: #006400; /* Dark Green */
+background-color: #F5F5F5; /* Dark Green */
 display: flex;
 justify-content: space-between;
 align-items: center;
 padding: 10px 20px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 /* Navigation Links Styling */
@@ -168,6 +168,10 @@ margin: 0;
 color: #888;
 }
 
+
+
+
+
 /* Smooth Scroll */
 html {
 scroll-behavior: smooth;
@@ -205,3 +209,79 @@ background: rgba(0, 123, 255, 0.1); /* Light blue background */
 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+.pagination-container {
+  font-size: 62.5%;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.6px;
+  line-height: 1.4;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.pagination-container .page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem; /* Reduced height */
+  margin: 2rem; /* Reduced margin */
+  border-radius: 0.6rem;
+  background: #ffffff;
+  box-shadow: 0 0.8rem 2rem rgba(90, 97, 129, 0.05);
+}
+
+.pagination-container .page__numbers,
+.pagination-container .page__btn,
+.pagination-container .page__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem; /* Reduced margin */
+  font-size: 1.2rem; /* Reduced font size */
+  cursor: pointer;
+}
+
+.pagination-container .page__dots {
+  width: 2rem; /* Reduced width */
+  height: 2rem; /* Reduced height */
+  color: var(--greyLight);
+  cursor: initial;
+}
+
+.pagination-container .page__numbers {
+  width: 2rem; /* Adjusted width */
+  height: 2rem; /* Adjusted height */
+  border-radius: 0.4rem;
+  font-size: 1.2rem; /* Adjusted font size */
+}
+
+.pagination-container .page__numbers:hover {
+  color: var(--primary);
+  transform: scale(1.2); /* Increase size on hover */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.pagination-container .page__numbers.active {
+  color: #30f6b4;
+  background: var(--primary);
+  font-weight: 600;
+  border: 1px solid var(--primary);
+}
+
+.pagination-container .page__btn {
+  color: var(--greyLight);
+  pointer-events: none;
+}
+
+.pagination-container .page__btn.active {
+  color: var(--greyDark);
+  pointer-events: initial;
+}
+
+.pagination-container .page__btn.active:hover {
+  color: var(--primary);
+}
+
+.pagination-container .page__btn img {
+  width: 15px; /* Reduced icon size */
+  height: 15px; /* Reduced icon size */
+}

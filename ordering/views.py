@@ -20,6 +20,13 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
 from .models import Feedback
+from customer.models import City, Place , State
+from restaurant.models import restaurantUser, foodItems
+
+from django.core.paginator import Paginator
+
+
+
 
 def home(request):
     user = request.user
@@ -74,55 +81,7 @@ def Cart(request):
 
 
 
-
 User = get_user_model()
-
-# @login_required
-# def menu(request):
-#     cities = City.objects.all()
-#     selected_city = request.GET.get('city')
-#     if selected_city:
-#         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
-#     else:
-#         restaurant_list = restaurantUser.objects.all()
-#     cities = City.objects.all()
-#     user = request.user
-#     query = request.GET.get('q')
-#     foods = foodItems.objects.all()
-    
-#     if query:
-#         foods = foods.filter(Q(name__icontains=query))
-    
-#     cartEmpty = True
-#     if hasattr(user, 'customeruser'):
-#         name = user.customeruser.name
-#     else:
-#         name = "No name found"
-
-#     if 'cart' not in request.session:
-#         request.session['cart'] = {}
-
-#     if request.method == 'POST':
-#         id = request.POST.get("id")
-#         cart = request.session.get('cart', {})
-#         if id in cart:
-#             cart[id] += 1
-#             cartEmpty = False
-#         else:
-#             cart[id] = 1
-#             cartEmpty = False
-#         request.session['cart'] = cart
-
-#     list_restaurant = restaurantUser.objects.all()
-
-#     return render(request, 'home/index1.html', {
-#         'name': name,
-#         'foodItems': foods,
-#         'cart': request.session.get('cart', {}),
-#         'Empty': cartEmpty,
-#         'restaurant_list': restaurant_list,
-#         'cities': cities
-#     })
 
 @login_required
 def menu(request):
@@ -132,11 +91,22 @@ def menu(request):
         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
     else:
         restaurant_list = restaurantUser.objects.all()
+    
     query = request.GET.get('q')
     foods = foodItems.objects.all()
     
     if query:
         foods = foods.filter(Q(name__icontains=query))
+
+    # Pagination for restaurants
+    restaurant_paginator = Paginator(restaurant_list, 6)
+    restaurant_page_number = request.GET.get('restaurant_page')
+    restaurant_page_obj = restaurant_paginator.get_page(restaurant_page_number)
+
+    # Pagination for food items
+    food_paginator = Paginator(foods, 8)
+    food_page_number = request.GET.get('food_page')
+    food_page_obj = food_paginator.get_page(food_page_number)
 
     cartEmpty = True
     if hasattr(request.user, 'customeruser'):
@@ -165,13 +135,12 @@ def menu(request):
 
     return render(request, 'home/index1.html', {
         'name': name,
-        'foodItems': foods,
+        'foodItems': food_page_obj,
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
-        'restaurant_list': restaurant_list,
+        'restaurant_list': restaurant_page_obj,
         'cities': cities
     })
-
 
 @login_required
 def restaurant_menu(request, restaurant_id):
@@ -277,48 +246,7 @@ def feedback_form(request):
 
 
 
-# views.py
-from django.shortcuts import render
-from customer.models import City, Place , State
-from restaurant.models import restaurantUser, foodItems
-# forms.py
 
-from .forms import SearchForm
-
-# def search(request):
-#     # Default querysets for restaurants and food items
-#     restaurants = restaurantUser.objects.all()
-#     food_items = foodItems.objects.all()
-
-#     # Initialize the search form
-#     form = SearchForm(request.GET)
-
-#     # Apply filters if the form is valid
-#     if form.is_valid():
-#         # City filter
-#         city = form.cleaned_data.get('city')
-#         if city:
-#             restaurants = restaurants.filter(city=city)
-#             food_items = food_items.filter(restaurantName__city=city)
-
-#         # Search query for restaurant and food item names
-#         query = form.cleaned_data.get('query')
-#         if query:
-#             restaurants = restaurants.filter(restaurantName__icontains=query)
-#             food_items = food_items.filter(name__icontains=query)
-
-#     # Render the results with the form
-#     return render(request, 'search.html', {
-#         'form': form,
-#         'restaurants': restaurants,
-#         'food_items': food_items,
-#     })
-
-
-from django.shortcuts import render
-from django.db.models import Q
-from restaurant.models import foodItems, restaurantUser
-from customer.models import City
 
 
 
@@ -334,10 +262,6 @@ def search(request):
     })
    
    
-
-from customer.models import City
-from restaurant.models import restaurantUser
-
 def filter(request):
     city_name = request.POST.get('filter', '')
     city = City.objects.filter(name__icontains=city_name).first()
@@ -348,13 +272,6 @@ def filter(request):
         'city': city_name,
         'restaurant_results': restaurant_results
     })
-
-
-
-
-
-from django.http import JsonResponse
-from customer.models import City
 
 def city_autocomplete(request):
     if 'term' in request.GET:

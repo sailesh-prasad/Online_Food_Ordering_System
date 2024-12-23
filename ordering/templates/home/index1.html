@@ -134,49 +134,114 @@ $(document).ready(function() {
                 <h1>Order from your favourite restaurant</h1>
         </div>
 
-          
-
-<!-- Restaurant Cards -->
-<div class="row g-4" id="restaurant-list">
-    {% for restaurant in restaurant_list %}
-    <div class="col-md-4 restaurant-item" data-name="{{ restaurant.restaurantName|lower }}">
-        <div class="restaurant-card">
-            <img src="{% static 'images/background1.jpg'%}" alt="{{ restaurant.restaurantName }}" class="restaurant-image">
-            <div class="restaurant-card-body">
-                <h5 class="restaurant-card-title">{{ restaurant.restaurantName }}</h5>
+             <!-- Restaurant Cards -->
+        <div class="row g-4" id="restaurant-list">
+            {% for restaurant in restaurant_list %}
+            <div class="col-md-4 restaurant-item" data-name="{{ restaurant.restaurantName|lower }}">
+                <div class="restaurant-card">
+                    <img src="{% static 'images/background1.jpg'%}" alt="{{ restaurant.restaurantName }}" class="restaurant-image">
+                    <div class="restaurant-card-body">
+                        <h5 class="restaurant-card-title">{{ restaurant.restaurantName }}</h5>
+                    </div>
+                    <div class="restaurant-card-footer">
+                        <a href="{% url 'restaurant_menu' restaurant.id %}" class="btn w-100">View Menu</a>
+                    </div>
+                </div>
             </div>
-            <div class="restaurant-card-footer">
-                <a href="{% url 'restaurant_menu' restaurant.id %}" class="btn w-100">View Menu</a>
-            </div>
+            {% endfor %}
         </div>
-    </div>
-    {% endfor %}
+        <div class="container-fluid text-center d-flex justify-content-center flex-wrap py-5">
+            <h1>Tasty food for you....!</h1>
+        </div>
+
+ <!-- Restaurant Paginator -->
+<!-- filepath: /c:/Users/chand/OneDrive/Desktop/FoodOrdering/Food-ordering/ordering/templates/home/index1.html -->
+
+<div class = "pagination-container">
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Restaurant pagination">
+        <ul class="page">
+            {% if restaurant_list.has_previous %}
+                <li class="page__btn active">
+                    <a class="page-link" href="?restaurant_page={{ restaurant_list.previous_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" aria-label="Previous">
+                        <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for num in restaurant_list.paginator.page_range %}
+                <li class="page__numbers {% if restaurant_list.number == num %}active{% endif %}">
+                    <a class="page-link" href="?restaurant_page={{ num }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">{{ num }}</a>
+                </li>
+            {% endfor %}
+            {% if restaurant_list.has_next %}
+                <li class="page__btn active">
+                    <a class="page-link" href="?restaurant_page={{ restaurant_list.next_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" aria-label="Next">
+                        <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 </div>
 
 
-    <div class="container-fluid text-center d-flex justify-content-center flex-wrap py-5">
-        <h1>Tasty food for you....!</h1>
-    </div>
-{% comment %} Food items  {% endcomment %}
-   
-
-    <div class="menu-container">
-        <h1>Menu</h1>
-        <div class="food-item-grid">
-            {% for food in foodItems %}
-                <div class="food-card" id="food-{{ food.id }}">
-                    <img src="{{ food.image.url }}" alt="{{ food.name }}" class="food-img">
-                    <h3>{{ food.name }}</h3>
-                    <p class="price">₹{{ food.price }}</p>
-                    <p class="restaurant">{{ food.restaurantName.restaurantName }}</p>
-                    <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})">
-                        Add to Cart
-                    </button>
-                </div>
-            {% endfor %}
+        <!-- Food items -->
+        <div class="menu-container">
+            <h1>Menu</h1>
+            <div class="food-item-grid">
+                {% for food in foodItems %}
+                    <div class="food-card" id="food-{{ food.id }}">
+                        <img src="{{ food.image.url }}" alt="{{ food.name }}" class="food-img">
+                        <h3>{{ food.name }}</h3>
+                        <p class="price">₹{{ food.price }}</p>
+                        <p class="restaurant">{{ food.restaurantName.restaurantName }}</p>
+                        <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})">
+                            Add to Cart
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    
+
+
+                <!-- filepath: /c:/Users/chand/OneDrive/Desktop/FoodOrdering/Food-ordering/ordering/templates/home/index1.html -->
+            <div class="pagination-container d-flex justify-content-center mt-4">
+                <nav aria-label="Food pagination">
+                    <ul class="page">
+                        {% if foodItems.has_previous %}
+                            <li class="page__btn active">
+                                <a class="page-link" href="?food_page={{ foodItems.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Previous">
+                                    <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for num in foodItems.paginator.page_range %}
+                            <li class="page__numbers {% if foodItems.number == num %}active{% endif %}">
+                                <a class="page-link" href="?food_page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if foodItems.has_next %}
+                            <li class="page__btn active">
+                                <a class="page-link" href="?food_page={{ foodItems.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Next">
+                                    <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
     <script>
         function toggleCart(foodId) {
             var button = document.getElementById('btn-' + foodId);
@@ -217,5 +282,64 @@ $(document).ready(function() {
         {% include "home/footer.html" %}
         </body>
 
+
+
+
+
+
+
+
+
+
+
+
+<!-- filepath: /c:/Users/chand/OneDrive/Desktop/FoodOrdering/Food-ordering/ordering/templates/home/index1.html -->
+<div id="cart-button" class="cart-button">
+    <a href="{% url 'cart' %}">
+       
+        <img src="{% static 'svg/cart.svg' %}" alt="Cart">
+    </a>
+</div>
+<style>
+    /* Add this to your CSS file, e.g., static/css/index.css */
+    .cart-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        background-color: #F5F5F5; /* Initial color */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cart-button a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+        font-weight: 700; /* Heavy font */
+        font-size: 1.2rem; /* Increased font size */
+    }
+
+    .cart-button img {
+        width: 60px;
+        height: 60px;
+        margin-top: 5px;
+    }
+
+    .cart-button:hover {
+        background-color: #4CAF50; /* Color when active */
+        transform: scale(1.1); /* Slightly increase size on hover */
+    }
+
+
+</style>
 </body>
 </html>
