@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -97,6 +98,7 @@ def menu(request):
     
     if query:
         foods = foods.filter(Q(name__icontains=query))
+        
 
     # Pagination for restaurants
     restaurant_paginator = Paginator(restaurant_list, 6)
@@ -132,14 +134,17 @@ def menu(request):
                 del cart[id]
             cartEmpty = len(cart) == 0
         request.session['cart'] = cart
-
+        
+    
+        
     return render(request, 'home/index1.html', {
         'name': name,
         'foodItems': food_page_obj,
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
         'restaurant_list': restaurant_page_obj,
-        'cities': cities
+        'cities': cities,
+        
     })
 
 @login_required

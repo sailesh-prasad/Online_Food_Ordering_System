@@ -139,7 +139,9 @@ $(document).ready(function() {
             {% for restaurant in restaurant_list %}
             <div class="col-md-4 restaurant-item" data-name="{{ restaurant.restaurantName|lower }}">
                 <div class="restaurant-card">
-                    <img src="{% static 'images/background1.jpg'%}" alt="{{ restaurant.restaurantName }}" class="restaurant-image">
+                
+    
+                    <img id="restaurant-image-{{ forloop.counter }}" alt="{{ restaurant.restaurantName }}" class="restaurant-image">
                     <div class="restaurant-card-body">
                         <h5 class="restaurant-card-title">{{ restaurant.restaurantName }}</h5>
                     </div>
@@ -154,8 +156,19 @@ $(document).ready(function() {
             <h1>Tasty food for you....!</h1>
         </div>
 
+
+                
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const restaurantImages = document.querySelectorAll('.restaurant-image');
+            restaurantImages.forEach((img, index) => {
+                const imageNumber = (index % 8) + 1; // Cycle through numbers 1 to 8
+                img.src = `{% static 'images/logos/' %}${imageNumber}.jpeg`;
+            });
+        });
+        </script>
  <!-- Restaurant Paginator -->
-<!-- filepath: /c:/Users/chand/OneDrive/Desktop/FoodOrdering/Food-ordering/ordering/templates/home/index1.html -->
+
 
 <div class = "pagination-container">
 <div class="d-flex justify-content-center mt-4">
