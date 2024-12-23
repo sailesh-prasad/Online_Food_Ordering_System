@@ -333,3 +333,35 @@ def search(request):
         'restaurant_results': restaurant_results
     })
    
+   
+
+from customer.models import City
+from restaurant.models import restaurantUser
+
+def filter(request):
+    city_name = request.POST.get('filter', '')
+    city = City.objects.filter(name__icontains=city_name).first()
+    if city:
+            restaurant_results = restaurantUser.objects.filter(city=city)
+    
+    return render(request, 'home/filter_restaurants.html', {
+        'city': city_name,
+        'restaurant_results': restaurant_results
+    })
+
+
+
+
+
+from django.http import JsonResponse
+from customer.models import City
+
+def city_autocomplete(request):
+    if 'term' in request.GET:
+        qs = City.objects.filter(name__icontains=request.GET.get('term'))
+        cities = list()
+        for city in qs:
+            cities.append(city.name)
+        return JsonResponse(cities, safe=False)
+    return JsonResponse([], safe=False)
+

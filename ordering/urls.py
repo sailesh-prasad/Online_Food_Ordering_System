@@ -56,6 +56,9 @@ urlpatterns = [
     path('run-speech-recog/', views.run_speech_recog, name='run_speech_recog'),
     path('password-change/', ChangePasswordView.as_view(), name='password_change'),
     path('search', views.search, name='search'),
+    path('filter', views.filter, name ='filter'),
+    path('city-autocomplete/', views.city_autocomplete, name='city_autocomplete'),
+   
 ]
 
 if settings.DEBUG:

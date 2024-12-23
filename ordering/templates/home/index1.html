@@ -31,36 +31,96 @@
 <body style="background: rgb(245, 245, 245);">
         {% include "home/header.html" %}
     
-    {% comment %} <form method="POST" action="{% url 'search' %}">
-        {% csrf_token %}
-        <div class="search__container">
-            <input class="search__input" type="search" name="q" placeholder="Search for food or restaurants">
-            <button type="submit" class="search__button">Search</button>
-        </div>
-    </form> {% endcomment %}
 
-
-
-    {% comment %} <div class="search__container">
-    <form method = POST action = "{% url 'search' %}">
-        {% csrf_token %}
-  
-        <p class="search__title"> 
-        </p>
-        <input class="search__input" type="search" placeholder="Search" name = "search">
-   
-</form>
-</div>
-    {% endcomment %}
 
     <div class="search-container">
-        
-        <form method="POST" action="{% url 'search' %}" class="search-form">
+        <form method="POST" action="" class="search-form" id="combined-search-form">
             {% csrf_token %}
-            <input type="text" name="search" placeholder="Search for food or restaurants..." class="search-input" value="{{ request.POST.search }}">
+            <div class="combined-search">
+                <!-- Left input: Filter by city -->
+                <input 
+                    type="text" 
+                    name="filter" 
+                    placeholder="Search by city" 
+                    class="search-input" 
+                    value="{{ request.POST.filter }}" 
+                    id="filter-input"
+                >
     
+                <!-- Right input: Search for food/restaurants -->
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Search for food or restaurants" 
+                    class="search-input" 
+                    value="{{ request.POST.search }}" 
+                    id="search-input"
+                >
+            </div>
         </form>
     </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("combined-search-form");
+            const filterInput = document.getElementById("filter-input");
+            const searchInput = document.getElementById("search-input");
+    
+            form.addEventListener("keydown", (event) => {
+                // Submit the form when Enter is pressed
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Prevent default form submission
+    
+                    // Determine which input field is active
+                    if (document.activeElement === filterInput) {
+                        form.action = "{% url 'filter' %}";
+                    } else if (document.activeElement === searchInput) {
+                        form.action = "{% url 'search' %}";
+                    }
+    
+                    form.submit(); // Submit the form
+                }
+            });
+        });
+    </script>
+    
+
+<!-- Include jQuery and jQuery UI for autocomplete -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+$(document).ready(function() {
+    $("#filter-input").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{% url 'city_autocomplete' %}",
+                dataType: "json",
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 2,
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -70,9 +130,9 @@
 
     <section class="justify-content-evenly">
         <div class="container my-5 text-center">
-            <div class="container-fluid text-center d-flex justify-content-center flex-wrap py-4 mt-5">
+        <div class="container-fluid text-center d-flex justify-content-center flex-wrap py-4 mt-5">
                 <h1>Order from your favourite restaurant</h1>
-            </div>
+        </div>
 
           
 

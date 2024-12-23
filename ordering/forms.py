@@ -10,3 +10,4 @@ from restaurant.models import restaurantUser, foodItems
 class SearchForm(forms.Form):
     city = forms.ModelChoiceField(queryset=City.objects.all(), required=False, empty_label="Select a City")
     query = forms.CharField(max_length=100, required=False, label="Search for Restaurants or Food Items")
+
