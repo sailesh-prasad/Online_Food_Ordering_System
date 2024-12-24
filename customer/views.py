@@ -135,37 +135,35 @@ def registerUser(request):
             )
             user.save()
             from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
-            user_name = customerUser.objects.get(email=name).name
+            user_name = user.name  # Use the newly created user object
             restaurant_links = "<br>".join([f"<a href='{request.build_absolute_uri(f'/restaurant/{restaurant.id}/menu/')}'>{restaurant.restaurantName}</a>" for restaurant in restaurantUser.objects.all()])
             send_mail(
-    'Welcome, {}'.format(user_name),
-    """Hello {},<br><br>
+                'Welcome, {}'.format(user_name),
+                """Hello {},<br><br>
 
-    Craving something delicious? 🍔🌮<br>
-    Explore your favorites or try something new today! 🚀<br>
-    Browse Restaurants 👉 <br>
-    {}<br><br>
+                Craving something delicious? 🍔🌮<br>
+                Explore your favorites or try something new today! 🚀<br>
+                Browse Restaurants 👉 <br>
+                {}<br><br>
 
+                We're here to deliver happiness right to your doorstep. 🛵💨<br>
+                Bon appétit,<br>
+                Food Ordering Team 🍽️""".format(user_name, restaurant_links),
+                from_email,
+                [user.email],
+                fail_silently=False,
+                html_message="""Hello {},<br><br>
 
-    We're here to deliver happiness right to your doorstep. 🛵💨<br>
-    Bon appétit,<br>
-    Food Ordering Team 🍽️""".format(user_name, restaurant_links),
-    from_email,
-    [user.email],
-    fail_silently=False,
-    html_message="""Hello {},<br><br>
+                Craving something delicious? 🍔🌮<br>
+                Explore your favorites or try something new today! 🚀<br><br>
 
-    Craving something delicious? 🍔🌮<br>
-    Explore your favorites or try something new today! 🚀<br><br>
+                Browse Restaurants 👉 <br>
+                {}<br><br>
 
-    Browse Restaurants 👉 <br>
-    {}<br><br>
-
-
-    We're here to deliver happiness right to your doorstep. 🛵💨<br>
-    Bon appétit,<br>
-    Food Ordering Team 🍽️""".format(user_name, restaurant_links)
-)
+                We're here to deliver happiness right to your doorstep. 🛵💨<br>
+                Bon appétit,<br>
+                Food Ordering Team 🍽️""".format(user_name, restaurant_links)
+            )
             messages.success(request, 'Successfully Registered')
             return redirect('login')
         except Exception as e:
