@@ -198,37 +198,10 @@
           <small class="error-message" id="city-error"></small>
         </div>
         <div class="form-outline mb-4">
-          <label class="form-label" for="place">Place:</label>
-          <select id="place" name="place" required>
-            <option value="">Select Place</option>
-          </select>
-          <small class="error-message" id="place-error"></small>
-        </div>
-        <div class="form-outline mb-4">
-          <label class="form-label" for="latitude">Latitude</label>
-          <input
-            type="text"
-            id="latitude"
-            class="form-control"
-            placeholder="Latitude"
-            name="latitude"
-            required
-          />
-          <small class="error-message" id="latitude-error"></small>
+          <label class="form-label" for="place">Place</label>
+          <input type="text" id="place" class="form-control" placeholder="Place" name="place" required />
         </div>
 
-        <div class="form-outline mb-4">
-          <label class="form-label" for="longitude">Longitude</label>
-          <input
-            type="text"
-            id="longitude"
-            class="form-control"
-            placeholder="Longitude"
-            name="longitude"
-            required
-          />
-          <small class="error-message" id="longitude-error"></small>
-        </div>
 
         <div class="form-outline mb-4">
           <label class="form-label" for="password">Password</label>
@@ -395,21 +368,7 @@
             $("#place-error").text("");
           }
 
-          // Latitude validation
-          if (!$("#latitude").val()) {
-            $("#latitude-error").text("Latitude is required.");
-            valid = false;
-          } else {
-            $("#latitude-error").text("");
-          }
 
-          // Longitude validation
-          if (!$("#longitude").val()) {
-            $("#longitude-error").text("Longitude is required.");
-            valid = false;
-          } else {
-            $("#longitude-error").text("");
-          }
 
           // Password validation
           const password = document.getElementById("password");

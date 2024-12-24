@@ -10,6 +10,7 @@ from customer.models import State, City, Place
 from django.core.mail import send_mail
 from .models import Feedback
 from customer.models import Customer,Order
+from geopy.geocoders import Nominatim
 
 @login_required
 def home(request):
@@ -89,9 +90,27 @@ def registerDelivery(request):
         place_id = request.POST.get('place')
         state = State.objects.get(id=state_id)
         city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
+        place = request.POST.get('place')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
+
+        # Validate state and city
+        try:
+            state = State.objects.get(id=state_id)
+            city = City.objects.get(id=city_id)
+        except (State.DoesNotExist, City.DoesNotExist):
+            messages.error(request, 'Invalid State or City selected.')
+            return redirect('register')
+
+        # Get latitude and longitude for the place
+        geolocator = Nominatim(user_agent="DeliveryRegistration")
+        location = geolocator.geocode(place)
+        if not location:
+            messages.error(request, 'Unable to fetch location details for the provided place.')
+            return redirect('register')
+
+        latitude = location.latitude
+        longitude = location.longitude
 
         delivery_data = deliveryUser(
             username=email,
@@ -103,6 +122,8 @@ def registerDelivery(request):
             deliveryContact=phone,
             name=name,
             address=address,
+            latitude = latitude,
+            longitude = longitude,
             is_delivery=True
         )
 

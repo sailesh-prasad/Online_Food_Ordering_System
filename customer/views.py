@@ -16,6 +16,7 @@ from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 from restaurant.models import foodItems, restaurantUser  # Add this import
 from django.core.mail import send_mail  # Add this import
+from geopy.geocoders import Nominatim
 import os  # Add this import
 # Create your views here.
 
@@ -89,28 +90,44 @@ def loginUser(request):
 def registerUser(request):
     states = State.objects.all()
     if request.method == 'POST':
+        # Collect form data
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         state_id = request.POST.get('state')
         city_id = request.POST.get('city')
-        place_id = request.POST.get('place')
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
+        place = request.POST.get('place')
         password = request.POST.get('password')
-        
-        state = State.objects.get(id=state_id)
-        city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
 
+        # Validate state and city
+        try:
+            state = State.objects.get(id=state_id)
+            city = City.objects.get(id=city_id)
+        except (State.DoesNotExist, City.DoesNotExist):
+            messages.error(request, 'Invalid State or City selected.')
+            return redirect('register')
+
+        # Get latitude and longitude for the place
+        geolocator = Nominatim(user_agent="CustomerRegistration")
+        location = geolocator.geocode(place)
+        if not location:
+            messages.error(request, 'Unable to fetch location details for the provided place.')
+            return redirect('register')
+
+        latitude = location.latitude
+        longitude = location.longitude
+
+        # Check if user exists
         if customerUser.objects.filter(email=email).exists():
             messages.error(request, 'User Already Exists in the System')
             return redirect('login')
 
+        # Hash the password
         hashed_password = make_password(password)
 
         try:
+            # Create the customer instance
             customer = Customer.objects.create(
                 name=name,
                 address=address,
@@ -119,6 +136,7 @@ def registerUser(request):
                 password=hashed_password
             )
 
+            # Create the user instance
             user = customerUser.objects.create(
                 name=name,
                 email=email,
@@ -134,41 +152,15 @@ def registerUser(request):
                 customer=customer
             )
             user.save()
-            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
-            user_name = user.name  # Use the newly created user object
-            restaurant_links = "<br>".join([f"<a href='{request.build_absolute_uri(f'/restaurant/{restaurant.id}/menu/')}'>{restaurant.restaurantName}</a>" for restaurant in restaurantUser.objects.all()])
-            send_mail(
-                'Welcome, {}'.format(user_name),
-                """Hello {},<br><br>
 
-                Craving something delicious? 🍔🌮<br>
-                Explore your favorites or try something new today! 🚀<br>
-                Browse Restaurants 👉 <br>
-                {}<br><br>
+            # Optionally, send a welcome email
+            ...
 
-                We're here to deliver happiness right to your doorstep. 🛵💨<br>
-                Bon appétit,<br>
-                Food Ordering Team 🍽️""".format(user_name, restaurant_links),
-                from_email,
-                [user.email],
-                fail_silently=False,
-                html_message="""Hello {},<br><br>
-
-                Craving something delicious? 🍔🌮<br>
-                Explore your favorites or try something new today! 🚀<br><br>
-
-                Browse Restaurants 👉 <br>
-                {}<br><br>
-
-                We're here to deliver happiness right to your doorstep. 🛵💨<br>
-                Bon appétit,<br>
-                Food Ordering Team 🍽️""".format(user_name, restaurant_links)
-            )
             messages.success(request, 'Successfully Registered')
             return redirect('login')
         except Exception as e:
             messages.error(request, f'Error!! Try Again: {e}')
-            return redirect('login')
+            return redirect('register')
 
     return render(request, 'authentication/register.html', {'states': states})
 

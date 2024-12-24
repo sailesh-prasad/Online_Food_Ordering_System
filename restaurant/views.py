@@ -24,6 +24,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetCompleteView
 from django.contrib.messages.views import SuccessMessageMixin
+from geopy.geocoders import Nominatim
 # Create your views here.
 
 # Create your views here.
@@ -97,14 +98,21 @@ def registerRestaurant(request):
         restaurantContact = request.POST.get('restaurantContact')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
         state_id = request.POST.get('state')
         city_id = request.POST.get('city')
         place_id = request.POST.get('place')
         state = State.objects.get(id=state_id)
         city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
+        place = request.POST.get('place')
+
+        geolocator = Nominatim(user_agent="RestaurantRegistration")
+        location = geolocator.geocode(place)
+        if not location:
+            messages.error(request, 'Unable to fetch location details for the provided place.')
+            return redirect('register')
+        
+        latitude = location.latitude
+        longitude = location.longitude
 
         restaurant_data = restaurantUser(
             restaurantName=restaurantName,
