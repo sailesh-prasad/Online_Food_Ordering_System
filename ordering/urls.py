@@ -33,13 +33,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('customer.urls')),
     path('', include('restaurant.urls')),
+    path('', include('delivery.urls')),
     path('api/', include('ordering.api.urls')),
  
     
 
-    path('loginDelivery/',deliveryviews.loginDelivery,name = 'loginDelivery'),
-    path('registerDelivery/',deliveryviews.registerDelivery,name = 'registerDelivery'),
-    path('home/', deliveryviews.home, name='home'),
+    # path('loginDelivery/',deliveryviews.loginDelivery,name = 'loginDelivery'),
+    # path('registerDelivery/',deliveryviews.registerDelivery,name = 'registerDelivery'),
+    # path('home/', deliveryviews.home, name='home'),
     # path('login/', customerviews.loginUser, name='login'),
     path('menu/',views.menu,name = 'menu'),
     path('restaurant/<int:restaurant_id>/menu/', views.restaurant_menu, name='restaurant_menu'),

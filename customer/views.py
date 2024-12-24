@@ -106,7 +106,7 @@ def registerUser(request):
 
         if customerUser.objects.filter(email=email).exists():
             messages.error(request, 'User Already Exists in the System')
-            return redirect('registerUser')
+            return redirect('login')
 
         hashed_password = make_password(password)
 
@@ -134,11 +134,43 @@ def registerUser(request):
                 customer=customer
             )
             user.save()
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = customerUser.objects.get(email=name).name
+            restaurant_links = "<br>".join([f"<a href='{request.build_absolute_uri(f'/restaurant/{restaurant.id}/menu/')}'>{restaurant.restaurantName}</a>" for restaurant in restaurantUser.objects.all()])
+            send_mail(
+    'Welcome, {}'.format(user_name),
+    """Hello {},<br><br>
+
+    Craving something delicious? 🍔🌮<br>
+    Explore your favorites or try something new today! 🚀<br>
+    Browse Restaurants 👉 <br>
+    {}<br><br>
+
+
+    We're here to deliver happiness right to your doorstep. 🛵💨<br>
+    Bon appétit,<br>
+    Food Ordering Team 🍽️""".format(user_name, restaurant_links),
+    from_email,
+    [user.email],
+    fail_silently=False,
+    html_message="""Hello {},<br><br>
+
+    Craving something delicious? 🍔🌮<br>
+    Explore your favorites or try something new today! 🚀<br><br>
+
+    Browse Restaurants 👉 <br>
+    {}<br><br>
+
+
+    We're here to deliver happiness right to your doorstep. 🛵💨<br>
+    Bon appétit,<br>
+    Food Ordering Team 🍽️""".format(user_name, restaurant_links)
+)
             messages.success(request, 'Successfully Registered')
             return redirect('login')
         except Exception as e:
             messages.error(request, f'Error!! Try Again: {e}')
-            return redirect('registerUser')
+            return redirect('login')
 
     return render(request, 'authentication/register.html', {'states': states})
 
@@ -221,39 +253,39 @@ def make_payment(request):
         return redirect('orders')
     return redirect('cart')
 
-def register(request):
-    if request.method == 'POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        address = request.POST['address']
-        state_id = request.POST['state']
-        city_id = request.POST['city']
-        place_id = request.POST['place']
-        latitude = request.POST['latitude']
-        longitude = request.POST['longitude']
-        password = request.POST['password']
+# def register(request):
+#     if request.method == 'POST':
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         phone = request.POST['phone']
+#         address = request.POST['address']
+#         state_id = request.POST['state']
+#         city_id = request.POST['city']
+#         place_id = request.POST['place']
+#         latitude = request.POST['latitude']
+#         longitude = request.POST['longitude']
+#         password = request.POST['password']
 
-        state = State.objects.get(id=state_id)
-        city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
+#         state = State.objects.get(id=state_id)
+#         city = City.objects.get(id=city_id)
+#         place = Place.objects.get(id=place_id)
 
-        customer_user = customerUser.objects.create(
-            name=name,
-            email=email,
-            state=state,
-            city=city,
-            place=place,
-            address = address,
-            latitude=latitude,
-            longitude=longitude,
-        )
-        customer_user.set_password(password)
-        customer_user.save()
+#         customer_user = customerUser.objects.create(
+#             name=name,
+#             email=email,
+#             state=state,
+#             city=city,
+#             place=place,
+#             address = address,
+#             latitude=latitude,
+#             longitude=longitude,
+#         )
+#         customer_user.set_password(password)
+#         customer_user.save()
 
-        messages.success(request, 'Registration Successful!')
-        return redirect('register')
+#         messages.success(request, 'Registration Successful!')
+#         return redirect('register')
 
-    states = State.objects.all()
-    return render(request, 'authentication/register.html', {'states': states})
+#     states = State.objects.all()
+#     return render(request, 'authentication/register.html', {'states': states})
 

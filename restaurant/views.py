@@ -131,6 +131,38 @@ def registerRestaurant(request):
 
         else:
             restaurant_data.save()
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = restaurantUser.objects.get(email=email).restaurantName
+            view_orders_link = request.build_absolute_uri('/restaurantOrders/')
+            check_menu_link = request.build_absolute_uri('/addMenu/')
+            send_mail(
+    'Welcome, {}! Let’s Make Today Delicious!'.format(user_name),  # Subject line with dynamic user_name
+    """Hello {},
+
+Your kitchen is ready to serve! 🌟
+Check out today’s orders and get ready to satisfy your customer's cravings!
+
+👉 [View New Orders]({view_orders_link})
+👉 [Check Your Menu]({check_menu_link})
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                view_orders_link=view_orders_link, 
+                                                                check_menu_link=check_menu_link),  # Plain text email content
+    from_email,  # Sender's email
+    [restaurant_data.email],  # Recipient's email
+    fail_silently=False,  # Fail silently if set to False
+    html_message="""Hello {},<br><br>
+
+Your kitchen is ready to serve! 🌟<br>
+Check out today’s orders and get ready to satisfy your customer's cravings!<br><br>
+
+👉 <a href="{view_orders_link}">View New Orders</a><br>
+👉 <a href="{check_menu_link}">Check Your Menu</a><br>
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                   view_orders_link=view_orders_link, 
+                                                                   check_menu_link=check_menu_link)  # HTML email content
+)
             messages.success(request, "Successfully Registered")
             return redirect('loginRestaurant')
 

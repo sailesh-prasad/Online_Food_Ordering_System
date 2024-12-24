@@ -119,12 +119,43 @@ def registerDelivery(request):
         # Check if the user already exists
         if deliveryUser.objects.filter(username=email).exists() and deliveryUser.objects.filter(is_delivery=True):
             messages.error(request, 'User Already Exist in the System')
-            return redirect('registerDelivery')
+            return redirect('loginDelivery')
         elif deliveryUser.objects.filter(username=email).exists() and deliveryUser.objects.filter(is_delivery=False):
             messages.error(request, 'You have Customer Account Using This Email ID. Try Another Email ID')
             return redirect('loginDelivery')
         else:
             delivery_data.save()
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = delivery_data.name  # Use the newly created delivery_data object
+            delivery_link = request.build_absolute_uri('/home/')
+            send_mail(
+                'Welcome, {}'.format(user_name),
+                """Hello {},
+
+Ready to deliver happiness today? 🚚💨
+Check out your upcoming deliveries and get ready to hit the road!
+
+👉 [View Upcoming Deliveries]({})
+
+We're here to help you make someone's day better! 🌟
+
+Drive safe and enjoy the ride,
+Delivery Team 🚗💨""".format(user_name, delivery_link),
+                from_email,
+                [delivery_data.email],
+                fail_silently=False,
+                html_message="""Hello {},<br><br>
+
+Ready to deliver happiness today? 🚚💨<br>
+Check out your upcoming deliveries and get ready to hit the road!<br><br>
+
+👉 <a href="{}">View Upcoming Deliveries</a><br><br>
+
+We're here to help you make someone's day better! 🌟<br><br>
+
+Drive safe and enjoy the ride,<br>
+Delivery Team 🚗💨""".format(user_name, delivery_link)
+            )
             messages.success(request, "Successfully Registered")
             return redirect('loginDelivery')
     return render(request, 'registerDelivery.html', {'states': states})
