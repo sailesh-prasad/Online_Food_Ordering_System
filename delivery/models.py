@@ -5,6 +5,9 @@ from django.contrib.auth.models import AbstractUser
 from customer.models import CustomUser
 from phonenumber_field.modelfields import PhoneNumberField
 from customer.models import State, City, Place
+
+
+
 class deliveryUser(CustomUser):
     name = models.CharField(max_length=50)
     address = models.TextField()
