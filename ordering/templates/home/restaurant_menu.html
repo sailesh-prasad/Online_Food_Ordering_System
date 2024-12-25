@@ -377,6 +377,58 @@
 
     
 
+    <script>
+        function handleAddToCart(button) {
+            const formData = new FormData(button.closest("form"));
+            const action = button.value === "Add to Cart" ? "add" : "remove";
+            formData.append("action", action);
+
+            fetch(button.closest("form").action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            }).then(response => {
+                if (response.ok) {
+                    if (action === "add") {
+                        button.classList.remove("btn-danger");
+                        button.classList.add("btn-success");
+                        button.value = "Remove from Cart";
+                    } else {
+                        button.classList.remove("btn-success");
+                        button.classList.add("btn-danger");
+                        button.value = "Add to Cart";
+                    }
+                }
+            }).catch(error => console.error("Error:", error));
+        }
+
+        function filterCategory(category) {
+            const foodCards = document.querySelectorAll(".food-card");
+            foodCards.forEach(card => {
+                if (category === "all" || card.dataset.category === category) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function filterFoodItems() {
+            const query = document.getElementById("search-bar").value.toLowerCase();
+            const foodCards = document.querySelectorAll(".food-card");
+            foodCards.forEach(card => {
+                const foodName = card.querySelector(".card-title").textContent.toLowerCase();
+                if (foodName.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+
 </head>
 <header>{% include "home/header.html" %}</header>
 <body>
@@ -440,26 +492,23 @@
 </div>
 
 <!-- Food Items -->
- <BR>
-
-<section id="food-items-section" class="section">
-    <div class="food-items-row">
-        {% for food in food_items %}
-        <div class="food-item-col" data-category="{{ food.category }}">
-            <div class="food-card">
-                <img src="/media/{{ food.image }}" class="food-image" alt="{{ food.name }}">
-                <div class="food-details">
-                    <h4 class="food-name">{{ food.name }}</h4>
-                    <div class="food-info">
-                        <span class="food-category">Category: {{ food.category }}</span>
-                        <span class="food-price">Price: ₹{{ food.price }}</span>
-                    </div>
-                    <form action="#" method="post">
-                        {% csrf_token %}
-                        <input hidden type="text" name="id" value="{{ food.id }}">
-                        <input type="button" class="add-to-cart-btn" value="Add to Cart" onclick="handleAddToCart(this)">
-                    </form>
-                </div>
+<div class="row">
+    {% for food in food_items %}
+    <div class="col-md-4 food-card" data-category="{{ food.category }}">
+        <div class="card mb-4">
+            <img src="/media/{{ food.image }}" class="card-img-top" alt="{{ food.name }}" 
+                 style="height: 200px; width: 100%; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ food.name }}</h5>
+                <p class="card-text">Category: {{ food.category }}</p>
+                <p class="card-text">Price: ₹{{ food.price }}</p>
+                <form action="{% url 'menu' %}" method="post">
+                    {% csrf_token %}
+                    <input hidden type="text" name="id" value="{{ food.id }}">
+                    <input type="button" class="btn {% if food.is_out_of_stock %}btn-secondary{% elif food.id in request.session.cart %}btn-success{% else %}btn-danger{% endif %}" 
+                           value="{% if food.is_out_of_stock %}Out of Stock{% elif food.id in request.session.cart %}Remove from Cart{% else %}Add to Cart{% endif %}" 
+                           onclick="handleAddToCart(this)" {% if food.is_out_of_stock %}disabled{% endif %}>
+                </form>
             </div>
         </div>
         {% endfor %}

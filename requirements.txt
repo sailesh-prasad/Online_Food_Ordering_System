@@ -6,6 +6,7 @@ djangorestframework==3.14.0
 markdown
 django-filter
 django-phonenumbers
+django-phonenumber-field
 drf-yasg
 django-import-export
 speechrecognition
