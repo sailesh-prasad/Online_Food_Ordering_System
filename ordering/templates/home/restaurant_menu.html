@@ -411,9 +411,9 @@
                 <form action="{% url 'menu' %}" method="post">
                     {% csrf_token %}
                     <input hidden type="text" name="id" value="{{ food.id }}">
-                    <input type="button" class="btn {% if food.id in request.session.cart %}btn-success{% else %}btn-danger{% endif %}" 
-                           value="{% if food.id in request.session.cart %}Remove from Cart{% else %}Add to Cart{% endif %}" 
-                           onclick="handleAddToCart(this)">
+                    <input type="button" class="btn {% if food.is_out_of_stock %}btn-secondary{% elif food.id in request.session.cart %}btn-success{% else %}btn-danger{% endif %}" 
+                           value="{% if food.is_out_of_stock %}Out of Stock{% elif food.id in request.session.cart %}Remove from Cart{% else %}Add to Cart{% endif %}" 
+                           onclick="handleAddToCart(this)" {% if food.is_out_of_stock %}disabled{% endif %}>
                 </form>
             </div>
         </div>
