@@ -33,14 +33,14 @@ class customerUser(CustomUser):
     name = models.CharField(max_length=50)
     state = models.ForeignKey(State, on_delete=models.CASCADE, default=1)  # Ensure State with id=1 exists
     city = models.ForeignKey(City, on_delete=models.CASCADE, default=1)    # Ensure City with id=1 exists
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=1)  # Ensure Place with id=1 exists
+    place = models.CharField(max_length=50)  # Ensure Place with id=1 exists
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     address = models.CharField(max_length=255)  # Ensure address field is correctly defined
     customer = models.OneToOneField('Customer', on_delete=models.CASCADE, null=True, blank=True)  # Add OneToOneField to Customer
 
     def __str__(self):
-        return f"{self.name} - {self.place.name}, {self.city.name}, {self.state.name}"
+        return f"{self.name} - {self.place}, {self.city.name}, {self.state.name}"
     
 class Contact(models.Model):
     name = models.CharField(max_length=200)

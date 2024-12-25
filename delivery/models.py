@@ -5,13 +5,18 @@ from django.contrib.auth.models import AbstractUser
 from customer.models import CustomUser
 from phonenumber_field.modelfields import PhoneNumberField
 from customer.models import State, City, Place
+
+
+
 class deliveryUser(CustomUser):
     name = models.CharField(max_length=50)
     address = models.TextField()
     state = models.ForeignKey(State, on_delete=models.CASCADE, default=1)  # Ensure State with id=1 exists
     city = models.ForeignKey(City, on_delete=models.CASCADE, default=1)    # Ensure City with id=1 exists
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, default=1)
+    place = models.CharField(max_length=50)
     deliveryContact = PhoneNumberField(null=True, blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
     def __str__(self):
         return self.name  # Use name for display

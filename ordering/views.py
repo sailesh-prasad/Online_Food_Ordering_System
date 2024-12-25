@@ -1,4 +1,3 @@
-import random
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -21,13 +20,6 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
 from .models import Feedback
-from customer.models import City, Place , State
-from restaurant.models import restaurantUser, foodItems
-
-from django.core.paginator import Paginator
-
-
-
 
 def home(request):
     user = request.user
@@ -82,7 +74,55 @@ def Cart(request):
 
 
 
+
 User = get_user_model()
+
+# @login_required
+# def menu(request):
+#     cities = City.objects.all()
+#     selected_city = request.GET.get('city')
+#     if selected_city:
+#         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
+#     else:
+#         restaurant_list = restaurantUser.objects.all()
+#     cities = City.objects.all()
+#     user = request.user
+#     query = request.GET.get('q')
+#     foods = foodItems.objects.all()
+    
+#     if query:
+#         foods = foods.filter(Q(name__icontains=query))
+    
+#     cartEmpty = True
+#     if hasattr(user, 'customeruser'):
+#         name = user.customeruser.name
+#     else:
+#         name = "No name found"
+
+#     if 'cart' not in request.session:
+#         request.session['cart'] = {}
+
+#     if request.method == 'POST':
+#         id = request.POST.get("id")
+#         cart = request.session.get('cart', {})
+#         if id in cart:
+#             cart[id] += 1
+#             cartEmpty = False
+#         else:
+#             cart[id] = 1
+#             cartEmpty = False
+#         request.session['cart'] = cart
+
+#     list_restaurant = restaurantUser.objects.all()
+
+#     return render(request, 'home/index1.html', {
+#         'name': name,
+#         'foodItems': foods,
+#         'cart': request.session.get('cart', {}),
+#         'Empty': cartEmpty,
+#         'restaurant_list': restaurant_list,
+#         'cities': cities
+#     })
 
 @login_required
 def menu(request):
@@ -92,23 +132,11 @@ def menu(request):
         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
     else:
         restaurant_list = restaurantUser.objects.all()
-    
     query = request.GET.get('q')
     foods = foodItems.objects.all()
     
     if query:
         foods = foods.filter(Q(name__icontains=query))
-        
-
-    # Pagination for restaurants
-    restaurant_paginator = Paginator(restaurant_list, 10)
-    restaurant_page_number = request.GET.get('restaurant_page')
-    restaurant_page_obj = restaurant_paginator.get_page(restaurant_page_number)
-
-    # Pagination for food items
-    food_paginator = Paginator(foods, 8)
-    food_page_number = request.GET.get('food_page')
-    food_page_obj = food_paginator.get_page(food_page_number)
 
     cartEmpty = True
     if hasattr(request.user, 'customeruser'):
@@ -134,18 +162,16 @@ def menu(request):
                 del cart[id]
             cartEmpty = len(cart) == 0
         request.session['cart'] = cart
-        
-    
-        
+
     return render(request, 'home/index1.html', {
         'name': name,
-        'foodItems': food_page_obj,
+        'foodItems': foods,
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
-        'restaurant_list': restaurant_page_obj,
-        'cities': cities,
-        
+        'restaurant_list': restaurant_list,
+        'cities': cities
     })
+
 
 @login_required
 def restaurant_menu(request, restaurant_id):
@@ -163,6 +189,7 @@ def restaurantPage(request):
     print(rname)
 
     return render(request,'restaurantPage.html')
+
 
 
 
@@ -251,7 +278,19 @@ def feedback_form(request):
 
 
 
+# views.py
+from django.shortcuts import render
+from customer.models import City, Place , State
+from restaurant.models import restaurantUser, foodItems
+# forms.py
 
+from .forms import SearchForm
+
+
+from django.shortcuts import render
+from django.db.models import Q
+from restaurant.models import foodItems, restaurantUser
+from customer.models import City
 
 
 
@@ -265,6 +304,10 @@ def search(request):
         'food_results': food_results,
         'restaurant_results': restaurant_results
     })
+   
+
+
+
    
    
 def filter(request):
@@ -286,4 +329,5 @@ def city_autocomplete(request):
             cities.append(city.name)
         return JsonResponse(cities, safe=False)
     return JsonResponse([], safe=False)
+
 
