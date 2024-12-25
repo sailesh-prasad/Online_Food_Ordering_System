@@ -13,6 +13,7 @@ from django.http import request, JsonResponse
 import speech_recognition as sr
 from django.http import request, HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
+from django.core.paginator import Paginator
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -132,13 +133,23 @@ def menu(request):
         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
     else:
         restaurant_list = restaurantUser.objects.all()
-    cities = City.objects.all()
-    user = request.user
+    
     query = request.GET.get('q')
     foods = foodItems.objects.all()
     
     if query:
         foods = foods.filter(Q(name__icontains=query))
+        
+
+    # Pagination for restaurants
+    restaurant_paginator = Paginator(restaurant_list, 6)
+    restaurant_page_number = request.GET.get('restaurant_page')
+    restaurant_page_obj = restaurant_paginator.get_page(restaurant_page_number)
+
+    # Pagination for food items
+    food_paginator = Paginator(foods, 10)
+    food_page_number = request.GET.get('food_page')
+    food_page_obj = food_paginator.get_page(food_page_number)
 
     cartEmpty = True
     if hasattr(request.user, 'customeruser'):
@@ -167,10 +178,10 @@ def menu(request):
 
     return render(request, 'home/index1.html', {
         'name': name,
-        'foodItems': foods,
+        'foodItems': food_page_obj,
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
-        'restaurant_list': restaurant_list,
+        'restaurant_list': restaurant_page_obj,
         'cities': cities
     })
 
