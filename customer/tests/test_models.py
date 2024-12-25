@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from pymysql import IntegrityError
+#from pymysql import IntegrityError
 from customer.models import Customer
 
 class CustomerModelTest(TestCase):
