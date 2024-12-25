@@ -7,6 +7,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 from customer.models import State, City, Place
 
 
+from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField
+from customer.models import CustomUser, State, City, Place
 
 class deliveryUser(CustomUser):
     name = models.CharField(max_length=50)
@@ -64,3 +67,12 @@ class DeliveryPerson(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+class DeliveryPersonLocation(models.Model):
+    delivery_person = models.OneToOneField(DeliveryPerson, on_delete=models.CASCADE)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Location for {self.delivery_person.first_name} {self.delivery_person.last_name}"

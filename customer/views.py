@@ -18,6 +18,21 @@ from restaurant.models import foodItems, restaurantUser  # Add this import
 from django.core.mail import send_mail  # Add this import
 from geopy.geocoders import Nominatim
 import os  # Add this import
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.list import ListView
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+
+from customer.models import customerUser, Contact, Order, Customer, State, City, Place
+from restaurant.models import foodItems, restaurantUser
+import os
+from random import choice
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 User = get_user_model()
@@ -205,6 +220,7 @@ def orders(request):
     user_orders = Order.objects.filter(customer=request.user)
     return render(request, 'home/orders.html', {'orders': user_orders})
 
+@login_required
 def make_payment(request):
     if request.method == 'POST':
         cart = request.session.get('cart', {})
@@ -213,7 +229,7 @@ def make_payment(request):
         for item_id, item in cart.items():
             food_item = foodItems.objects.get(id=item_id)
             restaurant_name = food_item.restaurantName.restaurantName
-            if (restaurant_name not in orders):
+            if restaurant_name not in orders:
                 orders[restaurant_name] = {
                     'items': [],
                     'total_price': 0,
@@ -227,12 +243,13 @@ def make_payment(request):
             })
             orders[restaurant_name]['total_price'] += food_item.price * item
 
+        order_instance = None
         for order in orders.values():
             order_instance = Order.objects.create(
                 customer=customerUser.objects.get(id=request.user.id),
                 item=', '.join([f"{i['name']} (x{i['quantity']})" for i in order['items']]),
                 quantity=sum([i['quantity'] for i in order['items']]),
-                category=', '.join(set([i['category'] for i in order['items']])), 
+                category=', '.join(set([i['category'] for i in order['items']])),
                 sum_of_price=order['total_price'],
                 order_no=get_random_string(10),
                 restaurant_name=order['restaurant_name']
@@ -240,42 +257,65 @@ def make_payment(request):
             order_instance.save()
 
         request.session['cart'] = {}
-        return redirect('orders')
+        if order_instance:
+            return redirect('track_locations', order_id=order_instance.id)
+        else:
+            messages.error(request, "No orders were created.")
+            return redirect('orders')
     return redirect('cart')
 
-# def register(request):
-#     if request.method == 'POST':
-#         name = request.POST['name']
-#         email = request.POST['email']
-#         phone = request.POST['phone']
-#         address = request.POST['address']
-#         state_id = request.POST['state']
-#         city_id = request.POST['city']
-#         place_id = request.POST['place']
-#         latitude = request.POST['latitude']
-#         longitude = request.POST['longitude']
-#         password = request.POST['password']
+@login_required
+def track_locations(request, order_id):
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
+    customer = order.customer
+    try:
+        restaurant = restaurantUser.objects.get(restaurantName=order.restaurant_name)
+    except restaurantUser.DoesNotExist:
+        messages.error(request, "Restaurant user does not exist.")
+        return redirect('orders')
 
-#         state = State.objects.get(id=state_id)
-#         city = City.objects.get(id=city_id)
-#         place = Place.objects.get(id=place_id)
+    context = {
+        'order': order,
+        'customer_latitude': customer.latitude,
+        'customer_longitude': customer.longitude,
+        'restaurant_latitude': restaurant.latitude,
+        'restaurant_longitude': restaurant.longitude
+    }
 
-#         customer_user = customerUser.objects.create(
-#             name=name,
-#             email=email,
-#             state=state,
-#             city=city,
-#             place=place,
-#             address = address,
-#             latitude=latitude,
-#             longitude=longitude,
-#         )
-#         customer_user.set_password(password)
-#         customer_user.save()
+    return render(request, 'home/track_locations.html', context)
 
-#         messages.success(request, 'Registration Successful!')
-#         return redirect('register')
+def register(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        address = request.POST['address']
+        state_id = request.POST['state']
+        city_id = request.POST['city']
+        place_id = request.POST['place']
+        latitude = request.POST['latitude']
+        longitude = request.POST['longitude']
+        password = request.POST['password']
 
-#     states = State.objects.all()
-#     return render(request, 'authentication/register.html', {'states': states})
+        state = State.objects.get(id=state_id)
+        city = City.objects.get(id=city_id)
+        place = Place.objects.get(id=place_id)
 
+        customer_user = customerUser.objects.create(
+            name=name,
+            email=email,
+            state=state,
+            city=city,
+            place=place,
+            address = address,
+            latitude=latitude,
+            longitude=longitude,
+        )
+        customer_user.set_password(password)
+        customer_user.save()
+
+        messages.success(request, 'Registration Successful!')
+        return redirect('register')
+
+    states = State.objects.all()
+    return render(request, 'authentication/register.html', {'states': states})

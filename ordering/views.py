@@ -132,6 +132,8 @@ def menu(request):
         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
     else:
         restaurant_list = restaurantUser.objects.all()
+    cities = City.objects.all()
+    user = request.user
     query = request.GET.get('q')
     foods = foodItems.objects.all()
     
@@ -189,7 +191,6 @@ def restaurantPage(request):
     print(rname)
 
     return render(request,'restaurantPage.html')
-
 
 
 
