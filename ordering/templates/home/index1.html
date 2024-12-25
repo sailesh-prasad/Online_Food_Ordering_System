@@ -56,7 +56,7 @@ body {
             
             background: rgba(0, 0, 0, 0.2); /* Translucent white background */
             backdrop-filter: blur(6px);
-            height:21.5vh;
+            height:23vh;
             border-radius: 12px;
             padding-left:30px;
             padding-right: 50px;
@@ -148,24 +148,27 @@ body {
 
 
 .scroll-item img {
-    width: 65px;
-    height: 67px;
-    border-radius: 50%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 65%; /* Slightly larger for better focus */
+    height:65%;
+    border-radius: 50%; /* Reduced curve for better space utilization */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* Deeper shadow for floating effect */
     object-fit: cover;
-    transition: transform 0.3s ease;
-    border-style: double;
-    border-color: green;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid #ffa500;
 }
 
 .scroll-item img:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); /* More dramatic shadow on hover */
+    border: 3px solid #efe013; /* Orange border to highlight hover state */
+    background-color: #fff8e1; /* Warmer background for hover state */
+    transform:scale(0.9);
 }
+
+
 
 .scroll-item p {
     
-    padding: 0px ;/* Adjusted padding for compact spacing */
+    padding-top: 10px ;/* Adjusted padding for compact spacing */
     font-size: 1rem; /* Improved font style */
     color: #f6fbe7;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -191,7 +194,8 @@ font-weight: bold;
     width: 70px;           /* Sets the width of each item */
     height: 720px;          /* Ensures items remain square-shaped */
     border-radius: 50%;     /* Makes the items circular */
-    text-align: center;     /* Centers the text within each item */
+    text-align: center;
+       /* Centers the text within each item */
            /* Adds space between items */
 }
     .scroll-wrapper {
@@ -201,10 +205,12 @@ font-weight: bold;
     .scroll-item img {
         width: 50px;
         height: 52px;
+        gap:20px !important; 
     }
 
     .scroll-item p {
-        font-size: 0.9rem; /* Adjusted font size for mobile */
+        padding:0px;
+        font-size: 0.8rem; /* Adjusted font size for mobile */
         font-family: 'Roboto', sans-serif;
     }
     .frozen-container-hero {
@@ -231,6 +237,17 @@ font-weight: bold;
         width:180px !important;
 
     }
+    .scroll-item p {
+    
+    padding: 0px ;/* Adjusted padding for compact spacing */
+    font-size: 0.75rem; /* Improved font style */
+    flex-wrap :nowrap;
+}
+
+.frozen-container-hero {
+            height:19vh;
+           
+        }
 }
 
 /* Adjust vertical space inside the container */
@@ -243,7 +260,7 @@ font-weight: bold;
 .custom-search input {
     border-radius: 30px;
     padding: 5px;
-    width:250px;
+    width:350px;
     margin-top:12px;
     margin-bottom:12px;
 }
@@ -322,6 +339,9 @@ background: rgba(0, 0, 0, 0.1);
 border-radius: 50%;
 
 }
+.feature-icon:hover{
+    transform:scale(1.04);
+}
 
 .feature-card h6 {
 padding-top:8px;
@@ -337,6 +357,7 @@ z-index:-4;
 .feature-card h6:hover {
 color: #ffcdd2;
 }
+
 
 @keyframes monkey-jump {
 0%, 100% {
@@ -375,6 +396,11 @@ color: #ffcdd2;
 .features-container {
     gap: 5px;
      
+}
+.custom-search input {
+   
+    padding: 3px;
+    
 }
 
 
@@ -765,7 +791,7 @@ color: #ffcdd2;
                         <input 
                             type="text" 
                             name="filter" 
-                            placeholder="Search by city" 
+                            placeholder="Select City Or Area Of Your Choice" 
                             class="search-input" 
                             value="{{ request.POST.filter }}" 
                             id="filter-input"
@@ -775,7 +801,7 @@ color: #ffcdd2;
                         <input 
                             type="text" 
                             name="search" 
-                            placeholder="Search for food or restaurants" 
+                            placeholder="Search For Foods Or Restaurants" 
                             class="search-input" 
                             value="{{ request.POST.search }}" 
                             id="search-input"
@@ -846,66 +872,67 @@ color: #ffcdd2;
                     
 
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="pizza image">
-                            <p>Pizza</p>
-                        </div>
-                        <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="biryani image">
+                            <img class="img-fluid" src="{% static 'images/biryani.jpg' %}" alt="pizza image">
                             <p>Biryani</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="paneer image">
-                            <p>Paneer</p>
+                            <img class="img-fluid" src="{% static 'images/Burger.jpg' %}" alt="biryani image">
+                            <p>Burger</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="thali image">
-                            <p>Thali</p>
+                            <img class="img-fluid" src="{% static 'images/Fish_fry.jpg' %}" alt="thali image">
+                            <p>Fish Fry</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="noodle image">
+                            <img class="img-fluid" src="{% static 'images/Chicken_Fry.jpg' %}" alt="paneer image">
+                            <p>Chicken Fry</p>
+                        </div>
+                        <div class="scroll-item">
+                            <img class="img-fluid" src="{% static 'images/panner_barbique.jpg' %}" alt="thali image">
+                            <p>Barbique</p>
+                        </div>
+                        <div class="scroll-item">
+                            <img class="img-fluid" src="{% static 'images/noodles.jpg' %}" alt="noodle image">
                             <p>Noodles</p>
                         </div>
 
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="pizza image">
+                            <img class="img-fluid" src="{% static 'images/pizza.jpg' %}" alt="pizza image">
                             <p>Pizza</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="biryani image">
-                            <p>Biryani</p>
+                            <img class="img-fluid" src="{% static 'images/kesari.jpg' %}" alt="biryani image">
+                            <p>Kessari</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="paneer image">
-                            <p>Paneer</p>
+                            <img class="img-fluid" src="{% static 'images/dessert.jpg' %}" alt="paneer image">
+                            <p>Dessert</p>
                         </div>
+                       
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="thali image">
-                            <p>Thali</p>
-                        </div>
-                        <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="noodle image">
-                            <p>Noodles</p>
+                            <img class="img-fluid" src="{% static 'images/Cutlut.jpg' %}" alt="noodle image">
+                            <p>Cutlut</p>
                         </div>
 
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="pizza image">
-                            <p>Pizza</p>
+                            <img class="img-fluid" src="{% static 'images/Mushroom_nan.jpg' %}" alt="pizza image">
+                            <p>Naan</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="biryani image">
-                            <p>Biryani</p>
+                            <img class="img-fluid" src="{% static 'images/Panner_tikka.jpg' %}" alt="biryani image">
+                            <p>Panner Fry</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="paneer image">
-                            <p>Paneer</p>
+                            <img class="img-fluid" src="{% static 'images/prawn_fry.jpg' %}" alt="paneer image">
+                            <p>Prawn Fry</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="thali image">
-                            <p>Thali</p>
+                            <img class="img-fluid" src="{% static 'images/Pulav.jpg' %}" alt="thali image">
+                            <p>Pulav</p>
                         </div>
                         <div class="scroll-item">
-                            <img class="img-fluid" src="{% static 'images/Del_reg.jpg' %}" alt="noodle image">
-                            <p>Noodles</p>
+                            <img class="img-fluid" src="{% static 'images/salad.jpg' %}" alt="noodle image">
+                            <p>Salad</p>
                         </div>
                         
                  
@@ -1140,7 +1167,7 @@ color: #ffcdd2;
         // Add smooth scrolling to icons (Optional)
         document.querySelectorAll('.feature-card').forEach(card => {
             card.addEventListener('click', () => {
-                alert(`You clicked on ${card.querySelector('h5').textContent}`);
+                alert(You clicked on ${card.querySelector('h5').textContent});
             });
         });
 

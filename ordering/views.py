@@ -101,7 +101,7 @@ def menu(request):
         
 
     # Pagination for restaurants
-    restaurant_paginator = Paginator(restaurant_list, 6)
+    restaurant_paginator = Paginator(restaurant_list, 10)
     restaurant_page_number = request.GET.get('restaurant_page')
     restaurant_page_obj = restaurant_paginator.get_page(restaurant_page_number)
 
