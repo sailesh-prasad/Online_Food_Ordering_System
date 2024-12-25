@@ -5,7 +5,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-    
         <!-- Bootstrap & Icons -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -14,60 +13,60 @@
         <!-- AOS Library for Scroll Animations -->
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
-    <title>{{ restaurant.restaurantName }} Menu</title>
+        <title>{{ restaurant.restaurantName }} Menu</title>
 
-    <style>
-        /* General body styling */
-        .frozen-container {
-            
-            background: rgba(0, 0, 0, 0.2); /* Translucent white background */
-            backdrop-filter: blur(6px);
-            border-radius: 12px;
-            
-            padding:20px;
-          
-            animation: fadeIn 1s ease-in-out;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025);
-            max-width:90% !important;
+        <style>
+            /* General body styling */
+            .frozen-container {
+                
+                background: rgba(0, 0, 0, 0.2); /* Translucent white background */
+                backdrop-filter: blur(6px);
+                border-radius: 12px;
+                
+                padding:20px;
+              
+                animation: fadeIn 1s ease-in-out;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025);
+                max-width:90% !important;
 
+                
+            }
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(103deg, #3b5a3b, #9ced07);
+                /* background: url("{% static 'images/photobackground.jpg' %}") no-repeat center center fixed; */
+                background-size: cover;
+                color: #333;
+                overflow-x: hidden; /* Remove horizontal scroll bars */
+            }
+            .container{
+                max-width:100% !important;
+            }
+            .frozen-container-hero {
+                
+                background: rgba(0, 0, 0, 0.2); /* Translucent white background */
+                backdrop-filter: blur(6px);
+                height:19vh;
+                border-radius: 12px;
+                padding:20px;
+                width:100% 1!important;
+                animation: fadeIn 1s ease-in-out;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025);
+            }
             
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(103deg, #3b5a3b, #9ced07);
-            /* background: url("{% static 'images/photobackground.jpg' %}") no-repeat center center fixed; */
-            background-size: cover;
-            color: #333;
-            overflow-x: hidden; /* Remove horizontal scroll bars */
-        }
-        .container{
-            max-width:100% !important;
-        }
-        .frozen-container-hero {
-            
-            background: rgba(0, 0, 0, 0.2); /* Translucent white background */
-            backdrop-filter: blur(6px);
-            height:19vh;
-            border-radius: 12px;
-            padding:20px;
-            width:100% 1!important;
-            animation: fadeIn 1s ease-in-out;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025);
-        }
         
-    
-        h1 {
-            font-weight: bold;
-            color: #f9f9fa;
-            text-align: center;
+            h1 {
+                font-weight: bold;
+                color: #f9f9fa;
+                text-align: center;
 
-            font-size: 2rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        /* Customize the nav-tabs */
+                font-size: 2rem;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+            /* Customize the nav-tabs */
 /* Customize the nav-tabs */
 .custom-nav {
     margin: 0 auto;
@@ -377,58 +376,6 @@
 
     
 
-    <script>
-        function handleAddToCart(button) {
-            const formData = new FormData(button.closest("form"));
-            const action = button.value === "Add to Cart" ? "add" : "remove";
-            formData.append("action", action);
-
-            fetch(button.closest("form").action, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}"
-                }
-            }).then(response => {
-                if (response.ok) {
-                    if (action === "add") {
-                        button.classList.remove("btn-danger");
-                        button.classList.add("btn-success");
-                        button.value = "Remove from Cart";
-                    } else {
-                        button.classList.remove("btn-success");
-                        button.classList.add("btn-danger");
-                        button.value = "Add to Cart";
-                    }
-                }
-            }).catch(error => console.error("Error:", error));
-        }
-
-        function filterCategory(category) {
-            const foodCards = document.querySelectorAll(".food-card");
-            foodCards.forEach(card => {
-                if (category === "all" || card.dataset.category === category) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
-
-        function filterFoodItems() {
-            const query = document.getElementById("search-bar").value.toLowerCase();
-            const foodCards = document.querySelectorAll(".food-card");
-            foodCards.forEach(card => {
-                const foodName = card.querySelector(".card-title").textContent.toLowerCase();
-                if (foodName.includes(query)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
-    </script>
-
 </head>
 <header>{% include "home/header.html" %}</header>
 <body>
@@ -492,23 +439,24 @@
 </div>
 
 <!-- Food Items -->
-<div class="row">
-    {% for food in food_items %}
-    <div class="col-md-4 food-card" data-category="{{ food.category }}">
-        <div class="card mb-4">
-            <img src="/media/{{ food.image }}" class="card-img-top" alt="{{ food.name }}" 
-                 style="height: 200px; width: 100%; object-fit: cover;">
-            <div class="card-body">
-                <h5 class="card-title">{{ food.name }}</h5>
-                <p class="card-text">Category: {{ food.category }}</p>
-                <p class="card-text">Price: ₹{{ food.price }}</p>
-                <form action="{% url 'menu' %}" method="post">
-                    {% csrf_token %}
-                    <input hidden type="text" name="id" value="{{ food.id }}">
-                    <input type="button" class="btn {% if food.is_out_of_stock %}btn-secondary{% elif food.id in request.session.cart %}btn-success{% else %}btn-danger{% endif %}" 
-                           value="{% if food.is_out_of_stock %}Out of Stock{% elif food.id in request.session.cart %}Remove from Cart{% else %}Add to Cart{% endif %}" 
-                           onclick="handleAddToCart(this)" {% if food.is_out_of_stock %}disabled{% endif %}>
-                </form>
+ <BR>
+
+<section id="food-items-section" class="section">
+    <div class="food-items-row">
+        {% for food in food_items %}
+        <div class="food-item-col" data-category="{{ food.category }}">
+            <div class="food-card">
+                <img src="/media/{{ food.image }}" class="food-image" alt="{{ food.name }}">
+                <div class="food-details">
+                    <h4 class="food-name">{{ food.name }}</h4>
+                    <div class="food-info">
+                        <span class="food-category">Category: {{ food.category }}</span>
+                        <span class="food-price">Price: ₹{{ food.price }}</span>
+                    </div>
+                    <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})" {% if food.is_out_of_stock %}disabled{% endif %}>
+                        {% if food.is_out_of_stock %}Out of Stock{% else %}Add to Cart{% endif %}
+                    </button>
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -519,101 +467,33 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const micButton = document.getElementById("micButton");
-        const searchInput = document.getElementById("searchInput");
+    function toggleCart(foodId) {
+        var button = document.getElementById('btn-' + foodId);
+        var action = button.innerHTML.trim() === "Add to Cart" ? "add" : "remove";
+        
+        console.log("Button clicked for foodId:", foodId, "Action:", action);
 
-        // Check if browser supports SpeechRecognition
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            micButton.disabled = true;
-            micButton.title = "Voice search is not supported in this browser.";
-            return;
-        }
-
-        const recognition = new SpeechRecognition();
-        recognition.lang = "en-US";
-
-        micButton.addEventListener("click", () => {
-            recognition.start();
-        });
-
-        recognition.onstart = () => {
-            micButton.classList.add("listening");
-            micButton.innerHTML = <i class="bi bi-mic-fill"></i>;
-        };
-
-        recognition.onend = () => {
-            micButton.classList.remove("listening");
-            micButton.innerHTML = <i class="bi bi-mic"></i>;
-        };
-
-        recognition.onresult = (event) => {
-            let transcript = event.results[0][0].transcript;
-            transcript = transcript.trim().replace(/\.$/, ''); // Remove trailing period
-            searchInput.value = transcript;
-            filterFoodItems(); // Trigger the food items filter
-        };
-
-        recognition.onerror = (event) => {
-            console.error("Speech recognition error:", event.error);
-        };
-    });
-
-    function filterFoodItems() {
-        // Logic to filter food items based on search input
-        const query = document.getElementById("searchInput").value.toLowerCase();
-        const foodCards = document.querySelectorAll(".food-card");
-
-        foodCards.forEach(card => {
-            const foodName = card.querySelector(".card-title").textContent.toLowerCase();
-            if (foodName.includes(query)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
+        // Send the foodId to the server via a POST request
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'menu' %}", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");  // Add CSRF token for security
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // On success, toggle the button text and style
+                if (action === "add") {
+                    button.innerHTML = "Remove from Cart";
+                    button.style.backgroundColor = "#4CAF50";  // Green color for added items
+                    button.style.cursor = "pointer";
+                } else {
+                    button.innerHTML = "Add to Cart";
+                    button.style.backgroundColor = "#d30a0a";  // Original color for add to cart
+                    button.style.cursor = "pointer";
+                }
+                console.log("Button state updated for foodId:", foodId, "New state:", button.innerHTML.trim());
             }
-        });
-    }
-</script>
-<script>
-    function handleAddToCart(button) {
-        button.classList.remove("btn-danger");
-        button.classList.add("btn-success");
-        button.value = "Added to Cart";
-        button.disabled = true;
-
-        const formData = new FormData(button.closest("form"));
-        fetch(button.closest("form").action, {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}"
-            }
-        }).catch(error => console.error("Error:", error));
-    }
-
-    function filterCategory(category) {
-        const foodCards = document.querySelectorAll(".food-card");
-        foodCards.forEach(card => {
-            if (category === "all" || card.dataset.category === category) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    }
-
-    function filterFoodItems() {
-        const query = document.getElementById("search-bar").value.toLowerCase();
-        const foodCards = document.querySelectorAll(".food-card");
-        foodCards.forEach(card => {
-            const foodName = card.querySelector(".card-title").textContent.toLowerCase();
-            if (foodName.includes(query)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
+        };
+        xhr.send("id=" + foodId + "&action=" + action);
     }
 </script>
 
