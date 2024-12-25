@@ -869,68 +869,67 @@ color: #ffcdd2;
                 <button class="arrow-btn left-btn">&#8592;</button>
                 <div class="scroll-wrapper">
                     
-                    
 
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Biryani')">
                             <img class="img-fluid" src="{% static 'images/biryani.jpg' %}" alt="pizza image">
                             <p>Biryani</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Burger')">
                             <img class="img-fluid" src="{% static 'images/Burger.jpg' %}" alt="biryani image">
                             <p>Burger</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Fish Fry')">
                             <img class="img-fluid" src="{% static 'images/Fish_fry.jpg' %}" alt="thali image">
                             <p>Fish Fry</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Chicken Fry')">
                             <img class="img-fluid" src="{% static 'images/Chicken_Fry.jpg' %}" alt="paneer image">
                             <p>Chicken Fry</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Barbique')">
                             <img class="img-fluid" src="{% static 'images/panner_barbique.jpg' %}" alt="thali image">
                             <p>Barbique</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Noodles')">
                             <img class="img-fluid" src="{% static 'images/noodles.jpg' %}" alt="noodle image">
                             <p>Noodles</p>
                         </div>
 
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Pizza')">
                             <img class="img-fluid" src="{% static 'images/pizza.jpg' %}" alt="pizza image">
                             <p>Pizza</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Kessari')">
                             <img class="img-fluid" src="{% static 'images/kesari.jpg' %}" alt="biryani image">
                             <p>Kessari</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Dessert')">
                             <img class="img-fluid" src="{% static 'images/dessert.jpg' %}" alt="paneer image">
                             <p>Dessert</p>
                         </div>
                        
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Cutlut')">
                             <img class="img-fluid" src="{% static 'images/Cutlut.jpg' %}" alt="noodle image">
                             <p>Cutlut</p>
                         </div>
 
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Naan')">
                             <img class="img-fluid" src="{% static 'images/Mushroom_nan.jpg' %}" alt="pizza image">
                             <p>Naan</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Panner Fry')">
                             <img class="img-fluid" src="{% static 'images/Panner_tikka.jpg' %}" alt="biryani image">
                             <p>Panner Fry</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Prawn Fry')">
                             <img class="img-fluid" src="{% static 'images/prawn_fry.jpg' %}" alt="paneer image">
                             <p>Prawn Fry</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Pulav')">
                             <img class="img-fluid" src="{% static 'images/Pulav.jpg' %}" alt="thali image">
                             <p>Pulav</p>
                         </div>
-                        <div class="scroll-item">
+                        <div class="scroll-item" onclick="redirectToSearch('Salad')">
                             <img class="img-fluid" src="{% static 'images/salad.jpg' %}" alt="noodle image">
                             <p>Salad</p>
                         </div>
@@ -1205,6 +1204,24 @@ color: #ffcdd2;
             }
         };
         xhr.send("id=" + foodId + "&action=" + action);
+    }
+
+    function redirectToSearch(query) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{% url 'search' %}";
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = 'csrfmiddlewaretoken';
+        csrfToken.value = '{{ csrf_token }}';
+        form.appendChild(csrfToken);
+        const searchInput = document.createElement('input');
+        searchInput.type = 'hidden';
+        searchInput.name = 'search';
+        searchInput.value = query;
+        form.appendChild(searchInput);
+        document.body.appendChild(form);
+        form.submit();
     }
 </script>
 {% include "home/footer.html" %}
