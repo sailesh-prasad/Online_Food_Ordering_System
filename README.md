@@ -48,7 +48,7 @@ The goal of this project is to streamline the interaction between customers and 
 #### **Restaurants:**
 - View, accept, or decline orders.
 - Assign delivery personnel to specific orders.
-- Update order statuses (e.g., "Preparing," "Out for Delivery").
+- Update order statuses (e.g., "Confirmed", "Out for Delivery").
 
 #### **Delivery Management:**
 - Record geolocation data for delivery personnel.
