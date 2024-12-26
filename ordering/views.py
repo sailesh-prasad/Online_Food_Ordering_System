@@ -283,7 +283,7 @@ def feedback_form(request):
             Fb.comments = comments
             Fb.user_type = user_type
             Fb.save()
-            return render(request, 'thank_you.html')  # Render the thank you page
+            return redirect("logout")  # Render the thank you page
         except:
             return HttpResponse('<h1>Sorry!</h1><p>There is an issue</p>')
     return render(request, 'feedback.html')
