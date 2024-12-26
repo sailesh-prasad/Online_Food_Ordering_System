@@ -109,7 +109,7 @@ def registerRestaurant(request):
         location = geolocator.geocode(place)
         if not location:
             messages.error(request, 'Unable to fetch location details for the provided place.')
-            return redirect('register')
+            return redirect('loginRestaurant')
         
         latitude = location.latitude
         longitude = location.longitude

@@ -284,6 +284,30 @@ def track_locations(request, order_id):
 
     return render(request, 'home/track_locations.html', context)
 
+@login_required
+def track_delivery(request):
+    last_order = Order.objects.filter(customer=request.user).order_by('-id').first()
+    if not last_order:
+        messages.error(request, "No orders found.")
+        return redirect('orders')
+
+    customer = last_order.customer
+    try:
+        restaurant = restaurantUser.objects.get(restaurantName=last_order.restaurant_name)
+    except restaurantUser.DoesNotExist:
+        messages.error(request, "Restaurant user does not exist.")
+        return redirect('orders')
+
+    context = {
+        'order': last_order,
+        'customer_latitude': customer.latitude,
+        'customer_longitude': customer.longitude,
+        'restaurant_latitude': restaurant.latitude,
+        'restaurant_longitude': restaurant.longitude
+    }
+
+    return render(request, 'home/track_locations.html', context)
+
 def register(request):
     if request.method == 'POST':
         name = request.POST['name']
