@@ -137,14 +137,14 @@ def registerDelivery(request):
             city = City.objects.get(id=city_id)
         except (State.DoesNotExist, City.DoesNotExist):
             messages.error(request, 'Invalid State or City selected.')
-            return redirect('register')
+            return redirect('loginDelivery')
 
         # Get latitude and longitude for the place
         geolocator = Nominatim(user_agent="DeliveryRegistration")
         location = geolocator.geocode(place)
         if not location:
             messages.error(request, 'Unable to fetch location details for the provided place.')
-            return redirect('register')
+            return redirect('loginDelivery')
 
         latitude = location.latitude
         longitude = location.longitude
