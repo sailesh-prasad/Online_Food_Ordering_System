@@ -1,38 +1,39 @@
-# Restaurant Ordering and Delivery Platform
+# Food Ordering System
 
 ## Introduction
 
-The goal of this project is to streamline the interaction between customers and restaurants, improving the online food ordering experience. The platform will enable customers to search for restaurants, browse menus, place orders, and track their deliveries in real-time. For restaurants, it will provide a system to manage orders, assign delivery personnel, and offer live updates on order status. The platform will also integrate delivery management features, including real-time tracking and geolocation data capture. 
+The goal of this project is to streamline the interaction between customers and restaurants, improving the online food ordering experience. The platform will enable customers to search for restaurants, browse menus, place orders, and track their deliveries in real-time. For restaurants, it will provide a system to manage orders, assign delivery personnel, and offer live updates on order status. The platform will also integrate delivery management features, including real-time tracking and geolocation data capture, as well as email notifications for user registration, login, and order updates.
 
-**Key Features:**
-- **Customer:** Search for restaurants, browse menus, place orders, track deliveries.
-- **Restaurant:** Manage orders, assign deliveries, update order statuses.
-- **Delivery Management:** Capture geolocation data, display real-time tracking on maps.
+### Key Features:
+- **Customer**: Search for restaurants, browse menus, place orders, track deliveries, and receive email notifications.
+- **Restaurant**: Manage orders, assign deliveries, update order statuses.
+- **Delivery Management**: Capture geolocation data, display real-time tracking on maps.
 
-**Technologies:**
-- Modern web technologies and frameworks, such as React.js, Django, and Docker.
+### Technologies:
+- Web development with **HTML**, **CSS**, **JavaScript**.
+- **Django** for backend development and API integration.
+- **SQLite** for development database.
+- **Docker** for containerization.
+- **Email Notifications** using **Django Email** for order confirmation, user registration, and login.
 
 ---
 
 ## Project Scope
 
 ### **For Customers:**
-- **Search for Restaurants** by name, cuisine, or location.
-- **Browse Menus** and place orders for food.
-- **Real-Time Order Tracking** to view the delivery status and estimated arrival.
+- **Search for Restaurants**: Customers can search for restaurants by name, cuisine, or location.
+- **Browse Menus**: Customers can view menu items and select their desired food.
+- **Real-Time Order Tracking**: Customers can view the delivery status and estimated arrival time.
+- **Email Notifications**: Customers will receive confirmation emails upon order placement and successful delivery.
 
 ### **For Restaurants:**
-- **View and Manage Orders**: Restaurants can view incoming orders, accept or decline them, and track order status.
-- **Assign Delivery Personnel**: Allocate delivery tasks to drivers.
-- **Update Order Status**: Provide real-time updates on order progress.
+- **View and Manage Orders**: Restaurants can view incoming orders, accept or decline them, and track order statuses.
+- **Assign Delivery Personnel**: Allocate delivery tasks to available drivers based on proximity.
+- **Update Order Status**: Provide real-time updates on order progress, such as “Preparing”, “Out for Delivery”.
 
 ### **Delivery Management:**
-- **Geolocation Tracking**: Capture delivery routes and locations for real-time tracking.
-- **Live Map-based Updates**: Display delivery progress on a map in real-time.
-
-### **Scalability & Usability:**
-- Designed to handle high user traffic.
-- Secure and reliable services to ensure smooth transactions and communication.
+- **Geolocation Tracking**: Real-time tracking of the delivery agent’s location during delivery.
+- **Live Map-based Updates**: Display delivery progress on a map in real-time for both customers and restaurant staff.
 
 ---
 
@@ -44,9 +45,10 @@ The goal of this project is to streamline the interaction between customers and 
 - Ability to search for restaurants.
 - View restaurant menus and place orders.
 - Real-time tracking of orders.
+- Receive email notifications about registration, login, and order delivery.
 
 #### **Restaurants:**
-- View, accept, or decline orders.
+- Ability to view, accept, or decline orders.(e.g., "Out Of Stock")
 - Assign delivery personnel to specific orders.
 - Update order statuses (e.g., "Confirmed", "Out for Delivery").
 
@@ -65,7 +67,6 @@ The goal of this project is to streamline the interaction between customers and 
 
 ### **Frontend:**
 - **HTML, CSS, JavaScript**: For web development.
-- **React.js or Vue.js**: To build responsive, dynamic user interfaces.
 
 ### **Backend:**
 - **Django**: Framework for backend development, ensuring robust server-side functionality.
@@ -73,7 +74,6 @@ The goal of this project is to streamline the interaction between customers and 
 
 ### **Database:**
 - **SQLite**: For development and testing environments.
-- **PostgreSQL** (for production): A scalable, production-ready database system.
 
 ### **Deployment:**
 - **Docker**: Containerization to ensure consistency across different environments (local, staging, production).
@@ -96,13 +96,13 @@ The goal of this project is to streamline the interaction between customers and 
 4. **Order Tracking**: Real-time updates on order status and live map tracking of deliveries.
 
 ### **Restaurant Features:**
-1. **Order Management**: Restaurants can accept or decline incoming orders.
+1. **Order Management**: Restaurants can accept or decline incoming orders (e.g., "Out of Stock").
 2. **Assign Delivery Personnel**: Allocate orders to specific delivery drivers.
 3. **Order Status Updates**: Provide real-time updates to customers regarding their order (e.g., "In Progress," "Out for Delivery").
 
 ### **Delivery Features:**
 1. **Geolocation**: Capture and store real-time location data for deliveries.
-2. **Live Updates**: Provide real-time map updates to customers and restaurant staff.
+2. **Live Updates**: Provide real-time map updates to customers.
 
 ---
 
@@ -113,7 +113,7 @@ The goal of this project is to streamline the interaction between customers and 
 - Initialize the Git repository and connect it to GitHub for version control.
 
 ### **2. Frontend Development:**
-- Design and build responsive web pages using React.js or Vue.js.
+- Design and build responsive web pages using JavaScript.
 - Integrate API calls for fetching restaurant data, placing orders, and tracking deliveries.
 
 ### **3. Backend Development:**
@@ -122,7 +122,7 @@ The goal of this project is to streamline the interaction between customers and 
 
 ### **4. Deployment:**
 - Containerize the application using Docker to ensure consistency across environments.
-- Test the application thoroughly before deploying to cloud platforms (e.g., AWS, Azure).
+- Test the application thoroughly before deploying to cloud platforms (e.g., Docker).
 
 ---
 
@@ -153,6 +153,8 @@ The goal of this project is to streamline the interaction between customers and 
 
 ## Conclusion
 
-This project aims to provide a comprehensive solution for the food delivery industry, improving the user experience for customers and streamlining operations for restaurants. By leveraging modern web technologies, scalable architecture, and real-time tracking features, the platform is well-positioned to meet the demands of high traffic volumes while offering a seamless experience. 
+This project aims to provide a comprehensive solution for the food delivery industry, improving the user experience for customers and streamlining operations for restaurants. By leveraging modern web technologies, scalable architecture, and real-time tracking features, the platform is well-positioned to meet the demands of high traffic volumes while offering a seamless experience.
 
-**Case Study:** The project demonstrates the practical application of engineering principles such as modular architecture, real-time data handling, and containerized deployment—making it adaptable and scalable for future enhancements.
+**Case Study**: The project demonstrates the practical application of engineering principles such as modular architecture, real-time data handling, and containerized deployment—making it adaptable and scalable for future enhancements.
+
+---
