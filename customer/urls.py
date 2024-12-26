@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from customer import views as customerviews
+from . import views
 
 urlpatterns = [
     path('login/', customerviews.loginUser, name='login'),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('load-places/', customerviews.load_places, name='load_places'),
     path('orders/', customerviews.orders, name='orders'),
     path('make_payment/', customerviews.make_payment, name='make_payment'),
+    path('track_locations/<int:order_id>/', views.track_locations, name='track_locations'),
 ]
 
 if settings.DEBUG:

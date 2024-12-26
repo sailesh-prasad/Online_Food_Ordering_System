@@ -1,4 +1,3 @@
-
 {%load static%}
 
 <!DOCTYPE html>
@@ -8,26 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-    <script>
+    {% comment %} <script>
       document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("form");
         form.addEventListener("submit", function (event) {
           const email = document.getElementById("email");
           const password = document.getElementById("password");
+          const emailError = document.getElementById('email-error');
+          const passwordError = document.getElementById('password-error');
           let valid = true;
 
           if (!email.value) {
             valid = false;
             email.classList.add("error");
+            emailError.textContent = 'Email is required.';
           } else {
             email.classList.remove("error");
+            emailError.textContent = '';
           }
 
           if (!password.value) {
             valid = false;
             password.classList.add("error");
+            passwordError.textContent = 'Password is required.';
           } else {
             password.classList.remove("error");
+            passwordError.textContent = '';
           }
 
           if (!valid) {
@@ -36,7 +41,7 @@
           }
         });
       });
-    </script>
+    </script> {% endcomment %}
     <style>
       body {
         background-image: url('{% static "images/background1.jpg" %}');
@@ -223,6 +228,7 @@
         display: none;
         color: red;
         margin-bottom: 10px;
+        font-weight: bold; /* Make the error message bold */
       }
 
       .alert {
@@ -234,11 +240,31 @@
       .alert-danger {
         background-color: #f8d7da;
         color: #721c24;
+        font-weight: bold; /* Make the error message bold */
       }
 
       .alert-primary {
-        background-color: #cce5ff;
-        color: #004085;
+        background-color: #c3e6cb; /* Light green background */
+        color: #155724;
+      }
+
+
+      .error-message {
+        display: block;
+        color: red;
+        font-size: 16px;
+        margin-top: 5px;
+        font-weight: bold; /* Make the error message bold */
+      }
+      .alert {
+        text-align: center;
+        font-weight: bold;
+      }
+      .alert-danger {
+        color: red;
+      }
+      .alert-primary {
+        color: green;
       }
     </style>
   </head>
@@ -283,6 +309,9 @@
                   {% endfor %}
               {% endif %}
 
+              <!-- Error message for empty fields -->
+              {% comment %} <div id="error-message">Please fill in all fields.</div> {% endcomment %}
+
               <!-- Email -->
               <div class="form-field">
                   <label for="email">Email:</label>
@@ -306,7 +335,7 @@
                       name="password" 
                       placeholder="Enter your password" 
                       required 
-                      pattern="(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}"
+                      pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}"
                   >
                   <small class="error-message" id="password-error"></small>
               </div>
@@ -340,9 +369,9 @@
     </section>
 
     <!-- Footer Section -->
-    <footer>
+    {% comment %} <footer>
         {% include 'home/footer.html' %}
-    </footer>
+    </footer> {% endcomment %}
 
   <script>
       document.addEventListener('DOMContentLoaded', function () {
@@ -371,12 +400,12 @@
               if (!passwordField.value.trim()) {
                   passwordError.textContent = 'Password is required.';
                   valid = false;
-              }
+              } 
               
-              {% comment %} else if (!/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
+              {% comment %} else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}/.test(passwordField.value)) {
                   passwordError.textContent = 'Password must have at least 8 characters of multi character';
                   valid = false;
-              } {% endcomment %}
+              } {% endcomment %}//"Remove the comments later"
               
               else {
                   passwordError.textContent = '';

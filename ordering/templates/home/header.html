@@ -1,15 +1,37 @@
-<!-- filepath: /c:/Users/chand/OneDrive/Desktop/FoodOrdering/Food-ordering/ordering/templates/home/header.html -->
 {% load static %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href={% static 'style.css' %}>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 {% include 'loader.html' %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light text-muted fixed-top">
-  <a class="navbar-brand px-3"><span style="font-family: 'Poetsen One'; font-weight: 400; font-size: larger;">Hii {{ name }}!</span></a>
+
+<style>
+ 
+ 
+  /* Custom Styles for Navbar */
+  .navbar-custom {
+ 
+      color: white !important;
+  }
+  .navbar-custom .navbar-nav .nav-link {
+      color: white !important;
+  }
+  .navbar-custom .navbar-brand span {
+      color: white !important;
+  }
+  .navbar-custom .nav-link:hover {
+      text-decoration: underline;
+      color: lightgray !important;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-custom position-sticky">
+  <a class="navbar-brand px-3">
+    <span style="font-family: 'Poetsen One'; font-weight: 400; font-size: larger;padding-left:15px;">Hii {{ name }}!</span>
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
   </button>

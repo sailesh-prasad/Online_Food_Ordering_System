@@ -191,6 +191,7 @@
             display: none;
             color: red;
             margin-bottom: 10px;
+            font-weight: bold; /* Make the error message bold */
           }
     
           .alert {
@@ -202,31 +203,32 @@
           .alert-danger {
             background-color: #f8d7da;
             color: #721c24;
+            font-weight: bold; /* Make the error message bold */
           }
     
           .alert-primary {
-            background-color: #cce5ff;
-            color: #004085;
+            background-color: #c3e6cb; /* Light green background */
+            color: #155724;
           }
 
 
-        .error-message {
+          .error-message {
             display: block;
             color: red;
             font-size: 16px;
             margin-top: 5px;
-            font-weight: 700;
-        }
-        .alert {
+            font-weight: bold; /* Make the error message bold */
+          }
+          .alert {
             text-align: center;
             font-weight: bold;
-        }
-        .alert-danger {
+          }
+          .alert-danger {
             color: red;
-        }
-        .alert-primary {
+          }
+          .alert-primary {
             color: green;
-        }
+          }
     </style>
 </head>
 <body>
@@ -273,7 +275,7 @@
                 <!-- Email input (Username) -->
                 <div class="form-field">
                     <label for="email">Email:</label>
-                    <input type="text" id="email" name="email" placeholder="Enter your delivery email or username" required>
+                    <input type="text" id="email" name="email" placeholder="Enter your delivery email" required>
                     <small class="error-message" id="email-error"></small>
                 </div>
 
@@ -352,11 +354,6 @@
                     valid = false;
                 }
                 
-                {% comment %} else if (!passwordPattern.test(password.value)) {
-                    passwordError.textContent = 'Password must have at least 8 characters, including uppercase, lowercase, a number, and a special character.';
-                    valid = false;
-                } 
-                 {% endcomment %}
                 else {
                     passwordError.textContent = '';
                 }

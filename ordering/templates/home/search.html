@@ -42,22 +42,38 @@
                 {% endfor %}
             </div>
 
-            <h3 class="text-center">Food Items</h3>
-            <div class="card-container">
-                {% for food in food_results %}
-                    <div class="card">
-                        <img src="{{ food.image.url }}" alt="{{ food.name }}" class="food-img">
-                        <h3>{{ food.name }}</h3>
-                        <p class="price">₹{{ food.price }}</p>
-                        <p class="restaurant">{{ food.restaurantName.restaurantName }}</p>
-                        <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})">
-                            Add to Cart
-                        </button>
-                    </div>
-                {% empty %}
-                    <p>No food items found.</p>
-                {% endfor %}
-            </div>
+          
+
+            <div class="menu-container">
+                <h1>Food Items Found</h1>
+                <div class="food-item-grid">
+                    {% for food in food_results %}
+                   <div class="food-card" id="food-{{ food.id }}">
+                      <img src="{{ food.image.url }}" alt="{{ food.name }}" class="food-img">
+                      <h3>{{ food.name }}</h3>
+                      <p class="price">₹{{ food.price }}</p>
+                      <p class="restaurant">{{ food.restaurantName.restaurantName }}</p>
+                      <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})">
+                      Add to Cart
+                      </button>
+                   </div>
+                   {% endfor %}
+                </div>
+             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {% else %}
             <h2 class="no-results text-center">No results found</h2>
         {% endif %}
@@ -72,7 +88,7 @@
             var action = button.innerHTML.trim() === "Add to Cart" ? "add" : "remove";
             
             console.log("Button clicked for foodId:", foodId, "Action:", action);
-    
+        
             // Send the foodId to the server via a POST request
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "{% url 'menu' %}", true);
@@ -83,12 +99,12 @@
                     // On success, toggle the button text and style
                     if (action === "add") {
                         button.innerHTML = "Remove from Cart";
-                        button.style.backgroundColor = "#4CAF50";  // Green color for added items
+                          // Green color for added items
                         button.style.cursor = "pointer";
                         foodCard.classList.add('added-to-cart');
                     } else {
                         button.innerHTML = "Add to Cart";
-                        button.style.backgroundColor = "#FFA500";  // Original color for add to cart
+                          // Original color for add to cart
                         button.style.cursor = "pointer";
                         foodCard.classList.remove('added-to-cart');
                     }
@@ -97,6 +113,7 @@
             };
             xhr.send("id=" + foodId + "&action=" + action);
         }
+     </script>
 
 
 

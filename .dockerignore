@@ -1,0 +1,10 @@
+# Ignore the SQLite database file
+db.sqlite3
+
+# Ignore Django migration files 
+*/migrations/* 
+!*/migrations/__init__.py
+
+# Ignore Python cache files
+__pycache__/
+*.pyc

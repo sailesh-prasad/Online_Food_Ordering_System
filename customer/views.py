@@ -16,7 +16,23 @@ from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 from restaurant.models import foodItems, restaurantUser  # Add this import
 from django.core.mail import send_mail  # Add this import
+from geopy.geocoders import Nominatim
 import os  # Add this import
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.list import ListView
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+
+from customer.models import customerUser, Contact, Order, Customer, State, City, Place
+from restaurant.models import foodItems, restaurantUser
+import os
+from random import choice
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 User = get_user_model()
@@ -25,7 +41,7 @@ def loginUser(request):
 
     
     if request.method == 'POST':
-        User = get_user_model()
+        # User = get_user_model()
         username = request.POST.get('email')
         password = request.POST.get('password')
         
@@ -34,9 +50,9 @@ def loginUser(request):
         #     return redirect('login')
 
         user = authenticate(username=username, password=password)
-        print(user)
+        # print(user)
         if user is None:
-            messages.error(request,'Invalid Password or Username')
+            messages.error(request,'Invalid Username or Password')
             return redirect('login')
         elif user.is_delivery:
             messages.error(request,'You are Registered as delivery')
@@ -79,8 +95,8 @@ def loginUser(request):
     Bon appétit,<br>
     Food Ordering Team 🍽️""".format(user_name, restaurant_links)
 )
-            render(request,'authentication/login.html')
-            return redirect('menu')
+            # render(request,'authentication/login.html')
+        return redirect('menu')
 
 
         
@@ -89,28 +105,44 @@ def loginUser(request):
 def registerUser(request):
     states = State.objects.all()
     if request.method == 'POST':
+        # Collect form data
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         state_id = request.POST.get('state')
         city_id = request.POST.get('city')
-        place_id = request.POST.get('place')
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
+        place = request.POST.get('place')
         password = request.POST.get('password')
-        
-        state = State.objects.get(id=state_id)
-        city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
 
+        # Validate state and city
+        try:
+            state = State.objects.get(id=state_id)
+            city = City.objects.get(id=city_id)
+        except (State.DoesNotExist, City.DoesNotExist):
+            messages.error(request, 'Invalid State or City selected.')
+            return redirect('register')
+
+        # Get latitude and longitude for the place
+        geolocator = Nominatim(user_agent="CustomerRegistration")
+        location = geolocator.geocode(place)
+        if not location:
+            messages.error(request, 'Unable to fetch location details for the provided place.')
+            return redirect('register')
+
+        latitude = location.latitude
+        longitude = location.longitude
+
+        # Check if user exists
         if customerUser.objects.filter(email=email).exists():
             messages.error(request, 'User Already Exists in the System')
-            return redirect('registerUser')
+            return redirect('login')
 
+        # Hash the password
         hashed_password = make_password(password)
 
         try:
+            # Create the customer instance
             customer = Customer.objects.create(
                 name=name,
                 address=address,
@@ -119,6 +151,7 @@ def registerUser(request):
                 password=hashed_password
             )
 
+            # Create the user instance
             user = customerUser.objects.create(
                 name=name,
                 email=email,
@@ -134,11 +167,15 @@ def registerUser(request):
                 customer=customer
             )
             user.save()
+
+            # Optionally, send a welcome email
+            ...
+
             messages.success(request, 'Successfully Registered')
             return redirect('login')
         except Exception as e:
             messages.error(request, f'Error!! Try Again: {e}')
-            return redirect('registerUser')
+            return redirect('register')
 
     return render(request, 'authentication/register.html', {'states': states})
 
@@ -183,6 +220,7 @@ def orders(request):
     user_orders = Order.objects.filter(customer=request.user)
     return render(request, 'home/orders.html', {'orders': user_orders})
 
+@login_required
 def make_payment(request):
     if request.method == 'POST':
         cart = request.session.get('cart', {})
@@ -191,7 +229,7 @@ def make_payment(request):
         for item_id, item in cart.items():
             food_item = foodItems.objects.get(id=item_id)
             restaurant_name = food_item.restaurantName.restaurantName
-            if (restaurant_name not in orders):
+            if restaurant_name not in orders:
                 orders[restaurant_name] = {
                     'items': [],
                     'total_price': 0,
@@ -205,12 +243,13 @@ def make_payment(request):
             })
             orders[restaurant_name]['total_price'] += food_item.price * item
 
+        order_instance = None
         for order in orders.values():
             order_instance = Order.objects.create(
                 customer=customerUser.objects.get(id=request.user.id),
                 item=', '.join([f"{i['name']} (x{i['quantity']})" for i in order['items']]),
                 quantity=sum([i['quantity'] for i in order['items']]),
-                category=', '.join(set([i['category'] for i in order['items']])), 
+                category=', '.join(set([i['category'] for i in order['items']])),
                 sum_of_price=order['total_price'],
                 order_no=get_random_string(10),
                 restaurant_name=order['restaurant_name']
@@ -218,8 +257,32 @@ def make_payment(request):
             order_instance.save()
 
         request.session['cart'] = {}
-        return redirect('orders')
+        if order_instance:
+            return redirect('track_locations', order_id=order_instance.id)
+        else:
+            messages.error(request, "No orders were created.")
+            return redirect('orders')
     return redirect('cart')
+
+@login_required
+def track_locations(request, order_id):
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
+    customer = order.customer
+    try:
+        restaurant = restaurantUser.objects.get(restaurantName=order.restaurant_name)
+    except restaurantUser.DoesNotExist:
+        messages.error(request, "Restaurant user does not exist.")
+        return redirect('orders')
+
+    context = {
+        'order': order,
+        'customer_latitude': customer.latitude,
+        'customer_longitude': customer.longitude,
+        'restaurant_latitude': restaurant.latitude,
+        'restaurant_longitude': restaurant.longitude
+    }
+
+    return render(request, 'home/track_locations.html', context)
 
 def register(request):
     if request.method == 'POST':
@@ -256,4 +319,3 @@ def register(request):
 
     states = State.objects.all()
     return render(request, 'authentication/register.html', {'states': states})
-

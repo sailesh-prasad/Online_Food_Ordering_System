@@ -24,6 +24,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetCompleteView
 from django.contrib.messages.views import SuccessMessageMixin
+from geopy.geocoders import Nominatim
 # Create your views here.
 
 # Create your views here.
@@ -97,14 +98,21 @@ def registerRestaurant(request):
         restaurantContact = request.POST.get('restaurantContact')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
         state_id = request.POST.get('state')
         city_id = request.POST.get('city')
         place_id = request.POST.get('place')
         state = State.objects.get(id=state_id)
         city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
+        place = request.POST.get('place')
+
+        geolocator = Nominatim(user_agent="RestaurantRegistration")
+        location = geolocator.geocode(place)
+        if not location:
+            messages.error(request, 'Unable to fetch location details for the provided place.')
+            return redirect('register')
+        
+        latitude = location.latitude
+        longitude = location.longitude
 
         restaurant_data = restaurantUser(
             restaurantName=restaurantName,
@@ -131,6 +139,38 @@ def registerRestaurant(request):
 
         else:
             restaurant_data.save()
+            from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
+            user_name = restaurantUser.objects.get(email=email).restaurantName
+            view_orders_link = request.build_absolute_uri('/restaurantOrders/')
+            check_menu_link = request.build_absolute_uri('/addMenu/')
+            send_mail(
+    'Welcome, {}! Let’s Make Today Delicious!'.format(user_name),  # Subject line with dynamic user_name
+    """Hello {},
+
+Your kitchen is ready to serve! 🌟
+Check out today’s orders and get ready to satisfy your customer's cravings!
+
+👉 [View New Orders]({view_orders_link})
+👉 [Check Your Menu]({check_menu_link})
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                view_orders_link=view_orders_link, 
+                                                                check_menu_link=check_menu_link),  # Plain text email content
+    from_email,  # Sender's email
+    [restaurant_data.email],  # Recipient's email
+    fail_silently=False,  # Fail silently if set to False
+    html_message="""Hello {},<br><br>
+
+Your kitchen is ready to serve! 🌟<br>
+Check out today’s orders and get ready to satisfy your customer's cravings!<br><br>
+
+👉 <a href="{view_orders_link}">View New Orders</a><br>
+👉 <a href="{check_menu_link}">Check Your Menu</a><br>
+
+We’re excited to see the magic your team creates today! 🍽️""".format(user_name, 
+                                                                   view_orders_link=view_orders_link, 
+                                                                   check_menu_link=check_menu_link)  # HTML email content
+)
             messages.success(request, "Successfully Registered")
             return redirect('loginRestaurant')
 
