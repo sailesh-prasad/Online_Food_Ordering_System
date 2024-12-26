@@ -953,7 +953,7 @@ color: #ffcdd2;
         
             
             <div class="features-container">
-                <div class="feature-card">
+                <div class="feature-card" onclick="redirectToTrackDelivery();">
                     <i class="feature-icon fas fa-location-dot"></i>
                     <h6>Track Order</h6>
                 </div>
@@ -1360,6 +1360,19 @@ color: #ffcdd2;
         searchInput.name = 'search';
         searchInput.value = query;
         form.appendChild(searchInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function redirectToTrackDelivery() {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{% url 'track_delivery' %}";
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = 'csrfmiddlewaretoken';
+        csrfToken.value = '{{ csrf_token }}';
+        form.appendChild(csrfToken);
         document.body.appendChild(form);
         form.submit();
     }

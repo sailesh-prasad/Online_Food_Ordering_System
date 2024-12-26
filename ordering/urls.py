@@ -67,6 +67,7 @@ urlpatterns = [
     path('search', views.search, name='search'),
     path('filter', views.filter, name ='filter'),
     path('city-autocomplete/', views.city_autocomplete, name='city_autocomplete'),
+    path('track_delivery/', customerviews.track_delivery, name='track_delivery'),
    
 ]
 
