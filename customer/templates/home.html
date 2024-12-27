@@ -359,7 +359,7 @@ html {
         <div class="service-box">
             <div class="service-img" style="background-image: url('{% static "images/photo1.jpg" %}');"></div>
             <div class="service-content">
-                <h3>Hungry ? We've Got You!</h3>
+                <h3>Hungry ? We've Got You Here!</h3>
                 <p>Sign up to explore a variety of cuisines from local restaurants.</p>
                 <a class="btn" href="/login">Explore</a>
 
@@ -384,8 +384,10 @@ html {
         </div>
     </section>
 
-    <!-- Footer HTML -->
+    
 <footer class="footer">
+    <!-- Footer HTML -->
+        {% comment %} <center><b><p>&copy; 2024 Food Ordering System | All Rights Reserved</p></b></center> {% endcomment %}
     <div class="footer-container">
         <!-- About Us Section -->
         <div class="footer-section about">
@@ -398,10 +400,10 @@ html {
             <h4>Useful Links</h4>
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Menu</a></li>
+                <!--<li><a href="#">Menu</a></li>
                 <li><a href="#">Track Order</a></li>
                 <li><a href="#">Contact Us</a></li>
-                <li><a href="#">FAQ</a></li>
+                <li><a href="#">FAQ</a></li> -->
                 <li><a href="#">Privacy Policy</a></li>
                 <li><a href="#">Terms of Service</a></li>
             </ul>
@@ -427,7 +429,7 @@ html {
             </form>
         </div>
 
-        <!-- Contact Us Section -->
+        {% comment %} <!-- Contact Us Section -->
         <div class="footer-section contact">
             <h4>Contact Us</h4>
             <ul>
@@ -435,12 +437,10 @@ html {
                 <li>Phone: <a href="tel:+123456789">+1 (234) 567-89</a></li>
                 <li>Address: 123 Food St, Delivery City</li>
             </ul>
-        </div>
+        </div> {% endcomment %}
     </div>
 
-    <div class="footer-bottom">
-        <p>&copy; 2024 Food Delivery Service | All Rights Reserved</p>
-    </div>
+    
 </footer>
 
     

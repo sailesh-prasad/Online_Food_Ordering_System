@@ -131,18 +131,17 @@ def menu(request):
     selected_city = request.GET.get('city')
     if selected_city:
         restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
+        foods = foodItems.objects.filter(restaurantName__city_id=selected_city)
     else:
         restaurant_list = restaurantUser.objects.all()
+        foods = foodItems.objects.all()
     
     query = request.GET.get('q')
-    foods = foodItems.objects.all()
-    
     if query:
         foods = foods.filter(Q(name__icontains=query))
-        
 
     # Pagination for restaurants
-    restaurant_paginator = Paginator(restaurant_list, 6)
+    restaurant_paginator = Paginator(restaurant_list, 8)
     restaurant_page_number = request.GET.get('restaurant_page')
     restaurant_page_obj = restaurant_paginator.get_page(restaurant_page_number)
 
@@ -182,7 +181,8 @@ def menu(request):
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
         'restaurant_list': restaurant_page_obj,
-        'cities': cities
+        'cities': cities,
+        'selected_city': selected_city,
     })
 
 
@@ -326,14 +326,16 @@ def filter(request):
     city_name = request.POST.get('filter', '')
     city = City.objects.filter(name__icontains=city_name).first()
     if city:
-            restaurant_list = restaurantUser.objects.filter(city=city)
+        restaurant_list = restaurantUser.objects.filter(city=city)
+        foods = foodItems.objects.filter(restaurantName__city=city)
     else:
         restaurant_list = restaurantUser.objects.all()
+        foods = foodItems.objects.all()
         
     restaurant_paginator = Paginator(restaurant_list, 6)
     restaurant_page_number = request.GET.get('restaurant_page')
     restaurant_page_obj = restaurant_paginator.get_page(restaurant_page_number)
-    foods = foodItems.objects.all()
+
     food_paginator = Paginator(foods, 10)
     food_page_number = request.GET.get('food_page')
     food_page_obj = food_paginator.get_page(food_page_number)
@@ -369,6 +371,8 @@ def filter(request):
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
         'restaurant_list': restaurant_page_obj,
+        'cities': City.objects.all(),
+        'selected_city': city_name,
     })
 
 def city_autocomplete(request):
