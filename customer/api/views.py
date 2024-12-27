@@ -12,7 +12,7 @@ from rest_framework.authentication import TokenAuthentication
 class CustomerViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = customerUser.objects.all()
+    queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     
 

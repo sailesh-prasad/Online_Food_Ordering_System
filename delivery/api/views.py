@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from delivery.models import DeliveryPerson, deliveryUser, Feedback, Contact
-from delivery.api.serializers import DeliveryPersonSerializer, DeliveryUserSerializer, Feedback_dSerializer, Contact_dSerializer
+from delivery.models import DeliveryPerson, deliveryUser, Feedback, Contact, DeliveryPersonLocation
+from delivery.api.serializers import DeliveryPersonSerializer, DeliveryUserSerializer, Feedback_dSerializer, Contact_dSerializer, DeliveryPersonLocationSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -28,3 +28,9 @@ class Contact_dViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Contact.objects.all()
     serializer_class = Contact_dSerializer
+
+class DeliveryPersonLocationViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = DeliveryPersonLocation.objects.all()
+    serializer_class = DeliveryPersonLocationSerializer
