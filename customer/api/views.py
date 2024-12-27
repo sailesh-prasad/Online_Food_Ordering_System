@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
-from customer.models import customerUser,Contact,Place,City,State,Order
+from customer.models import customerUser,Contact,Place,City,State,Order,Customer
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -12,7 +12,7 @@ from rest_framework.authentication import TokenAuthentication
 class CustomerViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = customerUser.objects.all()
+    queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     
 

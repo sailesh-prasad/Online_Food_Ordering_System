@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from restaurant.models import Restaurant,Payment,Product,Cart,restaurantUser,foodItems
+from customer.models import Place
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
-        model = restaurantUser
+        model = Restaurant
         fields = '__all__'
 
 class foodItemsSerializer(serializers.ModelSerializer):
@@ -13,7 +14,9 @@ class foodItemsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RestaurantUserSerializer(serializers.ModelSerializer):
-    
+    state = serializers.CharField(source='state.name', read_only=True) 
+    city = serializers.CharField(source='city.name', read_only=True) 
+    place = serializers.SerializerMethodField()
     food_items = serializers.SerializerMethodField()
     class Meta:
         model = restaurantUser
@@ -23,6 +26,13 @@ class RestaurantUserSerializer(serializers.ModelSerializer):
         items = obj.food_items.all()
         summary = f"{len(items)} items"
         return summary
+    
+    def get_place(self, obj): 
+        try: # Assuming 'place' field contains the place ID 
+            place = Place.objects.get(id=obj.place) 
+            return place.name 
+        except Place.DoesNotExist: 
+            return None
       
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:

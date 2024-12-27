@@ -19,13 +19,24 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class CustomerUserSerializer(serializers.ModelSerializer): 
     state = serializers.CharField(source='state.name', read_only=True) 
-    place = serializers.CharField(source='place.name', read_only=True)
     city = serializers.CharField(source='city.name', read_only=True) 
+    place = serializers.SerializerMethodField()
+    orders = serializers.SerializerMethodField()
     
     class Meta: 
         model = customerUser 
         fields = '__all__'
 
+    def get_orders(self, obj):
+        return obj.orders.count()
+    
+    def get_place(self, obj): 
+        try: # Assuming 'place' field contains the place ID 
+            place = Place.objects.get(id=obj.place) 
+            return place.name 
+        except Place.DoesNotExist: 
+            return None
+    
 
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
