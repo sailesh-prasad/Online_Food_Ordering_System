@@ -124,7 +124,9 @@
                   Select Delivery Person
                 </option>
                 {% for person in delivery_persons %}
-                <option value="{{ person.id }}">{{ person.name }}</option>
+                  {% if person.city == restaurant.city %}
+                    <option value="{{ person.id }}">{{ person.name }}</option>
+                  {% endif %}
                 {% endfor %}
               </select>
             </div>

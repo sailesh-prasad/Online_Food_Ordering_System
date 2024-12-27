@@ -245,9 +245,13 @@ def update_order_status(request, order_id):
 @login_required
 def assign_delivery_person(request, order_id):
     order = Order.objects.get(id=order_id)
+    restaurant = restaurantUser.objects.get(email=request.user.email)
     delivery_persons = deliveryUser.objects.filter(is_delivery=True)
-    return render(request, 'delivery.html', {'order': order, 'delivery_persons': delivery_persons})
-
+    return render(request, 'delivery.html', {
+        'order': order,
+        'restaurant': restaurant,
+        'delivery_persons': delivery_persons
+    })
 @login_required
 def update_delivery_person(request, order_id):
     if request.method == 'POST':
