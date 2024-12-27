@@ -1045,7 +1045,7 @@ color: #ffcdd2;
         </section>
         
         <section id="restaurants" class="section">
-            <h2 class="section-title">Restaurants Near You</h2>
+            <h2 class="section-title">Restaurants Near You{% if selected_city %} in {{ selected_city }}{% endif %}</h2>
             <div class="row">
                 {% for restaurant in restaurant_list %} <!-- Display all restaurants -->
                 <div class="col-md-3 col-sm-6">

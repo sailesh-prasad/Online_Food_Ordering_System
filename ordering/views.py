@@ -127,15 +127,15 @@ User = get_user_model()
 
 @login_required
 def menu(request):
-    cities = City.objects.all()
-    selected_city = request.GET.get('city')
-    if selected_city:
-        restaurant_list = restaurantUser.objects.filter(city_id=selected_city)
-        foods = foodItems.objects.filter(restaurantName__city_id=selected_city)
+    user = request.user
+    if hasattr(user, 'customeruser'):
+        customer_city = user.customeruser.city
+        restaurant_list = restaurantUser.objects.filter(city=customer_city)
+        foods = foodItems.objects.filter(restaurantName__city=customer_city)
     else:
         restaurant_list = restaurantUser.objects.all()
         foods = foodItems.objects.all()
-    
+
     query = request.GET.get('q')
     if query:
         foods = foods.filter(Q(name__icontains=query))
@@ -181,8 +181,8 @@ def menu(request):
         'cart': request.session.get('cart', {}),
         'Empty': cartEmpty,
         'restaurant_list': restaurant_page_obj,
-        'cities': cities,
-        'selected_city': selected_city,
+        'cities': City.objects.all(),
+        'selected_city': customer_city.name if hasattr(user, 'customeruser') else None,
     })
 
 
