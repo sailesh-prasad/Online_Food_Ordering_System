@@ -4,25 +4,20 @@
 The goal of this project is to streamline the interaction between customers and restaurants, improving the online food ordering experience. The platform will enable customers to search for restaurants, browse menus, place orders, and track their deliveries in real-time. For restaurants, it will provide a system to manage orders, assign delivery personnel, and offer live updates on order status. The platform will also integrate delivery management features, including real-time tracking and geolocation data capture, as well as email notifications for user registration, login, and order updates.
 
 ## Key Features
-- User registration and authentication
-- Browse and search for restaurants
-- Add items to the cart and place orders
-- Track order status
-- Admin panel for managing restaurants and orders
 ### **Customer Features:**
-1. **Restaurant Search**: Customers can search for restaurants based on name, cuisine, or location.
-2. **Menu Browsing**: View menu items, including descriptions and prices.
-3. **Order Placement**: Select items and place an order, with customizable options.
-4. **Order Tracking**: Real-time updates on order status and live map tracking of deliveries.
+- **Restaurant Search**: Customers can search for restaurants based on name, cuisine, or location.
+- **Menu Browsing**: View menu items, including descriptions and prices.
+- **Order Placement**: Select items and place an order, with customizable options.
+- **Order Tracking**: Real-time updates on order status and live map tracking of deliveries.
 
 ### **Restaurant Features:**
-1. **Order Management**: Restaurants can accept or decline incoming orders (e.g., "Out of Stock").
-2. **Assign Delivery Personnel**: Allocate orders to specific delivery drivers.
-3. **Order Status Updates**: Provide real-time updates to customers regarding their order (e.g., "In Progress," "Out for Delivery").
+- **Order Management**: Restaurants can accept or decline incoming orders (e.g., "Out of Stock").
+- **Assign Delivery Personnel**: Allocate orders to specific delivery drivers.
+- **Order Status Updates**: Provide real-time updates to customers regarding their order (e.g., "In Progress," "Out for Delivery").
 
 ### **Delivery Features:**
-1. **Geolocation**: Capture and store real-time location data for deliveries.
-2. **Live Updates**: Provide real-time map updates to customers.
+- **Geolocation**: Capture and store real-time location data for deliveries.
+- **Live Updates**: Provide real-time map updates to customers.
 
 ## Project Scope
 ### **For Customers:**
@@ -63,10 +58,22 @@ The goal of this project is to streamline the interaction between customers and 
 - **Data Security**: Protection of customer, restaurant, and order data.
 
 ## Technologies Used
-- Frontend: HTML, CSS, JavaScript, Bootstrap
-- Backend: Django
-- Database: PostgreSQL
-- Deployment: Docker
+### **Frontend:**
+- **HTML, CSS, JavaScript**: For web development.
+
+### **Backend:**
+- **Django**: Framework for backend development, ensuring robust server-side functionality.
+- **Django REST Framework**: For creating the REST APIs that will connect the frontend and backend.
+
+### **Database:**
+- **SQLite**: For development and testing environments.
+
+### **Deployment:**
+- **Docker**: Containerization to ensure consistency across different environments (local, staging, production).
+
+## Version Control & IDE
+- **Version Control**: Git and GitHub to manage the codebase and collaboration.
+- **IDE**: Visual Studio Code for efficient development.
 
 ## Installation and Setup
 1. Clone the repository:
@@ -116,6 +123,19 @@ The goal of this project is to streamline the interaction between customers and 
 - Containerize the application using Docker to ensure consistency across environments.
 - Test the application thoroughly before deploying to cloud platforms (e.g., Docker).
 
+## System Desig
+### **Architecture:**
+- **Modular**: Clear separation of concerns between frontend, backend, and database layers.
+- **Frontend**: Focus on user interface (UI) and interaction.
+- **Backend**: Manages business logic, handles data operations, and communicates with third-party APIs.
+- **Database**: Stores user, restaurant, and order-related data.
+- **Geolocation & Map Services**: Integrate third-party services like Google Maps API for delivery tracking.
+
+### **Layers:**
+1. **Presentation Layer**: The user interface that interacts with customers and restaurant staff.
+2. **Application Layer**: Implements the core business logic for order processing and management.
+3. **Data Layer**: Manages the database for user accounts, orders, restaurants, and geolocation data.
+
 ## Screenshots
 **Homepage**:
 ![Screenshot 2024-12-27 173503](https://github.com/user-attachments/assets/522d3aee-8906-4ee3-b396-ab1f1358000a)
@@ -147,5 +167,10 @@ The goal of this project is to streamline the interaction between customers and 
 ![Screenshot 2024-12-27 174139](https://github.com/user-attachments/assets/5c435e0b-73e5-41c1-97c8-eff3a976158f)
 
 ## Future Enhancements
-1. **Payment Integration**: Integrate secure online payment gateways (e.g., Stripe or PayPal) to handle transactions directly through the platform.
-2. **Advanced Analytics**: Provide restaurants with analytics on customer preferences, best-selling items, and order trends.
+- **Payment Integration**: Integrate secure online payment gateways (e.g., Stripe or PayPal) to handle transactions directly through the platform.
+- **Advanced Analytics**: Provide restaurants with analytics on customer preferences, best-selling items, and order trends.
+- **Mobile Applications**: Develop iOS and Android apps to extend the platform’s reach.
+- **AI Recommendations**: Implement recommendation algorithms to suggest restaurants and menu items based on user preferences and past orders.
+
+## Conclusion
+This project aims to provide a comprehensive solution for the food delivery industry, improving the user experience for customers and streamlining operations for restaurants. By leveraging modern web technologies, scalable architecture, and real-time tracking features, the platform is well-positioned to meet the demands of high traffic volumes while offering a seamless experience.
