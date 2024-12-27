@@ -165,6 +165,8 @@ The goal of this project is to streamline the interaction between customers and 
 ![Screenshot 2024-12-27 175402](https://github.com/user-attachments/assets/52556393-f408-46ec-b27a-b7bad31156a2)
 **Feedback Form**:
 ![Screenshot 2024-12-27 174139](https://github.com/user-attachments/assets/5c435e0b-73e5-41c1-97c8-eff3a976158f)
+**Swagger**:
+![Screenshot 2024-12-27 200731](https://github.com/user-attachments/assets/e059c2ec-7a4f-4472-b312-20dedb609ea7)
 
 ## Future Enhancements
 - **Payment Integration**: Integrate secure online payment gateways (e.g., Stripe or PayPal) to handle transactions directly through the platform.
