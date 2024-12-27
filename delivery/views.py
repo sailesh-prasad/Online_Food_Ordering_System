@@ -156,7 +156,6 @@ def registerDelivery(request):
             state=state, 
             city=city, 
             place=place,
-            deliveryContact=phone,
             name=name,
             address=address,
             latitude = latitude,

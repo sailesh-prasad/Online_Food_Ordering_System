@@ -255,7 +255,6 @@ def update_delivery_person(request, order_id):
         delivery_person_id = request.POST.get('delivery_person')
         delivery_person = deliveryUser.objects.get(id=delivery_person_id)
         order.delivery_person = delivery_person.name
-        order.delivery_contact = delivery_person.deliveryContact
         order.save()
         messages.success(request, f"Delivery person {delivery_person.name} assigned to order {order.order_no}")
     return redirect('restaurant_orders')
