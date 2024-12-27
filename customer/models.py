@@ -4,6 +4,8 @@ from django.forms import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
+
 class State(models.Model):
     name = models.CharField(max_length=100)
 
@@ -92,7 +94,7 @@ class Order(models.Model):
         ('CANCELLED', 'Cancelled')
     ], default='PENDING')
     delivery_person = models.CharField(max_length=100, null=True, blank=True)
-    delivery_contact = models.CharField(max_length=20, null=True, blank=True)  # Add delivery contact field
+    
     restaurant_name = models.CharField(max_length=100)
     comments = models.TextField(null=True, blank=True)
     date_time = models.DateTimeField(auto_now_add=True)
