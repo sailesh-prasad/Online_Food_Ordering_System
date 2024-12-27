@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Food Ordering Page</title>
+    <title>InFOODsys</title>
 
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -53,16 +53,16 @@ body {
             
         }
         .frozen-container-hero {
-            
+            {% comment %} 
             background: rgba(0, 0, 0, 0.2); /* Translucent white background */
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px); {% endcomment %}
             height:23vh;
             border-radius: 12px;
             padding-left:30px;
-            padding-right: 50px;
+            padding-right: 30px;
             
             animation: fadeIn 1s ease-in-out;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025);
+            {% comment %} box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025); {% endcomment %}
         }
 
         /* Section Titles */
@@ -116,9 +116,9 @@ body {
 
 /* Horizontal Scrollable Section */
 .scroll-container {
-    display: flex;
+    {% comment %} display: flex; {% endcomment %}
     align-items: center;
-    position: relative;
+    {% comment %} position: relative; {% endcomment %}
     overflow: hidden;
     
     padding: 9px; /* Unified padding */
@@ -126,7 +126,9 @@ body {
 
 .scroll-wrapper {
     display: flex;
-    gap: 5px !important; /* Reduced gap for mobile view */
+    align-items: center; /* Align items vertically */
+    justify-content: flex-start; /* Align items to the start */
+    gap: 0px !important; /* Reduced gap for mobile view */
     overflow-x: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -171,7 +173,7 @@ body {
     padding-top: 10px ;/* Adjusted padding for compact spacing */
     font-size: 1rem; /* Improved font style */
     color: #f6fbe7;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    {% comment %} text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); {% endcomment %}
     font-family: 'Roboto', sans-serif;
 /* Changed font for better readability */
 font-weight: bold;
@@ -213,7 +215,7 @@ font-weight: bold;
         font-size: 0.8rem; /* Adjusted font size for mobile */
         font-family: 'Roboto', sans-serif;
     }
-    .frozen-container-hero {
+    {% comment %} .frozen-container-hero {
             height:19vh;
             background: rgba(0, 0, 0, 0.2); /* Translucent white background */
             backdrop-filter: blur(6px);
@@ -223,7 +225,7 @@ font-weight: bold;
             margin-bottom: 10px;
             animation: fadeIn 1s ease-in-out;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.025);
-        }
+        } {% endcomment %}
         .custom-search input{
         width:230px !important;
 
@@ -245,14 +247,14 @@ font-weight: bold;
 }
 
 .frozen-container-hero {
-            height:19vh;
+            {% comment %} height:19vh; {% endcomment %}
            
         }
 }
 
 /* Adjust vertical space inside the container */
 .scroll-container {
-    padding: 0px; /* Reduced padding for compact placement */
+    {% comment %} padding: 0px; /* Reduced padding for compact placement */ {% endcomment %}
     
 }
 
@@ -283,12 +285,12 @@ display: flex;
 justify-content: center;
 flex-wrap: nowrap;
 gap: 60px;
-padding-top:25px;
+padding-top:60px;
 
 
 
 border-radius: 20px;
-box-shadow: 6px 8px 16px 8px rgba(0, 0, 0, 0.1);
+{% comment %} box-shadow: 6px 8px 16px 8px rgba(0, 0, 0, 0.1); {% endcomment %}
 overflow: hidden;
 position: relative;
 }
@@ -769,17 +771,91 @@ color: #ffcdd2;
 .deal-card .details .btn:hover {
     background: #ff5722;
 }
-
+    
+    .pagination-container {
+        font-size: 62.5%;
+        font-family: "Poppins", sans-serif;
+        letter-spacing: 0.6px;
+        line-height: 1.4;
+        backface-visibility: hidden;
+        -webkit-font-smoothing: subpixel-antialiased;
+      }
+      
+      .pagination-container .page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 4rem; /* Reduced height */
+        margin: 2rem; /* Reduced margin */
+        border-radius: 0.6rem;
+        background: #ffffff;
+        box-shadow: 0 0.8rem 2rem rgba(90, 97, 129, 0.05);
+      }
+      
+      .pagination-container .page__numbers,
+      .pagination-container .page__btn,
+      .pagination-container .page__dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.5rem; /* Reduced margin */
+        font-size: 1.2rem; /* Reduced font size */
+        cursor: pointer;
+      }
+      
+      .pagination-container .page__dots {
+        width: 2rem; /* Reduced width */
+        height: 2rem; /* Reduced height */
+        color: var(--greyLight);
+        cursor: initial;
+      }
+      
+      .pagination-container .page__numbers {
+        width: 2rem; /* Adjusted width */
+        height: 2rem; /* Adjusted height */
+        border-radius: 0.4rem;
+        font-size: 1.2rem; /* Adjusted font size */
+      }
+      
+      .pagination-container .page__numbers:hover {
+        color: var(--primary);
+        transform: scale(1.2); /* Increase size on hover */
+        transition: transform 0.3s ease; /* Smooth transition */
+      }
+      
+      .pagination-container .page__numbers.active {
+        color: #30f6b4;
+        background: var(--primary);
+        font-weight: 600;
+        border: 1px solid var(--primary);
+      }
+      
+      .pagination-container .page__btn {
+        color: var(--greyLight);
+        pointer-events: none;
+      }
+      
+      .pagination-container .page__btn.active {
+        color: var(--greyDark);
+        pointer-events: initial;
+      }
+      
+      .pagination-container .page__btn.active:hover {
+        color: var(--primary);
+      }
+      
+      .pagination-container .page__btn img {
+        width: 15px; /* Reduced icon size */
+        height: 15px; /* Reduced icon size */
+      }
 
     </style>
+    
 </head>
 <header>{% include "home/header.html" %}</header>
 
 <body>
-    
-
     <!-- Main Container -->
-    
     <div class="container frozen-container-hero">
         <div class="hero-section" data-aos="fade-up">
             <!-- Search Bar -->
@@ -834,7 +910,6 @@ color: #ffcdd2;
                 });
             </script>
             
-        
         <!-- Include jQuery and jQuery UI for autocomplete -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -860,16 +935,12 @@ color: #ffcdd2;
         });
         </script>
             
-    
             <!-- Heading -->
-            
-    
             <!-- Horizontal Scrollable Section -->
             <div class="scroll-container">
                 <button class="arrow-btn left-btn">&#8592;</button>
                 <div class="scroll-wrapper">
                     
-
                         <div class="scroll-item" onclick="redirectToSearch('Biryani')">
                             <img class="img-fluid" src="{% static 'images/biryani.jpg' %}" alt="pizza image">
                             <p>Biryani</p>
@@ -882,14 +953,14 @@ color: #ffcdd2;
                             <img class="img-fluid" src="{% static 'images/Fish_fry.jpg' %}" alt="thali image">
                             <p>Fish Fry</p>
                         </div>
-                        <div class="scroll-item" onclick="redirectToSearch('Chicken Fry')">
+                        {% comment %} <div class="scroll-item" onclick="redirectToSearch('Chicken Fry')">
                             <img class="img-fluid" src="{% static 'images/Chicken_Fry.jpg' %}" alt="paneer image">
                             <p>Chicken Fry</p>
                         </div>
                         <div class="scroll-item" onclick="redirectToSearch('Barbique')">
                             <img class="img-fluid" src="{% static 'images/panner_barbique.jpg' %}" alt="thali image">
                             <p>Barbique</p>
-                        </div>
+                        </div> {% endcomment %}
                         <div class="scroll-item" onclick="redirectToSearch('Noodles')">
                             <img class="img-fluid" src="{% static 'images/noodles.jpg' %}" alt="noodle image">
                             <p>Noodles</p>
@@ -899,32 +970,30 @@ color: #ffcdd2;
                             <img class="img-fluid" src="{% static 'images/pizza.jpg' %}" alt="pizza image">
                             <p>Pizza</p>
                         </div>
-                        <div class="scroll-item" onclick="redirectToSearch('Kessari')">
+                        {% comment %} <div class="scroll-item" onclick="redirectToSearch('Kessari')">
                             <img class="img-fluid" src="{% static 'images/kesari.jpg' %}" alt="biryani image">
                             <p>Kessari</p>
                         </div>
                         <div class="scroll-item" onclick="redirectToSearch('Dessert')">
                             <img class="img-fluid" src="{% static 'images/dessert.jpg' %}" alt="paneer image">
                             <p>Dessert</p>
-                        </div>
-                       
-                        <div class="scroll-item" onclick="redirectToSearch('Cutlut')">
-                            <img class="img-fluid" src="{% static 'images/Cutlut.jpg' %}" alt="noodle image">
-                            <p>Cutlut</p>
-                        </div>
-
+                        </div>{% endcomment %}
                         <div class="scroll-item" onclick="redirectToSearch('Naan')">
                             <img class="img-fluid" src="{% static 'images/Mushroom_nan.jpg' %}" alt="pizza image">
                             <p>Naan</p>
                         </div>
-                        <div class="scroll-item" onclick="redirectToSearch('Panner Fry')">
-                            <img class="img-fluid" src="{% static 'images/Panner_tikka.jpg' %}" alt="biryani image">
-                            <p>Panner Fry</p>
+                        <div class="scroll-item" onclick="redirectToSearch('dosa')">
+                            <img class="img-fluid" src="{% static 'images/dosa.jpg' %}" alt="biryani image">
+                            <p>Dosa</p>
                         </div>
                         <div class="scroll-item" onclick="redirectToSearch('Prawn Fry')">
-                            <img class="img-fluid" src="{% static 'images/prawn_fry.jpg' %}" alt="paneer image">
-                            <p>Prawn Fry</p>
+                            <img class="img-fluid" src="{% static 'images/idli.jpeg' %}" alt="paneer image">
+                            <p>Idli</p>
                         </div>
+                        <div class="scroll-item" onclick="redirectToSearch('chicken')">
+                            <img class="img-fluid" src="{% static 'images/Chicken_Fry.jpg' %}" alt="noodle image">
+                            <p>Chicken</p>
+                        </div> 
                         <div class="scroll-item" onclick="redirectToSearch('Pulav')">
                             <img class="img-fluid" src="{% static 'images/Pulav.jpg' %}" alt="thali image">
                             <p>Pulav</p>
@@ -951,36 +1020,34 @@ color: #ffcdd2;
     <div class="container">
         <section id="features" class="section">
         
-            
             <div class="features-container">
                 <div class="feature-card" onclick="redirectToTrackDelivery();">
                     <i class="feature-icon fas fa-location-dot"></i>
                     <h6>Track Order</h6>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" onclick="scrollToMenu();">
                     <i class="feature-icon fas fa-pizza-slice"></i>
                     <h6>View Paradise</h6>
                 </div>
-                <div class="feature-card">
+                {% comment %} <div class="feature-card">
                     <i class="feature-icon fas fa-percent"></i>
                     <h6>Avail Offers</h6>
-                </div>
+                </div> {% endcomment %}
                 <div class="feature-card">
                     <i class="feature-icon fas fa-bolt"></i>
                     <h6>Quick Reorder</h6>
                 </div>
-                <div class="feature-card">
+                {% comment %} <div class="feature-card">
                     <i class="feature-icon fas fa-heart"></i>
                     <h6>Order Favourites</h6>
-                </div>
+                </div> {% endcomment %}
             </div>
         </section>
-        
         
         <section id="restaurants" class="section">
             <h2 class="section-title">Restaurants Near You</h2>
             <div class="row">
-                {% for restaurant in restaurant_list %} <!-- Show only the first 7 restaurants -->
+                {% for restaurant in restaurant_list %} <!-- Display all restaurants -->
                 <div class="col-md-3 col-sm-6">
                     <div class="restaurant-card">
                         <video autoplay loop muted>
@@ -993,19 +1060,7 @@ color: #ffcdd2;
                     </div>
                 </div>
                 {% endfor %}
-                <!-- Add "View More" card as the 8th card -->
-                {% comment %} <div class="col-md-3 col-sm-6">
-                    <div class="restaurant-card view-more-card">
-                        <video autoplay loop muted>
-                            <source src="{% static 'video/video8.mp4' %}" type="video/mp4"> <!-- Optional placeholder video -->
-                        </video>
-                        <div class="restaurant-overlay">
-                            <h5>View More</h5>
-                            <a href="Homepage.html" class="btn">Explore</a>
-                        </div>
-                    </div>
-                </div>
-            </div> {% endcomment %}
+            </div>
         </section>
         <br>
         <div class="pagination-container">
@@ -1035,113 +1090,25 @@ color: #ffcdd2;
                </nav>
             </div>
          </div>
-<style>
 
-    
-.pagination-container {
-    font-size: 62.5%;
-    font-family: "Poppins", sans-serif;
-    letter-spacing: 0.6px;
-    line-height: 1.4;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: subpixel-antialiased;
-  }
-  
-  .pagination-container .page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 4rem; /* Reduced height */
-    margin: 2rem; /* Reduced margin */
-    border-radius: 0.6rem;
-    background: #ffffff;
-    box-shadow: 0 0.8rem 2rem rgba(90, 97, 129, 0.05);
-  }
-  
-  .pagination-container .page__numbers,
-  .pagination-container .page__btn,
-  .pagination-container .page__dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.5rem; /* Reduced margin */
-    font-size: 1.2rem; /* Reduced font size */
-    cursor: pointer;
-  }
-  
-  .pagination-container .page__dots {
-    width: 2rem; /* Reduced width */
-    height: 2rem; /* Reduced height */
-    color: var(--greyLight);
-    cursor: initial;
-  }
-  
-  .pagination-container .page__numbers {
-    width: 2rem; /* Adjusted width */
-    height: 2rem; /* Adjusted height */
-    border-radius: 0.4rem;
-    font-size: 1.2rem; /* Adjusted font size */
-  }
-  
-  .pagination-container .page__numbers:hover {
-    color: var(--primary);
-    transform: scale(1.2); /* Increase size on hover */
-    transition: transform 0.3s ease; /* Smooth transition */
-  }
-  
-  .pagination-container .page__numbers.active {
-    color: #30f6b4;
-    background: var(--primary);
-    font-weight: 600;
-    border: 1px solid var(--primary);
-  }
-  
-  .pagination-container .page__btn {
-    color: var(--greyLight);
-    pointer-events: none;
-  }
-  
-  .pagination-container .page__btn.active {
-    color: var(--greyDark);
-    pointer-events: initial;
-  }
-  
-  .pagination-container .page__btn.active:hover {
-    color: var(--primary);
-  }
-  
-  .pagination-container .page__btn img {
-    width: 15px; /* Reduced icon size */
-    height: 15px; /* Reduced icon size */
-  }
-  
-</style>
-
-
-
-
-
-
-
-
-    
-        
         <section id="food-items-section" class="section">
             <h2 class="section-title">Explore Our Menu</h2>
             <div class="food-items-row">
                 {% for food in foodItems %}
                 <div class="food-item-col">
                     <div class="food-card">
-                        <div class="offer-tag">20% OFF</div>
+                        {% if selected_city %}
+                        <div class="offer-tag">Quick Delivery</div>
+                        {% endif %}
                         <img src="/media/{{ food.image }}" alt="{{ food.name }}" class="food-image">
                         <div class="food-details">
                             <h4 class="food-name">{{ food.name }}</h4>
                             <div class="food-info">
                                 <span class="food-category">{{ food.category }}</span>
-                                <span class="food-rating">★ 4.5 &middot; 20-25 mins</span>
+                                {% comment %} <span class="food-rating">★ 4.5 &middot; 20-25 mins</span> {% endcomment %}
                             </div>
                             <div class="food-price-details">
-                                <p class="food-price">UPTO <span>₹ {{ food.price }}</span></p>
+                                <p class="food-price"><span>₹ {{ food.price }}</span></p>
                                 <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})" {% if food.is_out_of_stock %}disabled{% endif %}>
                                     {% if food.is_out_of_stock %}Out of Stock{% else %}Add to Cart{% endif %}
                                 </button>
@@ -1151,8 +1118,6 @@ color: #ffcdd2;
                 </div>
                 {% endfor %}
                
-                          
-        
                 {% comment %} <!-- View More Card -->
                 <div class="food-item-col">
                     <div class="food-card view-more-card">
@@ -1171,19 +1136,19 @@ color: #ffcdd2;
                <ul class="page">
                   {% if foodItems.has_previous %}
                   <li class="page__btn active">
-                     <a class="page-link" href="?food_page={{ foodItems.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Previous">
+                     <a class="page-link" href="?food_page={{ foodItems.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}" aria-label="Previous">
                      <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
                      </a>
                   </li>
                   {% endif %}
                   {% for num in foodItems.paginator.page_range %}
                   <li class="page__numbers {% if foodItems.number == num %}active{% endif %}">
-                     <a class="page-link" href="?food_page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                     <a class="page-link" href="?food_page={{ num }}{% if selected_city %}&city={{ selected_city }}{% endif %}">{{ num }}</a>
                   </li>
                   {% endfor %}
                   {% if foodItems.has_next %}
                   <li class="page__btn active">
-                     <a class="page-link" href="?food_page={{ foodItems.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Next">
+                     <a class="page-link" href="?food_page={{ foodItems.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}" aria-label="Next">
                      <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
                      </a>
                   </li>
@@ -1194,7 +1159,7 @@ color: #ffcdd2;
         
         <br>
         
-        <section id="deals" class="section">
+        <!--<section id="deals" class="section">
             <h2 class="section-title">Hot Deals You’ll Love</h2>
             <div class="deals-section">
                 <div class="deal-card">
@@ -1234,20 +1199,12 @@ color: #ffcdd2;
                 </div>
 
             </div>
-        </section>
+        </section>-->
         <br>
         <br>
         </div>
     
-
-        
-        
-        
-    
-
     <!-- Footer -->
-    
-
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -1375,6 +1332,10 @@ color: #ffcdd2;
         form.appendChild(csrfToken);
         document.body.appendChild(form);
         form.submit();
+    }
+
+    function scrollToMenu() {
+        document.getElementById('food-items-section').scrollIntoView({ behavior: 'smooth' });
     }
 </script>
 {% include "home/footer.html" %}

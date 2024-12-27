@@ -66,91 +66,7 @@
                 letter-spacing: 1px;
                 text-transform: uppercase;
             }
-            /* Customize the nav-tabs */
-/* Customize the nav-tabs */
-.custom-nav {
-    margin: 0 auto;
-    margin-top:10px;
-    width: 90%;
-    
-    background: linear-gradient(93deg, #172617, #15180f);
-    border-radius: 10px; /* Changed to block-like shape */
-    padding: 10px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow-x: auto; /* Prevent wrapping and allow horizontal scrolling */
-    scrollbar-width: thin;
-    scrollbar-color: #27ea19 #305830;
-}
-
-.custom-nav::-webkit-scrollbar {
-    height: 8px;
-}
-
-.custom-nav::-webkit-scrollbar-thumb {
-    background: #27ea19;
-    border-radius: 10px;
-}
-
-.custom-nav::-webkit-scrollbar-track {
-    background: #305830;
-}
-
-/* Nav link styles */
-.custom-nav-link {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px; /* Block-like shape */
-    transition: all 0.2s ease-in-out; /* Faster transitions */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    white-space: nowrap; /* Prevent text wrapping */
-}
-
-/* Active button style */
-.custom-nav-link.active {
-    background-color: #fff!important;
-    color: #000203;
-    
-    transform: scale(1.05); /* Slight emphasis */
-}
-
-/* Hover effect */
-.custom-nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #030910;
-  
-}
-
-/* Adjust for responsiveness */
-@media (max-width: 768px) {
-    .custom-nav {
-        padding: 8px;
-        width: 100%;
-    }
-    .custom-nav-link {
-        font-size: 14px;
-        padding: 8px 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .custom-nav {
-        padding: 6px;
-        justify-content: flex-start; /* Align left for compact view */
-    }
-    .custom-nav-link {
-        font-size: 12px;
-        padding: 6px 10px;
-    }
-}
-
+            
 /* Search bar styling */
 #search-bar {
     padding: 12px 18px;
@@ -307,6 +223,88 @@
         max-width: calc(100% - 30px);
         margin:2px;
     }
+}
+/* Advanced Nav Tabs */
+.custom-nav {
+    margin: 10px auto;
+    width: 90%;
+    padding: 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #658ea9, #2b64b9); /* Cool gradient */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Enhanced depth */
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #66fcf1 #1f2833; /* Stylish scrollbar colors */
+}
+
+.custom-nav::-webkit-scrollbar {
+    height: 8px;
+}
+
+.custom-nav::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #66fcf1, #45a29e);
+    border-radius: 10px;
+}
+
+/* Nav Link */
+.custom-nav-link {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    padding: 14px 30px;
+    border-radius: 30px; /* Soft pill-like shape */
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); /* Subtle glassy effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Active State */
+.custom-nav-link.active {
+    background: linear-gradient(135deg, #1de9b6, #1dc4e9); /* Eye-catching gradient */
+    color: #fff;
+    transform: scale(1.2); /* Highlight active link */
+    box-shadow: 0 8px 20px rgba(29, 196, 233, 0.6); /* Vibrant shadow */
+}
+
+/* Hover Effect */
+.custom-nav-link:hover {
+    color: #000;
+    background: linear-gradient(135deg, #f3e5ab, #ff8c42); /* Attractive hover gradient */
+    transform: translateY(-5px) scale(1.1); /* Dynamic hover animation */
+    box-shadow: 0 12px 30px rgba(255, 140, 66, 0.6); /* Glowing effect */
+}
+
+/* Glow Effect */
+.custom-nav-link::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.custom-nav-link:hover::before {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .custom-nav { padding: 12px; }
+    .custom-nav-link { font-size: 14px; padding: 12px 25px; }
+}
+
+@media (max-width: 480px) {
+    .custom-nav { justify-content: flex-start; }
+    .custom-nav-link { font-size: 13px; padding: 10px 20px; }
 }
 
 
@@ -489,74 +487,70 @@
         </style>
 
         <!-- Category Tabs -->
-        <div class="mb-4">
-            <ul class="nav nav-tabs custom-nav">
-                <li class="nav-item">
-                    <button class="nav-link active custom-nav-link" onclick="filterCategory('all')">All</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link custom-nav-link" onclick="filterCategory('tiffin')">Tiffins</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link custom-nav-link" onclick="filterCategory('veg')">Veg</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link custom-nav-link" onclick="filterCategory('non veg')">Non-Veg</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link custom-nav-link" onclick="filterCategory('Ice cream')">Ice-Creams</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link custom-nav-link" onclick="filterCategory('drinks')">Drinks</button>
-                </li>
-            </ul>
-        </div>
-
+<div class="mb-4">
+    <ul class="nav nav-tabs custom-nav">
+        <li class="nav-item">
+            <button class="nav-link active custom-nav-link" onclick="filterCategory('all')">All</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link custom-nav-link" onclick="filterCategory('tiffin')">Tiffins</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link custom-nav-link" onclick="filterCategory('starters')">Starters</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link custom-nav-link" onclick="filterCategory('biriyani')">Biriyani</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link custom-nav-link" onclick="filterCategory('deserts')">Desserts</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link custom-nav-link" onclick="filterCategory('snacks')">Snacks</button>
+        </li>
+    </ul>
+</div>
         <!-- Food Items -->
-        <section id="food-items-section" class="section">
-            <div class="food-items-row">
-                {% for food in food_items %}
-                <div class="food-item-col" data-category="{{ food.category }}">
-                    <div class="food-card">
-                        <img src="/media/{{ food.image }}" class="food-image" alt="{{ food.name }}">
-                        <div class="food-details">
-                            <h4 class="card-title">{{ food.name }}</h4>
-                            <div class="food-info">
-                                <span class="food-category">Category: {{ food.category }}</span>
-                                <span class="food-price">Price: ₹{{ food.price }}</span>
-                            </div>
-                            <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})" {% if food.is_out_of_stock %}disabled{% endif %}>
-                                {% if food.is_out_of_stock %}Out of Stock{% else %}Add to Cart{% endif %}
-                            </button>
-                        </div>
+<section id="food-items-section" class="section">
+    <div class="food-items-row">
+        {% for food in food_items %}
+        <div class="food-item-col" data-category="{{ food.category }}">
+            <div class="food-card">
+                <img src="/media/{{ food.image }}" class="food-image" alt="{{ food.name }}">
+                <div class="food-details">
+                    <h4 class="card-title">{{ food.name }}</h4>
+                    <div class="food-info">
+                        <span class="food-category">Category: {{ food.category }}</span>
+                        <span class="food-price">Price: ₹{{ food.price }}</span>
                     </div>
+                    <button class="add-to-cart-btn" id="btn-{{ food.id }}" onclick="toggleCart({{ food.id }})" {% if food.is_out_of_stock %}disabled{% endif %}>
+                        {% if food.is_out_of_stock %}Out of Stock{% else %}Add to Cart{% endif %}
+                    </button>
                 </div>
-                {% endfor %}
             </div>
-        </section>
-        <script>
-            function filterCategory(category) {
-                const foodCards = document.querySelectorAll(".food-card");  // Select all food cards
-                foodCards.forEach(card => {
-                    // If category is "all", show all food items, otherwise filter by the selected category
-                    if (category === "all" || card.dataset.category === category) {
-                        card.parentElement.style.display = "block";  // Show item
-                    } else {
-                        card.parentElement.style.display = "none";  // Hide item
-                    }
-                });
-                
-                // Add or remove the "active" class to the buttons to highlight the selected category
-                const buttons = document.querySelectorAll('.nav-link');
-                buttons.forEach(button => {
-                    if (button.textContent.toLowerCase() === category || category === "all" && button.textContent.toLowerCase() === "all") {
-                        button.classList.add("active");
-                    } else {
-                        button.classList.remove("active");
-                    }
-                });
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    // Function to filter food items based on the selected category
+    function filterCategory(category) {
+        const foodItems = document.querySelectorAll(".food-item-col"); // Select all food items
+        foodItems.forEach(item => {
+            // Show or hide items based on the selected category
+            if (category === "all" || item.dataset.category.toLowerCase() === category.toLowerCase()) {
+                item.style.display = "block"; // Show item
+            } else {
+                item.style.display = "none"; // Hide item
             }
-        </script>
+        });
+
+        // Highlight the active category button
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach(link => link.classList.remove("active"));
+        event.target.classList.add("active");
+    }
+</script>
         
 
         <!-- JavaScript Functions -->
@@ -575,22 +569,23 @@
                 });
             }
 
-            // Filter food items based on category
-            function filterCategory(category) {
-                const foodCards = document.querySelectorAll(".food-card");
-                foodCards.forEach(card => {
-                    if (category === "all" || card.dataset.category === category) {
-                        card.parentElement.style.display = "block";
-                    } else {
-                        card.parentElement.style.display = "none";
-                    }
-                });
-
-                // Update active tab styling
-                const navLinks = document.querySelectorAll('.custom-nav-link');
-                navLinks.forEach(link => link.classList.remove('active'));
-                event.target.classList.add('active');
+            // Function to filter food items based on the selected category
+    function filterCategory(category) {
+        const foodItems = document.querySelectorAll(".food-item-col"); // Select all food item columns
+        foodItems.forEach(item => {
+            // Show or hide items based on the selected category
+            if (category === "all" || item.getAttribute("data-category").toLowerCase() === category.toLowerCase()) {
+                item.style.display = "block"; // Show item
+            } else {
+                item.style.display = "none"; // Hide item
             }
+        });
+
+        // Highlight the active category button
+        const navLinks = document.querySelectorAll(".custom-nav-link");
+        navLinks.forEach(link => link.classList.remove("active")); // Remove "active" class from all links
+        event.target.classList.add("active"); // Add "active" class to the clicked link
+    }
 
             // Start voice search functionality
 function startVoiceSearch() {

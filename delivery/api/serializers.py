@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from delivery.models import DeliveryPerson,deliveryUser, Feedback, Contact
 from customer.models import Place
+from delivery.models import DeliveryPerson,deliveryUser, Feedback, Contact, DeliveryPersonLocation
 
 class DeliveryPersonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,7 @@ class Contact_dSerializer(serializers.ModelSerializer):
         model = Contact
         fields = '__all__'
 
+class DeliveryPersonLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryPersonLocation
+        fields = '__all__'

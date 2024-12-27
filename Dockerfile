@@ -26,6 +26,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code
 COPY . .
 
+# Run migrate command
+RUN python manage.py migrate --fake
+
 # Run the tests
 RUN python manage.py test
 

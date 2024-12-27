@@ -50,8 +50,8 @@ def home(request):
 
     # return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request), 'customer_address': delivery_user.address})
 
-            # Show the map when the status is confirmed
-            if new_status == 'CONFIRMED':
+            # Show the map when the status is out for delivery
+            if new_status == 'OUT_FOR_DELIVERY':
                 return redirect(reverse('track_delivery', kwargs={'order_id': order.id}))
         except Order.DoesNotExist:
             messages.error(request, 'Order not found or you are not authorized to update this order')
@@ -156,7 +156,6 @@ def registerDelivery(request):
             state=state, 
             city=city, 
             place=place,
-            deliveryContact=phone,
             name=name,
             address=address,
             latitude = latitude,
