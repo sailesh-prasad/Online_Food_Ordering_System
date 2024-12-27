@@ -9,14 +9,17 @@ class DeliveryPersonSerializer(serializers.ModelSerializer):
     
 
 class DeliveryUserSerializer(serializers.ModelSerializer):
-    state = serializers.CharField(source='state.name', read_only=True) 
-    city = serializers.CharField(source='city.name', read_only=True) 
+    # Fields to be included in the serializer
+    state = serializers.CharField(source='state.name') 
+    city = serializers.CharField(source='city.name') 
     place = serializers.SerializerMethodField()
     class Meta:
         model = deliveryUser
         fields = '__all__'
+
+    #Method to get the place name    
     def get_place(self, obj): 
-        try: # Assuming 'place' field contains the place ID 
+        try: 
             place = Place.objects.get(id=obj.place) 
             return place.name 
         except Place.DoesNotExist: 

@@ -14,21 +14,24 @@ class foodItemsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RestaurantUserSerializer(serializers.ModelSerializer):
-    state = serializers.CharField(source='state.name', read_only=True) 
-    city = serializers.CharField(source='city.name', read_only=True) 
+    # Fields to be included in the serializer
+    state = serializers.CharField(source='state.name') 
+    city = serializers.CharField(source='city.name') 
     place = serializers.SerializerMethodField()
     food_items = serializers.SerializerMethodField()
     class Meta:
         model = restaurantUser
         fields = '__all__'
 
+    # Method to count the menu items 
     def get_food_items(self, obj):
         items = obj.food_items.all()
         summary = f"{len(items)} items"
         return summary
     
+    # Method to get the place name
     def get_place(self, obj): 
-        try: # Assuming 'place' field contains the place ID 
+        try: 
             place = Place.objects.get(id=obj.place) 
             return place.name 
         except Place.DoesNotExist: 

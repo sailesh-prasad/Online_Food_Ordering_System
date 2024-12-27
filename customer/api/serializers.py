@@ -6,7 +6,6 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = '__all__'
 
-
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
@@ -18,8 +17,9 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CustomerUserSerializer(serializers.ModelSerializer): 
-    state = serializers.CharField(source='state.name', read_only=True) 
-    city = serializers.CharField(source='city.name', read_only=True) 
+    # Fields to be included in the serializer
+    state = serializers.CharField(source='state.name') 
+    city = serializers.CharField(source='city.name') 
     place = serializers.SerializerMethodField()
     orders = serializers.SerializerMethodField()
     
@@ -27,17 +27,21 @@ class CustomerUserSerializer(serializers.ModelSerializer):
         model = customerUser 
         fields = '__all__'
 
+    # Method to count the number of orders made by the customer
     def get_orders(self, obj):
         return obj.orders.count()
     
+    # Method to get the place name
     def get_place(self, obj): 
-        try: # Assuming 'place' field contains the place ID 
+        """ 
+           Fetch the place name based on the place ID stored in the customerUser model. If the place does not exist, return None. 
+        """
+        try: 
             place = Place.objects.get(id=obj.place) 
             return place.name 
         except Place.DoesNotExist: 
             return None
     
-
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State
