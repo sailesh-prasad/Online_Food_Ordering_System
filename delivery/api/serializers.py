@@ -12,18 +12,18 @@ class DeliveryUserSerializer(serializers.ModelSerializer):
     # Fields to be included in the serializer
     state = serializers.CharField(source='state.name') 
     city = serializers.CharField(source='city.name') 
-    place = serializers.SerializerMethodField()
+    #place = serializers.SerializerMethodField()
     class Meta:
         model = deliveryUser
         fields = '__all__'
 
     #Method to get the place name    
-    def get_place(self, obj): 
-        try: 
-            place = Place.objects.get(id=obj.place) 
-            return place.name 
-        except Place.DoesNotExist: 
-            return None
+    # def get_place(self, obj): 
+    #     try: 
+    #         place = Place.objects.get(id=obj.place) 
+    #         return place.name 
+    #     except Place.DoesNotExist: 
+    #         return None
 
 class Feedback_dSerializer(serializers.ModelSerializer):
     class Meta:
