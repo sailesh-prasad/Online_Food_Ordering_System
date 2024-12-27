@@ -123,7 +123,7 @@ The goal of this project is to streamline the interaction between customers and 
 - Containerize the application using Docker to ensure consistency across environments.
 - Test the application thoroughly before deploying to cloud platforms (e.g., Docker).
 
-## System Desig
+## System Design
 ### **Architecture:**
 - **Modular**: Clear separation of concerns between frontend, backend, and database layers.
 - **Frontend**: Focus on user interface (UI) and interaction.
