@@ -1017,7 +1017,7 @@ color: #ffcdd2;
     </section> -->
     
     <!-- Main Content -->
-    <div class="container">
+    <div class="container" id="main-content">
         <section id="features" class="section">
         
             <div class="features-container">
@@ -1069,19 +1069,19 @@ color: #ffcdd2;
                   <ul class="page">
                      {% if restaurant_list.has_previous %}
                      <li class="page__btn active">
-                        <a class="page-link" href="?restaurant_page={{ restaurant_list.previous_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" aria-label="Previous">
+                        <a class="page-link pagination-link" href="?restaurant_page={{ restaurant_list.previous_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all }}" aria-label="Previous">
                         <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
                         </a>
                      </li>
                      {% endif %}
                      {% for num in restaurant_list.paginator.page_range %}
                      <li class="page__numbers {% if restaurant_list.number == num %}active{% endif %}">
-                        <a class="page-link" href="?restaurant_page={{ num }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">{{ num }}</a>
+                        <a class="page-link pagination-link" href="?restaurant_page={{ num }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all }}">{{ num }}</a>
                      </li>
                      {% endfor %}
                      {% if restaurant_list.has_next %}
                      <li class="page__btn active">
-                        <a class="page-link" href="?restaurant_page={{ restaurant_list.next_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" aria-label="Next">
+                        <a class="page-link pagination-link" href="?restaurant_page={{ restaurant_list.next_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all }}" aria-label="Next">
                         <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
                         </a>
                      </li>
@@ -1136,19 +1136,19 @@ color: #ffcdd2;
                <ul class="page">
                   {% if foodItems.has_previous %}
                   <li class="page__btn active">
-                     <a class="page-link" href="?food_page={{ foodItems.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}" aria-label="Previous">
+                     <a class="page-link pagination-link" href="?food_page={{ foodItems.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all }}" aria-label="Previous">
                      <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
                      </a>
                   </li>
                   {% endif %}
                   {% for num in foodItems.paginator.page_range %}
                   <li class="page__numbers {% if foodItems.number == num %}active{% endif %}">
-                     <a class="page-link" href="?food_page={{ num }}{% if selected_city %}&city={{ selected_city }}{% endif %}">{{ num }}</a>
+                     <a class="page-link pagination-link" href="?food_page={{ num }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all }}">{{ num }}</a>
                   </li>
                   {% endfor %}
                   {% if foodItems.has_next %}
                   <li class="page__btn active">
-                     <a class="page-link" href="?food_page={{ foodItems.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}" aria-label="Next">
+                     <a class="page-link pagination-link" href="?food_page={{ foodItems.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all }}" aria-label="Next">
                      <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
                      </a>
                   </li>
@@ -1267,7 +1267,31 @@ color: #ffcdd2;
             });
         });
 
-   
+    // Handle pagination link clicks
+    document.querySelectorAll('.pagination-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const url = new URL(this.href);
+            const showAll = url.searchParams.get('show_all').toLowerCase() === 'true';
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('#main-content').innerHTML;
+                document.querySelector('#main-content').innerHTML = newContent;
+                window.history.pushState({}, '', url);
+                const toggleText = document.getElementById('toggle-text');
+                toggleText.textContent = showAll ? 'Show Less' : 'Show All';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
     </script>
 
 <script>
@@ -1340,14 +1364,14 @@ color: #ffcdd2;
 
     function toggleShowAll() {
         const urlParams = new URLSearchParams(window.location.search);
-        const showAll = urlParams.get('show_all') === 'true';
+        const showAll = urlParams.get('show_all').toLowerCase() === 'true';
         urlParams.set('show_all', !showAll);
         window.location.search = urlParams.toString();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const showAll = urlParams.get('show_all') === 'true';
+        const showAll = urlParams.get('show_all').toLowerCase() === 'true';
         const toggleText = document.getElementById('toggle-text');
         toggleText.textContent = showAll ? 'Show Less' : 'Show All';
     });

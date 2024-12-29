@@ -128,7 +128,7 @@ User = get_user_model()
 @login_required
 def menu(request):
     user = request.user
-    show_all = request.GET.get('show_all', 'false') == 'true'
+    show_all = request.GET.get('show_all', 'false').lower() == 'true'
     
     if hasattr(user, 'customeruser'):
         customer_city = user.customeruser.city
