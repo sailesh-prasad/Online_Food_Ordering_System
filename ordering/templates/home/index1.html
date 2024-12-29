@@ -1069,19 +1069,19 @@ color: #ffcdd2;
                   <ul class="page">
                      {% if restaurant_list.has_previous %}
                      <li class="page__btn active">
-                        <a class="page-link pagination-link" href="?restaurant_page={{ restaurant_list.previous_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all }}" aria-label="Previous">
+                        <a class="page-link pagination-link" href="?restaurant_page={{ restaurant_list.previous_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all|lower }}" aria-label="Previous">
                         <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
                         </a>
                      </li>
                      {% endif %}
                      {% for num in restaurant_list.paginator.page_range %}
                      <li class="page__numbers {% if restaurant_list.number == num %}active{% endif %}">
-                        <a class="page-link pagination-link" href="?restaurant_page={{ num }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all }}">{{ num }}</a>
+                        <a class="page-link pagination-link" href="?restaurant_page={{ num }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all|lower }}">{{ num }}</a>
                      </li>
                      {% endfor %}
                      {% if restaurant_list.has_next %}
                      <li class="page__btn active">
-                        <a class="page-link pagination-link" href="?restaurant_page={{ restaurant_list.next_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all }}" aria-label="Next">
+                        <a class="page-link pagination-link" href="?restaurant_page={{ restaurant_list.next_page_number }}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}&show_all={{ show_all|lower }}" aria-label="Next">
                         <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
                         </a>
                      </li>
@@ -1136,19 +1136,19 @@ color: #ffcdd2;
                <ul class="page">
                   {% if foodItems.has_previous %}
                   <li class="page__btn active">
-                     <a class="page-link pagination-link" href="?food_page={{ foodItems.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all }}" aria-label="Previous">
+                     <a class="page-link pagination-link" href="?food_page={{ foodItems.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all|lower }}" aria-label="Previous">
                      <span class="material-icons"><img src="{% static 'svg/arrow-left.svg' %}" alt="Previous"></span>
                      </a>
                   </li>
                   {% endif %}
                   {% for num in foodItems.paginator.page_range %}
                   <li class="page__numbers {% if foodItems.number == num %}active{% endif %}">
-                     <a class="page-link pagination-link" href="?food_page={{ num }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all }}">{{ num }}</a>
+                     <a class="page-link pagination-link" href="?food_page={{ num }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all|lower }}">{{ num }}</a>
                   </li>
                   {% endfor %}
                   {% if foodItems.has_next %}
                   <li class="page__btn active">
-                     <a class="page-link pagination-link" href="?food_page={{ foodItems.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all }}" aria-label="Next">
+                     <a class="page-link pagination-link" href="?food_page={{ foodItems.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}&show_all={{ show_all|lower }}" aria-label="Next">
                      <span class="material-icons"><img src="{% static 'svg/arrow-right.svg' %}" alt="Next"></span>
                      </a>
                   </li>
@@ -1364,14 +1364,14 @@ color: #ffcdd2;
 
     function toggleShowAll() {
         const urlParams = new URLSearchParams(window.location.search);
-        const showAll = urlParams.get('show_all').toLowerCase() === 'true';
+        const showAll = urlParams.get('show_all') === 'true';
         urlParams.set('show_all', !showAll);
         window.location.search = urlParams.toString();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const showAll = urlParams.get('show_all').toLowerCase() === 'true';
+        const showAll = urlParams.get('show_all') === 'true';
         const toggleText = document.getElementById('toggle-text');
         toggleText.textContent = showAll ? 'Show Less' : 'Show All';
     });
