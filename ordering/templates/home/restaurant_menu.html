@@ -496,13 +496,16 @@
             <button class="nav-link custom-nav-link" onclick="filterCategory('tiffin')">Tiffins</button>
         </li>
         <li class="nav-item">
-            <button class="nav-link custom-nav-link" onclick="filterCategory('starters')">Starters</button>
+            <button class="nav-link custom-nav-link" onclick="filterCategory('starter')">Starters</button>
         </li>
         <li class="nav-item">
             <button class="nav-link custom-nav-link" onclick="filterCategory('biriyani')">Biriyani</button>
         </li>
         <li class="nav-item">
-            <button class="nav-link custom-nav-link" onclick="filterCategory('deserts')">Desserts</button>
+            <button class="nav-link custom-nav-link" onclick="filterCategory('pizza')">Pizzas</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link custom-nav-link" onclick="filterCategory('dessert')">Desserts</button>
         </li>
         <li class="nav-item">
             <button class="nav-link custom-nav-link" onclick="filterCategory('snacks')">Snacks</button>
@@ -533,12 +536,33 @@
 </section>
 
 <script>
+    // Function to calculate similarity between two strings
+    function stringSimilarity(str1, str2) {
+        str1 = str1.toLowerCase();
+        str2 = str2.toLowerCase();
+
+        let matches = 0;
+        const len = Math.min(str1.length, str2.length);
+
+        for (let i = 0; i < len; i++) {
+            if (str1[i] === str2[i]) matches++;
+        }
+
+        return matches / Math.max(str1.length, str2.length);
+    }
+
     // Function to filter food items based on the selected category
     function filterCategory(category) {
+        const threshold = 0.5; // Set a threshold for similarity (0 to 1)
         const foodItems = document.querySelectorAll(".food-item-col"); // Select all food items
+        const lowerCategory = category.toLowerCase(); // Convert the selected category to lowercase
+
         foodItems.forEach(item => {
-            // Show or hide items based on the selected category
-            if (category === "all" || item.dataset.category.toLowerCase() === category.toLowerCase()) {
+            const itemCategory = item.dataset.category.toLowerCase(); // Convert the item's category to lowercase
+            const similarity = stringSimilarity(lowerCategory, itemCategory); // Calculate similarity
+
+            // Show item if similarity is above the threshold or category is 'all'
+            if (lowerCategory === "all" || similarity >= threshold) {
                 item.style.display = "block"; // Show item
             } else {
                 item.style.display = "none"; // Hide item
