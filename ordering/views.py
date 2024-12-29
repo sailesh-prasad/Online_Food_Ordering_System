@@ -128,6 +128,8 @@ User = get_user_model()
 @login_required
 def menu(request):
     user = request.user
+    show_all = request.GET.get('show_all', 'false') == 'true'
+    
     if hasattr(user, 'customeruser'):
         customer_city = user.customeruser.city
         restaurant_list = restaurantUser.objects.filter(city=customer_city)
@@ -139,6 +141,10 @@ def menu(request):
     query = request.GET.get('q')
     if query:
         foods = foods.filter(Q(name__icontains=query))
+
+    if show_all:
+        restaurant_list = restaurantUser.objects.all()
+        foods = foodItems.objects.all()
 
     # Pagination for restaurants
     restaurant_paginator = Paginator(restaurant_list, 8)
@@ -183,6 +189,7 @@ def menu(request):
         'restaurant_list': restaurant_page_obj,
         'cities': City.objects.all(),
         'selected_city': customer_city.name if hasattr(user, 'customeruser') else None,
+        'show_all': show_all,
     })
 
 

@@ -16,7 +16,14 @@ from geopy.geocoders import Nominatim
 @login_required
 def home(request):
     delivery_user = deliveryUser.objects.get(username=request.user.username)
-    orders = Order.objects.filter(delivery_person=delivery_user.name)
+    orders = Order.objects.filter(delivery_person=delivery_user.name).select_related('customer')  # Fetch customer details
+
+    # Fetch restaurant details for each order
+    for order in orders:
+        try:
+            order.restaurant = restaurantUser.objects.get(restaurantName=order.restaurant_name)
+        except restaurantUser.DoesNotExist:
+            order.restaurant = None
 
     if request.method == 'POST':
         order_id = request.POST.get('order_id')
@@ -28,9 +35,9 @@ def home(request):
             messages.success(request, f"Order status of {order.order_no} is {order.get_status_display()}")
             print(f"Received status update: {new_status}")
             if new_status == 'DELIVERED':
-                from_email = 'InFOODSys@gmail.com'  # Use the correct from_email
-                user_name = order.customer.name  # Use the newly created user object
-                user_email = order.customer.email  # Use the correct email address
+                from_email = 'InFOODSys@gmail.com'
+                user_name = order.customer.name
+                user_email = order.customer.email
                 send_mail(
                     'Hello, {}'.format(user_name),
                     """Your order has been Delivered Successfully!""",
@@ -42,15 +49,6 @@ def home(request):
                     Best regards,<br>
                     Food Ordering Team""".format(user_name)
                 )
-                
-    #     except Order.DoesNotExist:
-    #         messages.error(request, 'Order not found or you are not authorized to update this order')
-
-    #     return redirect('home')  # Redirect to avoid resubmission on refresh
-
-    # return render(request, 'Deliveryhome.html', {'orders': orders, 'messages': messages.get_messages(request), 'customer_address': delivery_user.address})
-
-            # Show the map when the status is out for delivery
             if new_status == 'OUT_FOR_DELIVERY':
                 return redirect(reverse('track_delivery', kwargs={'order_id': order.id}))
         except Order.DoesNotExist:

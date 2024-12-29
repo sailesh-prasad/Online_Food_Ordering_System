@@ -53,9 +53,9 @@ body {
             
         }
         .frozen-container-hero {
-            {% comment %} 
+            
             background: rgba(0, 0, 0, 0.2); /* Translucent white background */
-            backdrop-filter: blur(6px); {% endcomment %}
+            backdrop-filter: blur(6px); 
             height:23vh;
             border-radius: 12px;
             padding-left:30px;
@@ -173,7 +173,7 @@ body {
     padding-top: 10px ;/* Adjusted padding for compact spacing */
     font-size: 1rem; /* Improved font style */
     color: #f6fbe7;
-    {% comment %} text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); {% endcomment %}
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
     font-family: 'Roboto', sans-serif;
 /* Changed font for better readability */
 font-weight: bold;
@@ -285,7 +285,7 @@ display: flex;
 justify-content: center;
 flex-wrap: nowrap;
 gap: 60px;
-padding-top:60px;
+padding-top:30px;
 
 
 
@@ -1033,9 +1033,9 @@ color: #ffcdd2;
                     <i class="feature-icon fas fa-percent"></i>
                     <h6>Avail Offers</h6>
                 </div> {% endcomment %}
-                <div class="feature-card">
+                <div class="feature-card" onclick="toggleShowAll()">
                     <i class="feature-icon fas fa-bolt"></i>
-                    <h6>Quick Reorder</h6>
+                    <h6 id="toggle-text">{% if show_all %}Show Less{% else %}Show All{% endif %}</h6>
                 </div>
                 {% comment %} <div class="feature-card">
                     <i class="feature-icon fas fa-heart"></i>
@@ -1045,7 +1045,7 @@ color: #ffcdd2;
         </section>
         
         <section id="restaurants" class="section">
-            <h2 class="section-title">Restaurants Near You{% if selected_city %} in {{ selected_city }}{% endif %}</h2>
+            <h2 class="section-title">Restaurants Near You{% if selected_city and not show_all %} in {{ selected_city }}{% else %} All{% endif %}</h2>
             <div class="row">
                 {% for restaurant in restaurant_list %} <!-- Display all restaurants -->
                 <div class="col-md-3 col-sm-6">
@@ -1097,7 +1097,7 @@ color: #ffcdd2;
                 {% for food in foodItems %}
                 <div class="food-item-col">
                     <div class="food-card">
-                        {% if selected_city %}
+                        {% if selected_city and not show_all %}
                         <div class="offer-tag">Quick Delivery</div>
                         {% endif %}
                         <img src="/media/{{ food.image }}" alt="{{ food.name }}" class="food-image">
@@ -1337,6 +1337,20 @@ color: #ffcdd2;
     function scrollToMenu() {
         document.getElementById('food-items-section').scrollIntoView({ behavior: 'smooth' });
     }
+
+    function toggleShowAll() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const showAll = urlParams.get('show_all') === 'true';
+        urlParams.set('show_all', !showAll);
+        window.location.search = urlParams.toString();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const showAll = urlParams.get('show_all') === 'true';
+        const toggleText = document.getElementById('toggle-text');
+        toggleText.textContent = showAll ? 'Show Less' : 'Show All';
+    });
 </script>
 {% include "home/footer.html" %}
 </body>

@@ -214,6 +214,8 @@
                             <th>Order ID</th>
                             <th>Customer Name</th>
                             <th>Delivery Address</th>
+                            <th>Restaurant Name</th> <!-- New column for restaurant name -->
+                            <th>Restaurant Address</th> <!-- New column for restaurant address -->
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -222,8 +224,10 @@
                         {% for order in orders %}
                             <tr>
                                 <td>{{ order.order_no }}</td>
-                                <td>{{ order.customer.name }}</td>  <!-- Corrected field name -->
-                                <td>{{ order.customer.address }}</td>  <!-- Corrected field name to access address -->
+                                <td>{{ order.customer.name }}</td>
+                                <td>{{ order.customer.address }}</td> <!-- Corrected field for customer address -->
+                                <td>{{ order.restaurant.restaurantName }}</td> <!-- Corrected field for restaurant name -->
+                                <td>{{ order.restaurant.address }}</td> <!-- Corrected field for restaurant address -->
                                 <td>
                                     <form method="post" action="{% url 'home' %}">
                                         {% csrf_token %}
