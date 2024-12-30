@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import django
+from django.core.management import call_command
+from django.core.management.utils import get_random_secret_key
+from django.db import OperationalError
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -193,6 +197,19 @@ EMAIL_HOST_USER = os.getenv('EMAIL_USER', 'baymaxe1969@gmail.com')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', 'seru dwux awbp wvbc')
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
+# Ensure the database is created and create a superuser if it doesn't exist
+try:
+    django.setup()
+    call_command('migrate')
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(username='root').exists():
+        User.objects.create_superuser('root', '', 'root')
+except OperationalError:
+    print("Database is not ready yet. Please run the server again.")
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 # Debugging statements
 print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
