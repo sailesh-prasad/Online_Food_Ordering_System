@@ -30,7 +30,7 @@ COPY . .
 RUN python manage.py migrate --fake
 
 # Run the tests
-RUN python manage.py test
+RUN python manage.py test --verbosity=2
 
 # Expose the port for Django development server
 EXPOSE 8000
