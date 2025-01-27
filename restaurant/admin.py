@@ -5,7 +5,7 @@ from restaurant.models import restaurantUser, foodItems
 # Register your models here.
 
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = ['restaurantName', 'address', 'restaurantContact', 'email', 'password']
+    list_display = ['restaurantName', 'address', 'restaurantContact', 'email', 'place']
 
 admin.site.register(restaurantUser, RestaurantAdmin)
 
@@ -15,7 +15,7 @@ class FoodItemsAdmin(admin.ModelAdmin):
 # admin.site.register(Restaurant)
 admin.site.register(foodItems, FoodItemsAdmin)
 
-from import_export.admin import ImportExportModelAdmin
+# from import_export.admin import ImportExportModelAdmin
 
 # class StateAdmin(ImportExportModelAdmin):
 #     list_display = ('id', 'name')

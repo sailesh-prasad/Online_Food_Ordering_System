@@ -1,24 +1,24 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
-from customer.models import customerUser,Contact,Place,City,State,Order,Customer
+from customer.models import customerUser,Place,City,State,Order
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
 # A viewset for viewing and editing customer user instances.  
-class CustomerViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
+# class CustomerViewSet(viewsets.ModelViewSet):
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
+#     queryset = Customer.objects.all()
+#     serializer_class = CustomerSerializer
     
 # A viewset for viewing and editing contact instances.  
-class ContactViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    queryset = Contact.objects.all()
-    serializer_class = ContactSerializer
+# class ContactViewSet(viewsets.ModelViewSet):
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
+#     queryset = Contact.objects.all()
+#     serializer_class = ContactSerializer
 
 # A viewset for viewing and editing customer user instances.  
 class CustomerUserViewSet(viewsets.ModelViewSet):

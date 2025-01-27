@@ -1,37 +1,17 @@
-from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.shortcuts import render, get_object_or_404
-# from .models import Student
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
+
 from random import choice
-from customer.models import customerUser, Contact, Order, Customer  # Ensure Customer is imported
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
 from customer.models import State, City, Place
-from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 from restaurant.models import foodItems, restaurantUser  # Add this import
-from django.core.mail import send_mail  # Add this import
 from geopy.geocoders import Nominatim
-import os  # Add this import
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic.list import ListView
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-
-from customer.models import customerUser, Contact, Order, Customer, State, City, Place
-from restaurant.models import foodItems, restaurantUser
-import os
-from random import choice
+from customer.models import customerUser, Order, State, City, Place
 from django.contrib.auth import get_user_model
 # Create your views here.
 
@@ -121,14 +101,14 @@ def registerUser(request):
             city = City.objects.get(id=city_id)
         except (State.DoesNotExist, City.DoesNotExist):
             messages.error(request, 'Invalid State or City selected.')
-            return redirect('register')
+            return redirect('login')
 
         # Get latitude and longitude for the place
         geolocator = Nominatim(user_agent="CustomerRegistration")
-        location = geolocator.geocode(place)
+        location = geolocator.geocode(place) 
         if not location:
             messages.error(request, 'Unable to fetch location details for the provided place.')
-            return redirect('register')
+            return redirect('login')
 
         latitude = location.latitude
         longitude = location.longitude
@@ -143,13 +123,13 @@ def registerUser(request):
 
         try:
             # Create the customer instance
-            customer = Customer.objects.create(
-                name=name,
-                address=address,
-                phone_number=phone,
-                email=email,
-                password=hashed_password
-            )
+            # customer = customerUser.objects.create(
+            #     name=name,
+            #     address=address,
+            #     phone_number=phone,
+            #     email=email,
+            #     password=hashed_password
+            # )
 
             # Create the user instance
             user = customerUser.objects.create(
@@ -162,9 +142,10 @@ def registerUser(request):
                 city=city,
                 place=place,
                 address=address,
+                phone_number=phone,
                 latitude=latitude,
                 longitude=longitude,
-                customer=customer
+                # customer=customer
             )
             user.save()
 
@@ -175,33 +156,33 @@ def registerUser(request):
             return redirect('login')
         except Exception as e:
             messages.error(request, f'Error!! Try Again: {e}')
-            return redirect('register')
+            return redirect('login')
 
     return render(request, 'authentication/register.html', {'states': states})
 
-def forgetPassword(request):
-    return render(request,'authentication/forgetPassword.html')
+# def forgetPassword(request):
+#     return render(request,'authentication/forgetPassword.html')
 
 def logoutUser(request):
     User = get_user_model()
     logout(request)
     return render(request,'authentication/logout.html')
 
-def feedback_form(request):
-    pass
+# def feedback_form(request):
+#     pass
 
-def index(request):
-    if request.method == "POST":
-        contact = Contact()
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject')
-        contact.name = name
-        contact.email = email
-        contact.subject = subject
-        contact.save()
-        return render(request, 'thank_you.html')  # Render the thank you page
-    return render(request, 'contact.html')
+# def index(request):
+#     if request.method == "POST":
+#         contact = Contact()
+#         name = request.POST.get('name')
+#         email = request.POST.get('email')
+#         subject = request.POST.get('subject')
+#         contact.name = name
+#         contact.email = email
+#         contact.subject = subject
+#         contact.save()
+#         return render(request, 'thank_you.html')  # Render the thank you page
+#     return render(request, 'contact.html')
 
 def Home(request):
     return render(request,'home.html')
@@ -308,38 +289,38 @@ def track_delivery(request):
 
     return render(request, 'home/track_locations.html', context)
 
-def register(request):
-    if request.method == 'POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        address = request.POST['address']
-        state_id = request.POST['state']
-        city_id = request.POST['city']
-        place_id = request.POST['place']
-        latitude = request.POST['latitude']
-        longitude = request.POST['longitude']
-        password = request.POST['password']
+# def register(request):
+#     if request.method == 'POST':
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         phone = request.POST['phone']
+#         address = request.POST['address']
+#         state_id = request.POST['state']
+#         city_id = request.POST['city']
+#         place_id = request.POST['place']
+#         latitude = request.POST['latitude']
+#         longitude = request.POST['longitude']
+#         password = request.POST['password']
 
-        state = State.objects.get(id=state_id)
-        city = City.objects.get(id=city_id)
-        place = Place.objects.get(id=place_id)
+#         state = State.objects.get(id=state_id)
+#         city = City.objects.get(id=city_id)
+#         place = Place.objects.get(id=place_id)
 
-        customer_user = customerUser.objects.create(
-            name=name,
-            email=email,
-            state=state,
-            city=city,
-            place=place,
-            address = address,
-            latitude=latitude,
-            longitude=longitude,
-        )
-        customer_user.set_password(password)
-        customer_user.save()
+#         customer_user = customerUser.objects.create(
+#             name=name,
+#             email=email,
+#             state=state,
+#             city=city,
+#             place=place,
+#             address = address,
+#             latitude=latitude,
+#             longitude=longitude,
+#         )
+#         customer_user.set_password(password)
+#         customer_user.save()
 
-        messages.success(request, 'Registration Successful!')
-        return redirect('register')
+#         messages.success(request, 'Registration Successful!')
+#         return redirect('register')
 
-    states = State.objects.all()
-    return render(request, 'authentication/register.html', {'states': states})
+#     states = State.objects.all()
+#     return render(request, 'authentication/register.html', {'states': states})

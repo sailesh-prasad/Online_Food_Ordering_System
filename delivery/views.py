@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-from delivery.models import deliveryUser, DeliveryPerson, DeliveryPersonLocation
+from delivery.models import deliveryUser, DeliveryPersonLocation
 from customer.models import Order, State, City, Place
 from django.utils import timezone
 from django.core.mail import send_mail  # Import send_mail
@@ -156,6 +156,7 @@ def registerDelivery(request):
             place=place,
             name=name,
             address=address,
+            phone = phone,
             latitude = latitude,
             longitude = longitude,
             is_delivery=True
@@ -208,8 +209,8 @@ Delivery Team 🚗💨""".format(user_name, delivery_link)
 
 
 
-def feedback_form(request):
-    pass
+# def feedback_form(request):
+#     pass
 
 
 
@@ -254,7 +255,7 @@ def fetch_live_location(request):
     if request.method == 'GET':
         delivery_person_id = request.GET.get('delivery_person_id')
         try:
-            delivery_person = DeliveryPerson.objects.get(id=delivery_person_id)
+            delivery_person = deliveryUser.objects.get(id=delivery_person_id)
             # Assuming you have a mechanism to get the live location (e.g., GPS device, mobile app)
             # For the sake of this example, we'll just use some mock coordinates.
             live_latitude = 19.0760  # Replace with actual mechanism to get live latitude
@@ -265,6 +266,6 @@ def fetch_live_location(request):
                 'latitude': live_latitude,
                 'longitude': live_longitude
             })
-        except DeliveryPerson.DoesNotExist:
+        except deliveryUser.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Delivery person not found.'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request.'})

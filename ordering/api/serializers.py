@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from ordering.models import  Comment ,Feedback
+from ordering.models import Feedback
 
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = '__all__'
+# class CommentSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Comment
+#         fields = '__all__'
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

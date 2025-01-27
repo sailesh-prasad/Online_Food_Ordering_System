@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from customer.models import *
 
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = '__all__'
+# class CustomerSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Customer
+#         fields = '__all__'
 
-class ContactSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Contact
-        fields = '__all__'
+# class ContactSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Contact
+#         fields = '__all__'
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:

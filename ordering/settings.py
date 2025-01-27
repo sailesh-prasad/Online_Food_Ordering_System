@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     #'myapp',
     'ordering',
     'customer',
-    'phonenumber_field',
+    # 'phonenumber_field',
     'restaurant',
     # 'order',
     # 'menu',
@@ -212,5 +212,5 @@ except Exception as e:
     print(f"An error occurred: {e}")
 
 # Debugging statements
-print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
-print(f"EMAIL_HOST_PASSWORD: {EMAIL_HOST_PASSWORD}")
+# print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
+# print(f"EMAIL_HOST_PASSWORD: {EMAIL_HOST_PASSWORD}")

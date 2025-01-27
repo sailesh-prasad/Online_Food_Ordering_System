@@ -42,14 +42,14 @@ urlpatterns = [
     # path('registerDelivery/',deliveryviews.registerDelivery,name = 'registerDelivery'),
     # path('home/', deliveryviews.home, name='home'),
     # path('login/', customerviews.loginUser, name='login'),
-    path('track_delivery/<int:order_id>/', deliveryviews.track_delivery, name='track_delivery'),  # Ensure this line is included
-    path('fetch_live_location/', deliveryviews.fetch_live_location, name='fetch_live_location'),
+    # path('track_delivery/<int:order_id>/', deliveryviews.track_delivery, name='track_delivery'),  # Ensure this line is included
+    # path('fetch_live_location/', deliveryviews.fetch_live_location, name='fetch_live_location'),
     # path('feedback_form/', deliveryviews.feedback_form, name='feedback_form'),
 
-    path('loginDelivery/',deliveryviews.loginDelivery,name = 'loginDelivery'),
-    path('registerDelivery/',deliveryviews.registerDelivery,name = 'registerDelivery'),
-    path('home/', deliveryviews.home, name='home'),
-    path('login/', customerviews.loginUser, name='login'),
+    # path('loginDelivery/',deliveryviews.loginDelivery,name = 'loginDelivery'),
+    # path('registerDelivery/',deliveryviews.registerDelivery,name = 'registerDelivery'),
+    # path('home/', deliveryviews.home, name='home'),
+    # path('login/', customerviews.loginUser, name='login'),
     path('menu/',views.menu,name = 'menu'),
     path('restaurant/<int:restaurant_id>/menu/', views.restaurant_menu, name='restaurant_menu'),
     path('cart/', views.Cart, name='cart'),
@@ -67,7 +67,7 @@ urlpatterns = [
     path('search', views.search, name='search'),
     path('filter', views.filter, name ='filter'),
     path('city-autocomplete/', views.city_autocomplete, name='city_autocomplete'),
-    path('track_delivery/', customerviews.track_delivery, name='track_delivery'),
+    # path('track_delivery/', customerviews.track_delivery, name='track_delivery'),
    
 ]
 

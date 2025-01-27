@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import  CommentViewSet ,FeedbackViewSet
+from .views import  FeedbackViewSet
 from customer.api.views import *
 from delivery.api.views import *
 from restaurant.api.views import *
@@ -16,7 +16,7 @@ schema_view = get_schema_view(
         default_version='v1',
         description="API for food ordering system",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@yourapi.local"), 
+        # contact=openapi.Contact(email="contact@yourapi.local"), 
         license=openapi.License(name="BSD License"),       
     ),
     public=True,
@@ -25,19 +25,19 @@ schema_view = get_schema_view(
 
 
 router = DefaultRouter()
-router.register(r'comments', CommentViewSet)
+# router.register(r'comments', CommentViewSet)
 #router.register(r'customer', CustomerViewSet)
-router.register(r'contact', ContactViewSet)
+# router.register(r'contact', ContactViewSet)
 #router.register(r'delivery-persons', DeliveryPersonViewSet)
 router.register(r'delivery-users', DeliveryUserViewSet)
-router.register(r'feedback_delivery', Feedback_dViewSet ,basename='feedback_d')
+# router.register(r'feedback_delivery', Feedback_dViewSet ,basename='feedback_d')
 router.register(r'feedback', FeedbackViewSet ,basename='feedback')
-router.register(r'contacts_delivery', Contact_dViewSet,basename='contacts_delivery')
+# router.register(r'contacts_delivery', Contact_dViewSet,basename='contacts_delivery')
 #router.register(r'restaurant',RestaurantViewSet)
 router.register(r'del-locations', DeliveryPersonLocationViewSet, basename='deliverypersonlocation')
-router.register(r'payments',PaymentViewSet)
-router.register(r'products',ProductViewSet)
-router.register(r'carts',CartViewSet)
+# router.register(r'payments',PaymentViewSet)
+# router.register(r'products',ProductViewSet)
+# router.register(r'carts',CartViewSet)
 router.register(r'state',StateViewSet)
 router.register(r'place',PlaceViewSet)
 router.register(r'city',CityViewSet)
